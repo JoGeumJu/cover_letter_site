@@ -12,18 +12,12 @@ const MainCanvas: React.FunctionComponent = () => {
       style={{ width: "100%", height: "100%", background: "black" }}
       camera={{ position: [0, 0, 0], fov: 75 }}
     >
-      <fog attach={"fog"} color={"black"} near={0} far={150} />
+      <fog attach={"fog"} color={"black"} near={0} far={130} />
       <LightController />
-      <ScrollControls pages={7} damping={0.5}>
-        <MoveController></MoveController>
+      <ScrollControls pages={14} damping={0.25}>
+        <MoveController />
       </ScrollControls>
       <Stars />
-      {/* <OrbitControls
-        enableZoom={false}
-        enablePan={false}
-        minAzimuthAngle={-Math.PI / 4}
-        maxAzimuthAngle={Math.PI / 4}
-      /> */}
       <Stats />
     </Canvas>
   );

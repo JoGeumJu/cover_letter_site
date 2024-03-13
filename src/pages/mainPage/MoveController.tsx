@@ -1,12 +1,12 @@
-import { Float, useScroll, PerspectiveCamera, Text } from "@react-three/drei";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Float, PerspectiveCamera, useScroll } from "@react-three/drei";
+import React, { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { Group } from "three";
 import Dog from "./Dog";
 import Planet from "./Planet";
+import CUPlanet from "./CU_Planet";
 
-const CURVE_DISTANCE = 10;
 const CURVE_AHEAD_CAMERA = 0.008;
 const CURVE_AHEAD_Dog = 0.02;
 const Dog_MAX_ANGLE = 10;
@@ -17,31 +17,30 @@ const MoveController: React.FunctionComponent = () => {
     return new THREE.CatmullRomCurve3(
       [
         new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(0, 0, -1 * CURVE_DISTANCE),
-        new THREE.Vector3(0, 0, -5 * CURVE_DISTANCE),
-        new THREE.Vector3(0, 0, -15 * CURVE_DISTANCE),
-        new THREE.Vector3(0, 0, -27 * CURVE_DISTANCE),
-        new THREE.Vector3(0, 0, -40 * CURVE_DISTANCE),
-        new THREE.Vector3(0, 0, -55 * CURVE_DISTANCE),
-        new THREE.Vector3(0, 0, -73 * CURVE_DISTANCE),
+        new THREE.Vector3(0, 0, -4),
+        new THREE.Vector3(0, 0, -30),
+        new THREE.Vector3(-30, 25, -80), //cu
+        new THREE.Vector3(5, 2, -90),
+        new THREE.Vector3(40, -20, -230), //calculator
+        new THREE.Vector3(2, -37, -240),
+        new THREE.Vector3(-45, -55, -400), //streetStore
+        new THREE.Vector3(-5, -25, -410),
+        new THREE.Vector3(35, 5, -600), //dos
+        new THREE.Vector3(2, -7, -610),
+        new THREE.Vector3(-30, -20, -850), //meonghae
+        new THREE.Vector3(5, 0, -860),
+        new THREE.Vector3(40, 20, -1100), //git
       ],
       false,
       "catmullrom",
-      1
+      0.5
     );
   }, []);
-
-  const shape = useMemo(() => {
-    const shape = new THREE.Shape();
-    shape.moveTo(0, -0.08);
-    shape.lineTo(0, 0.08);
-
-    return shape;
-  }, [curve]);
-
   const cameraGroup = useRef<THREE.Group>(null!);
+  const dog = useRef<THREE.Group>(null!);
 
   useFrame((_state, delta) => {
+    // console.log(cameraGroup.current.rotation);
     const scrollOffset = Math.max(0, scroll.offset);
     const curPoint = curve.getPoint(scrollOffset);
 
@@ -61,11 +60,9 @@ const MoveController: React.FunctionComponent = () => {
     );
 
     const tangent = curve.getTangent(scrollOffset + CURVE_AHEAD_Dog);
-
     const nonLeprLookAt = new Group();
     nonLeprLookAt.position.copy(curPoint);
     nonLeprLookAt.lookAt(nonLeprLookAt.position.clone().add(targetLookAt));
-
     tangent.applyAxisAngle(
       new THREE.Vector3(0, 1, 0),
       -nonLeprLookAt.rotation.y
@@ -73,44 +70,73 @@ const MoveController: React.FunctionComponent = () => {
 
     let angle = Math.atan2(-tangent.z, tangent.x);
     angle = -Math.PI / 2 + angle;
-
     let angleDegrees = (angle * 180) / Math.PI;
     angleDegrees *= 2.4;
-
     if (angleDegrees < 0) {
       angleDegrees = Math.max(angleDegrees, -Dog_MAX_ANGLE);
     }
     if (angleDegrees > 0) {
       angleDegrees = Math.min(angleDegrees, Dog_MAX_ANGLE);
     }
-
     angle = (angleDegrees * Math.PI) / 180;
-
     const targetDogQuaternion = new THREE.Quaternion().setFromEuler(
       new THREE.Euler(dog.current.rotation.x, dog.current.rotation.y, angle)
     );
-
     dog.current.quaternion.slerp(targetDogQuaternion, delta * 2);
   });
-
-  const dog = useRef<THREE.Group>(null!);
 
   return (
     <>
       <group ref={cameraGroup}>
-        <PerspectiveCamera position={[0, 0, 20]} fov={60} makeDefault />
+        <PerspectiveCamera position={[0, 0, 0]} fov={60} makeDefault />
         <group ref={dog}>
-          <Float floatIntensity={0.05} speed={4} rotationIntensity={0.05}>
+          <Float floatIntensity={0.08} speed={4} rotationIntensity={0.08}>
             <Dog />
           </Float>
         </group>
       </group>
-      <Planet args={[1, 1, 1]} position={[-15, 0, -65]} scale={[10, 10, 10]} />
-      <Planet args={[1, 1, 1]} position={[15, 0, -165]} scale={[11, 11, 11]} />
-      <Planet args={[1, 1, 1]} position={[-15, 0, -285]} scale={[15, 15, 15]} />
-      <Planet args={[1, 1, 1]} position={[15, 0, -415]} scale={[17, 17, 17]} />
-      <Planet args={[1, 1, 1]} position={[-15, 0, -565]} scale={[20, 20, 20]} />
-      <Planet args={[1, 1, 1]} position={[0, 0, -745]} scale={[15, 15, 15]} />
+      <CUPlanet
+        // cu
+        args={[1, 1, 1]}
+        position={[-30, 26, -100]}
+        scale={[1, 1, 1]}
+        rotation={[0, 0, 0]}
+      />
+      <Planet
+        // calculator
+        args={[1, 1, 1]}
+        position={[40, -25, -251]}
+        scale={[11, 11, 11]}
+        rotation={[0, 0, 0]}
+      />
+      <Planet
+        // streetStore
+        args={[1, 1, 1]}
+        position={[-50, -52, -423]}
+        scale={[14, 14, 14]}
+        rotation={[0, 0, 0]}
+      />
+      <Planet
+        // dos
+        args={[1, 1, 1]}
+        position={[35, 6, -624]}
+        scale={[17, 17, 17]}
+        rotation={[0, 0, 0]}
+      />
+      <Planet
+        // meonghae
+        args={[1, 1, 1]}
+        position={[-30, -20, -877]}
+        scale={[20, 20, 20]}
+        rotation={[0, 0, 0]}
+      />
+      <Planet
+        // git
+        args={[1, 1, 1]}
+        position={[42, 20, -1125]}
+        scale={[15, 15, 15]}
+        rotation={[0, 0, 0]}
+      />
     </>
   );
 };

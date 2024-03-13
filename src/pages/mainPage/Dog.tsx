@@ -3,9 +3,10 @@ import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useAnimations, useGLTF, useScroll } from "@react-three/drei";
 
+const START_SCROLL_OFFSET = 0;
+const END_SCROLL_OFFSET = 0.1428;
+
 const Box: React.FC = () => {
-  const startScrollPosition = 0;
-  const endScrollPosition = 0.125;
   const scroll = useScroll();
   const meshRef = useRef<THREE.Mesh>(null);
   const { scene, animations } = useGLTF("/assets/models/heongee_test2.glb");
@@ -24,6 +25,9 @@ const Box: React.FC = () => {
     scene.children.forEach((child) => {
       findAndApplyMaterial(child);
     });
+    if (meshRef.current) {
+      meshRef.current.position.set(0, 0, -10);
+    }
     // animations.forEach((clip) => {
     //   const action = mixer.clipAction(clip);
     //   action.play();
@@ -31,16 +35,17 @@ const Box: React.FC = () => {
   }, [scene, actions]);
 
   useFrame((state, delta) => {
-    mixer.update(delta);
+    // mixer.update(delta);
     if (
-      startScrollPosition < scroll.offset &&
-      scroll.offset < endScrollPosition &&
+      START_SCROLL_OFFSET < scroll.offset &&
+      scroll.offset < END_SCROLL_OFFSET &&
       meshRef.current
     ) {
       meshRef.current.rotation.y =
-        Math.PI * (scroll.offset / endScrollPosition);
-      meshRef.current.position.z = 17.5 * (scroll.offset / endScrollPosition);
-      meshRef.current.position.y = -3 * (scroll.offset / endScrollPosition);
+        Math.PI * (scroll.offset / END_SCROLL_OFFSET);
+      meshRef.current.position.z =
+        -10 + 9 * (scroll.offset / END_SCROLL_OFFSET);
+      meshRef.current.position.y = -3 * (scroll.offset / END_SCROLL_OFFSET);
     }
   });
 

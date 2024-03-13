@@ -1,4 +1,4 @@
-import { Box } from "@react-three/drei";
+import { Box, useScroll } from "@react-three/drei";
 import { useRef, useState } from "react";
 import { MeshStandardMaterial } from "three";
 
@@ -10,6 +10,9 @@ interface CubeProps {
 }
 
 const Planet: React.FC<CubeProps> = (props) => {
+  const startScrollPosition = 0;
+  const endScrollPosition = 0.1428;
+  const scroll = useScroll();
   const [checked, setChecked] = useState(false);
   const material = new MeshStandardMaterial({
     color: checked ? "#22cc33" : "#cc2222",

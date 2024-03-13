@@ -9,7 +9,7 @@ const tempBoxes = new THREE.Object3D();
 const Stars: React.FC = () => {
   const { nodes } = useGLTF("/assets/models/star.glb");
   const ref = useRef<THREE.InstancedMesh>(null!);
-  const starsNum = 10000;
+  const starsNum = 4000;
   useEffect(() => {
     let counter = 0;
     for (let i = 0; i < 20000; i++) {
@@ -37,7 +37,7 @@ const Stars: React.FC = () => {
       args={[
         (nodes.Icosphere as Mesh).geometry,
         (nodes.Icosphere as Mesh).material,
-        starsNum,
+        starsNum * 4,
       ]}
     />
   );
