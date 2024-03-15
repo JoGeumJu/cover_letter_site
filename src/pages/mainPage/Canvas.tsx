@@ -5,6 +5,7 @@ import Stars from "./Stars";
 import LightController from "./LightController";
 import { ScrollControls } from "@react-three/drei";
 import MoveController from "./MoveController";
+import { TextBubble } from "./TextBubble";
 
 const MainCanvas: React.FunctionComponent = () => {
   return (
@@ -14,8 +15,9 @@ const MainCanvas: React.FunctionComponent = () => {
     >
       <fog attach={"fog"} color={"black"} near={0} far={130} />
       <LightController />
-      <ScrollControls pages={14} damping={0.25}>
+      <ScrollControls pages={20} damping={0.25}>
         <MoveController />
+        <TextBubble />
       </ScrollControls>
       <Stars />
       <Stats />

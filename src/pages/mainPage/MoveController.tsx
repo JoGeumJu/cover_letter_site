@@ -97,7 +97,6 @@ const MoveController: React.FunctionComponent = () => {
       </group>
       <CUPlanet
         // cu
-        args={[1, 1, 1]}
         position={[-30, 26, -100]}
         scale={[1, 1, 1]}
         rotation={[0, 0, 0]}

@@ -10,6 +10,7 @@ const Stars: React.FC = () => {
   const { nodes } = useGLTF("/assets/models/star.glb");
   const ref = useRef<THREE.InstancedMesh>(null!);
   const starsNum = 4000;
+
   useEffect(() => {
     let counter = 0;
     for (let i = 0; i < 20000; i++) {
