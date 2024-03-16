@@ -2,10 +2,12 @@
   font-family: "NPSfont";
   src: url("/public/assets/fonts/NPSfont_regular.ttf");
 }
+* {
+  font-family: "NPSfont";
+}
 
 body {
   margin: 0;
-  font-family: "NPSfont";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

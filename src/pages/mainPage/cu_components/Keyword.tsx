@@ -4,13 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 
 const START_SCROLL_OFFSET = 0.21;
-const END_SCROLL_OFFSET = 0.235;
-const CU: React.FC = () => {
+const END_SCROLL_OFFSET = 0.24;
+
+const Keyword: React.FC = () => {
   const [wasAnimated, setWasAnimated] = useState(false);
   const scroll = useScroll();
-  const cuRef = useRef<THREE.Mesh>(null!);
-  const { scene, animations } = useGLTF("/assets/models/cu/cu.glb");
-  const { actions } = useAnimations(animations, cuRef);
+  const keyRef = useRef<THREE.Mesh>(null!);
+  const { scene, animations } = useGLTF("/assets/models/cu/key.glb");
+  const { actions } = useAnimations(animations, keyRef);
   let mixer = new THREE.AnimationMixer(scene);
 
   useEffect(() => {
@@ -33,12 +34,16 @@ const CU: React.FC = () => {
     } else if (wasAnimated) setWasAnimated(false);
   });
 
-  const handleClick = () => {};
   return (
     <Float floatIntensity={1} speed={4} rotationIntensity={0.8}>
-      <primitive ref={cuRef} object={scene} onClick={handleClick} />;
+      <primitive
+        ref={keyRef}
+        object={scene}
+        scale={[1, 1, 1]}
+        position={[2, 2, 0]}
+      />
     </Float>
   );
 };
 
-export default CU;
+export default Keyword;
