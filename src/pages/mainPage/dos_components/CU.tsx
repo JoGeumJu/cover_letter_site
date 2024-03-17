@@ -2,14 +2,14 @@ import * as THREE from "three";
 import { Float, useGLTF, useScroll } from "@react-three/drei";
 import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { CU_EO, CU_SO } from "../../../data/scroll_offset";
 import { MeshStandardMaterial } from "three";
+import { DOS_EO, DOS_SO } from "../../../data/scroll_offset";
 
 const CU: React.FC = () => {
   const [wasAnimated, setWasAnimated] = useState(false);
   const scroll = useScroll();
   const cuRef = useRef<THREE.Mesh>(null!);
-  const { scene, animations } = useGLTF("/assets/models/cu/cu.glb");
+  const { scene, animations } = useGLTF("/assets/models/dos/display.glb");
   const mixer = new THREE.AnimationMixer(scene);
 
   const handleClick = () => {
@@ -34,7 +34,7 @@ const CU: React.FC = () => {
   }, [scene, wasAnimated, animations]);
 
   useFrame((state, delta) => {
-    if (CU_SO < scroll.offset && scroll.offset < CU_EO) {
+    if (DOS_SO < scroll.offset && scroll.offset < DOS_EO) {
       if (!wasAnimated) setWasAnimated(true);
       mixer.update(delta);
     } else if (wasAnimated) setWasAnimated(false);

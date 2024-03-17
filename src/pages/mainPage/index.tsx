@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import MainCanvas from "./Canvas";
+import MainCanvas from "./common/Canvas";
 
 const MainPage: React.FunctionComponent = () => {
   return (

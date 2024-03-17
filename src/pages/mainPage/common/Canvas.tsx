@@ -1,11 +1,10 @@
 import { Canvas } from "@react-three/fiber";
-import Dog from "./Dog";
-import { Stats, OrbitControls } from "@react-three/drei";
+import { Stats } from "@react-three/drei";
 import Stars from "./Stars";
-import LightController from "./LightController";
 import { ScrollControls } from "@react-three/drei";
-import MoveController from "./MoveController";
+import MoveController from "../controller/MoveController";
 import { TextBubble } from "./TextBubble";
+import LightController from "../controller/LightController";
 
 const MainCanvas: React.FunctionComponent = () => {
   return (

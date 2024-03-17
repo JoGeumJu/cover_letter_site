@@ -1,9 +1,22 @@
-import { Html, Scroll, useScroll } from "@react-three/drei";
+import { Html, useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { keyframes, styled } from "styled-components";
-import { LabelType, TalkingText } from "../../data/talking_text";
-import useTalking from "../../hook/useTalking";
+import {
+  CAL_EO,
+  CAL_SO,
+  CU_EO,
+  CU_SO,
+  DOS_EO,
+  DOS_SO,
+  GIT_SO,
+  MEONG_EO,
+  MEONG_SO,
+  ST_EO,
+  ST_SO,
+} from "../../../data/scroll_offset";
+import { LabelType, TalkingText } from "../../../data/talking_text";
+import useTalking from "../../../hook/useTalking";
 
 export const TextBubble: React.FunctionComponent = () => {
   const scroll = useScroll();
@@ -20,13 +33,29 @@ export const TextBubble: React.FunctionComponent = () => {
     if (scroll.offset <= 1 / 14) {
       checkIndex(LabelType.intro);
       setOpacity(1 - scroll.range(0, 1 / 14));
-    } else if (0.21 < scroll.offset && scroll.offset < 0.235) {
+    } else if (CU_SO < scroll.offset && scroll.offset < CU_EO) {
       checkIndex(LabelType.cu);
-      setOpacity(scroll.curve(0.21, 0.035));
+      setOpacity(scroll.curve(CU_SO, 0.035));
+    } else if (CAL_SO < scroll.offset && scroll.offset < CAL_EO) {
+      checkIndex(LabelType.calculator);
+      setOpacity(scroll.curve(CAL_SO, 0.035));
+    } else if (ST_SO < scroll.offset && scroll.offset < ST_EO) {
+      checkIndex(LabelType.streetStore);
+      setOpacity(scroll.curve(ST_SO, 0.035));
+    } else if (DOS_SO < scroll.offset && scroll.offset < DOS_EO) {
+      checkIndex(LabelType.dos);
+      setOpacity(scroll.curve(DOS_SO, 0.035));
+    } else if (MEONG_SO < scroll.offset && scroll.offset < MEONG_EO) {
+      checkIndex(LabelType.meonghae);
+      setOpacity(scroll.curve(MEONG_SO, 0.035));
+    } else if (GIT_SO < scroll.offset) {
+      checkIndex(LabelType.git);
+      setOpacity(scroll.curve(GIT_SO, 0.035));
     } else {
       setTextIndex(0);
       setOpacity(0);
       setIsFolding(false);
+      setTalkingOption({ text: "", speed: 50 });
     }
   });
 
@@ -48,7 +77,7 @@ export const TextBubble: React.FunctionComponent = () => {
 
   return (
     <Html>
-      <Bubble opacity={opacity} isfoling={isFolding}>
+      <Bubble opacity={opacity} isfolding={isFolding ? true : false}>
         <BubbleInner>
           <Name>흥이</Name>
           <BubbleBtn
@@ -91,7 +120,7 @@ export const TextBubble: React.FunctionComponent = () => {
 };
 export default TextBubble;
 
-const Bubble = styled.section<{ opacity: number; isfoling: boolean }>`
+const Bubble = styled.section<{ opacity: number; isfolding: boolean }>`
   position: fixed;
   width: 50vw;
   max-width: 800px;
@@ -100,7 +129,7 @@ const Bubble = styled.section<{ opacity: number; isfoling: boolean }>`
   left: 50vw;
   top: calc(100vh - 30px);
   transform: ${(props) =>
-    props.isfoling ? "translate(-50%, -16%)" : "translate(-50%, -100%)"};
+    props.isfolding ? "translate(-50%, -16%)" : "translate(-50%, -100%)"};
   background-image: url("/assets/images/bubble.png");
   background-size: cover;
   width: 50vw;

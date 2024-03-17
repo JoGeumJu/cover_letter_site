@@ -3,9 +3,13 @@ import React, { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { Group } from "three";
-import Dog from "./Dog";
-import Planet from "./Planet";
-import CUPlanet from "./CU_Planet";
+import Dog from "../common/Dog";
+import Planet from "../Planet";
+import CUPlanet from "../cu_components/CU_Planet";
+import CalculatorPlanet from "../calculator_components/Calculator_Planet";
+import StreetStorePlanet from "../streetStore_components/StreetStore_Planet";
+import MeonghaePlanet from "../meonghae_components/Meonghae_Planet";
+import DOSPlanet from "../dos_components/DOS_Planet";
 
 const CURVE_AHEAD_CAMERA = 0.008;
 const CURVE_AHEAD_Dog = 0.02;
@@ -95,45 +99,16 @@ const MoveController: React.FunctionComponent = () => {
           </Float>
         </group>
       </group>
-      <CUPlanet
-        // cu
-        position={[-30, 26, -100]}
-        scale={[1, 1, 1]}
-        rotation={[0, 0, 0]}
-      />
-      <Planet
-        // calculator
-        args={[1, 1, 1]}
-        position={[40, -25, -251]}
-        scale={[11, 11, 11]}
-        rotation={[0, 0, 0]}
-      />
-      <Planet
-        // streetStore
-        args={[1, 1, 1]}
-        position={[-50, -52, -423]}
-        scale={[14, 14, 14]}
-        rotation={[0, 0, 0]}
-      />
-      <Planet
-        // dos
-        args={[1, 1, 1]}
-        position={[35, 6, -624]}
-        scale={[17, 17, 17]}
-        rotation={[0, 0, 0]}
-      />
-      <Planet
-        // meonghae
-        args={[1, 1, 1]}
-        position={[-30, -20, -877]}
-        scale={[20, 20, 20]}
-        rotation={[0, 0, 0]}
-      />
+      <CUPlanet />
+      <CalculatorPlanet />
+      <StreetStorePlanet />
+      <DOSPlanet />
+      <MeonghaePlanet />
       <Planet
         // git
         args={[1, 1, 1]}
         position={[42, 20, -1125]}
-        scale={[15, 15, 15]}
+        scale={[1, 1, 1]}
         rotation={[0, 0, 0]}
       />
     </>

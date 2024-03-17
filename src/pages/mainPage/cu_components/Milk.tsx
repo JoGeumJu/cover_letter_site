@@ -1,12 +1,11 @@
 import * as THREE from "three";
-import { Float, useAnimations, useGLTF, useScroll } from "@react-three/drei";
+import { useGLTF, useScroll } from "@react-three/drei";
 import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 
 const Milk: React.FC = () => {
   const ref = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/cu/milk.glb");
-  const { actions } = useAnimations(animations, ref);
   let mixer = new THREE.AnimationMixer(scene);
 
   useEffect(() => {
@@ -15,7 +14,7 @@ const Milk: React.FC = () => {
       action.clampWhenFinished = true;
       action.play();
     });
-  }, [scene, actions]);
+  }, [scene]);
 
   useFrame((state, delta) => {
     mixer.update(delta);

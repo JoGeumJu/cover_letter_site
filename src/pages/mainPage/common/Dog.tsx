@@ -1,17 +1,13 @@
 import * as THREE from "three";
 import { useEffect, useRef, useState } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
-import { useAnimations, useGLTF, useScroll } from "@react-three/drei";
-import { LoopOnce } from "three";
+import { useFrame } from "@react-three/fiber";
+import { useGLTF, useScroll } from "@react-three/drei";
+import { DOG_EO, DOG_SO } from "../../../data/scroll_offset";
 
-const START_SCROLL_OFFSET = 0;
-const END_SCROLL_OFFSET = 0.1428;
-
-const Box: React.FC = () => {
+const Dog: React.FC = () => {
   const scroll = useScroll();
   const meshRef = useRef<THREE.Mesh>(null);
   const { scene, animations } = useGLTF("/assets/models/heongee.glb");
-  const { actions } = useAnimations(animations, meshRef);
   const [readyFlying, setReadyFlying] = useState(false);
   let mixer = new THREE.AnimationMixer(scene);
 
@@ -42,27 +38,21 @@ const Box: React.FC = () => {
       }
       action.play();
     });
-  }, [scene, actions, readyFlying]);
+  }, [scene, readyFlying, animations]);
 
   useFrame((state, delta) => {
-    if (
-      START_SCROLL_OFFSET < scroll.offset &&
-      scroll.offset < END_SCROLL_OFFSET
-    ) {
+    if (DOG_SO < scroll.offset && scroll.offset < DOG_EO) {
       if (!readyFlying) setReadyFlying(true);
       if (meshRef.current) {
-        meshRef.current.rotation.y =
-          Math.PI * (scroll.offset / END_SCROLL_OFFSET);
-        meshRef.current.position.z =
-          -7 + 5 * (scroll.offset / END_SCROLL_OFFSET);
-        meshRef.current.position.y = -3 * (scroll.offset / END_SCROLL_OFFSET);
+        meshRef.current.rotation.y = Math.PI * (scroll.offset / DOG_EO);
+        meshRef.current.position.z = -7 + 5 * (scroll.offset / DOG_EO);
+        meshRef.current.position.y = -3 * (scroll.offset / DOG_EO);
       }
-    } else if (START_SCROLL_OFFSET == scroll.offset && readyFlying)
-      setReadyFlying(false);
+    } else if (DOG_SO >= scroll.offset && readyFlying) setReadyFlying(false);
     mixer.update(delta);
   });
 
   return <primitive ref={meshRef} object={scene} scale={[0.5, 0.5, 0.5]} />;
 };
 
-export default Box;
+export default Dog;

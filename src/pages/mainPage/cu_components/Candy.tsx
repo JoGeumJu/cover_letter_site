@@ -1,12 +1,11 @@
 import * as THREE from "three";
-import { Float, useAnimations, useGLTF, useScroll } from "@react-three/drei";
-import { useEffect, useRef, useState } from "react";
+import { useGLTF } from "@react-three/drei";
+import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 
 const Candy: React.FC = () => {
   const ref = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/cu/candy.glb");
-  const { actions } = useAnimations(animations, ref);
   let mixer = new THREE.AnimationMixer(scene);
 
   useEffect(() => {
@@ -15,19 +14,18 @@ const Candy: React.FC = () => {
       action.clampWhenFinished = true;
       action.play();
     });
-  }, [scene, actions]);
+  }, [scene, animations]);
 
   useFrame((state, delta) => {
     mixer.update(delta);
   });
 
-  const handleClick = () => {};
   return (
     <primitive
       ref={ref}
       object={scene}
       scale={[0.7, 0.7, 0.7]}
-      position={[2, -2, 0]}
+      position={[2, -2, 2]}
     />
   );
 };
