@@ -14,10 +14,9 @@ const Keyword: React.FC = () => {
   useEffect(() => {
     animations.forEach((clip) => {
       const action = mixer.clipAction(clip);
-      action.reset();
       action.loop = THREE.LoopOnce;
       action.clampWhenFinished = true;
-      action.play();
+      action.reset().play();
     });
   }, [scene, wasAnimated]);
 

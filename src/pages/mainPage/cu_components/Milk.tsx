@@ -11,7 +11,6 @@ const Milk: React.FC = () => {
   useEffect(() => {
     animations.forEach((clip) => {
       const action = mixer.clipAction(clip);
-      action.clampWhenFinished = true;
       action.play();
     });
   }, [scene]);
@@ -20,7 +19,6 @@ const Milk: React.FC = () => {
     mixer.update(delta);
   });
 
-  const handleClick = () => {};
   return (
     <primitive
       ref={ref}
