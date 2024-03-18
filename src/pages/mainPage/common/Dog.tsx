@@ -15,7 +15,7 @@ const Dog: React.FC = () => {
     if (object instanceof THREE.Mesh && object.name === "glass001") {
       const material = object.material as THREE.MeshStandardMaterial;
       material.transparent = true;
-      material.opacity = 0.3;
+      material.opacity = 0.2;
     }
   };
 
@@ -26,6 +26,9 @@ const Dog: React.FC = () => {
     if (meshRef.current) {
       meshRef.current.position.set(0, 0, -7);
     }
+  }, []);
+
+  useEffect(() => {
     animations.forEach((clip) => {
       const action = mixer.clipAction(clip);
       if (readyFlying) {
@@ -38,7 +41,7 @@ const Dog: React.FC = () => {
       }
       action.play();
     });
-  }, [scene, readyFlying, animations]);
+  }, [readyFlying, animations]);
 
   useFrame((state, delta) => {
     if (DOG_SO < scroll.offset && scroll.offset < DOG_EO) {
