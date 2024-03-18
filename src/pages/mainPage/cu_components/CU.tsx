@@ -13,12 +13,15 @@ const CU: React.FC = () => {
   const mixer = new THREE.AnimationMixer(scene);
 
   const handleClick = () => {
-    scene.children.forEach((mesh) => {
-      if (mesh.name === "Cube024" || mesh.name === "Cube025") {
-        const material = (mesh as THREE.Mesh).material as MeshStandardMaterial;
-        material.color.set(material.color.g > 0.5 ? 0x9761e7 : 0xe7e7e7);
-      }
-    });
+    if (CU_SO < scroll.offset && scroll.offset < CU_EO) {
+      scene.children.forEach((mesh) => {
+        if (mesh.name === "Cube024" || mesh.name === "Cube025") {
+          const material = (mesh as THREE.Mesh)
+            .material as MeshStandardMaterial;
+          material.color.set(material.color.g > 0.5 ? 0x9761e7 : 0xe7e7e7);
+        }
+      });
+    }
   };
 
   useEffect(() => {
