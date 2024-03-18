@@ -1,6 +1,7 @@
-import { Box } from "@react-three/drei";
-import { useRef, useState } from "react";
-import { MeshStandardMaterial } from "three";
+import { useGLTF } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
+import { useEffect } from "react";
+import * as THREE from "three";
 
 interface CubeProps {
   args: [number, number, number];
@@ -10,16 +11,23 @@ interface CubeProps {
 }
 
 const Planet: React.FC<CubeProps> = (props) => {
-  const [checked, setChecked] = useState(false);
-  const material = new MeshStandardMaterial({
-    color: checked ? "#22cc33" : "#cc2222",
+  const gltf = useGLTF("/assets/models/cube.glb");
+  let mixer = new THREE.AnimationMixer(gltf.scene);
+  useEffect(() => {
+    gltf.animations.forEach((clip) => {
+      if (clip.name !== "parentsAction") {
+        const action = mixer.clipAction(clip);
+        action.loop = THREE.LoopPingPong;
+        action.play();
+      }
+    });
+  }, [gltf]);
+  useFrame((state, delta) => {
+    mixer.update(delta);
   });
-  const handleClick = () => {
-    setChecked(!checked);
-  };
   return (
-    <mesh onClick={handleClick}>
-      <Box {...props} material={material} />
+    <mesh>
+      <primitive object={gltf.scene} {...props} />
     </mesh>
   );
 };
