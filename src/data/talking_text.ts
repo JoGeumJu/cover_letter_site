@@ -55,6 +55,10 @@ export const TalkingText = (label: LabelType) => {
           speed: 40,
         },
         {
+          text: "왠지 마우스를 쳐다보고 있는 것 같은데...? 멍..?!",
+          speed: 40,
+        },
+        {
           text: "도감을 보니 이 행성은 주변 노점들의 위치와 주문,\n픽업 등을 제공하는 크로스 모바일 앱 프로젝트라고 적혀 있어! 멍!",
           speed: 40,
         },
