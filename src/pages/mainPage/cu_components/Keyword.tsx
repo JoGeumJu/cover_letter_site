@@ -28,7 +28,7 @@ const Keyword: React.FC = () => {
   });
 
   return (
-    <Float floatIntensity={0.6} speed={4} rotationIntensity={0.4}>
+    <Float floatIntensity={0.2} speed={4} rotationIntensity={0.2}>
       <primitive
         ref={keyRef}
         object={scene}

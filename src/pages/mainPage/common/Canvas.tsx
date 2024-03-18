@@ -5,13 +5,11 @@ import { ScrollControls } from "@react-three/drei";
 import MoveController from "../controller/MoveController";
 import { TextBubble } from "./TextBubble";
 import LightController from "../controller/LightController";
+import { styled } from "styled-components";
 
 const MainCanvas: React.FunctionComponent = () => {
   return (
-    <Canvas
-      style={{ width: "100%", height: "100%", background: "black" }}
-      camera={{ position: [0, 0, 0], fov: 75 }}
-    >
+    <CustomCanvas>
       <fog attach={"fog"} color={"black"} near={0} far={130} />
       <LightController />
       <ScrollControls pages={20} damping={0.25}>
@@ -20,7 +18,13 @@ const MainCanvas: React.FunctionComponent = () => {
       </ScrollControls>
       <Stars />
       <Stats />
-    </Canvas>
+    </CustomCanvas>
   );
 };
 export default MainCanvas;
+
+const CustomCanvas = styled(Canvas)`
+  width: 100%;
+  height: 100%;
+  background: black;
+`;

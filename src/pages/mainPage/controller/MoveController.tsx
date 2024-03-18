@@ -44,7 +44,6 @@ const MoveController: React.FunctionComponent = () => {
   const dog = useRef<THREE.Group>(null!);
 
   useFrame((_state, delta) => {
-    // console.log(cameraGroup.current.rotation);
     const scrollOffset = Math.max(0, scroll.offset);
     const curPoint = curve.getPoint(scrollOffset);
 
@@ -94,7 +93,7 @@ const MoveController: React.FunctionComponent = () => {
       <group ref={cameraGroup}>
         <PerspectiveCamera position={[0, 0, 0]} fov={60} makeDefault />
         <group ref={dog}>
-          <Float floatIntensity={0.08} speed={4} rotationIntensity={0.08}>
+          <Float floatIntensity={0.1} speed={4} rotationIntensity={0.1}>
             <Dog />
           </Float>
         </group>

@@ -11,7 +11,7 @@ const Candy: React.FC = () => {
   useEffect(() => {
     animations.forEach((clip) => {
       const action = mixer.clipAction(clip);
-      action.play();
+      action.reset().play();
     });
   }, [scene, animations]);
 

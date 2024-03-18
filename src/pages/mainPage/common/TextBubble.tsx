@@ -77,7 +77,7 @@ export const TextBubble: React.FunctionComponent = () => {
 
   return (
     <Html>
-      <Bubble opacity={opacity} isfolding={isFolding ? true : false}>
+      <Bubble opacity={opacity} isfolding={isFolding ? -16 : -100}>
         <BubbleInner>
           <Name>흥이</Name>
           <BubbleBtn
@@ -120,7 +120,7 @@ export const TextBubble: React.FunctionComponent = () => {
 };
 export default TextBubble;
 
-const Bubble = styled.section<{ opacity: number; isfolding: boolean }>`
+const Bubble = styled.section<{ opacity: number; isfolding: number }>`
   position: fixed;
   width: 50vw;
   max-width: 800px;
@@ -128,8 +128,7 @@ const Bubble = styled.section<{ opacity: number; isfolding: boolean }>`
   object-fit: cover;
   left: 50vw;
   top: calc(100vh - 30px);
-  transform: ${(props) =>
-    props.isfolding ? "translate(-50%, -16%)" : "translate(-50%, -100%)"};
+  transform: translate(-50%, ${(props) => props.isfolding}%);
   background-image: url("/assets/images/bubble.png");
   background-size: cover;
   width: 50vw;

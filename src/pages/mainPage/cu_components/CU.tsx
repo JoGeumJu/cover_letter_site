@@ -42,7 +42,7 @@ const CU: React.FC = () => {
     } else if (wasAnimated) setWasAnimated(false);
   });
   return (
-    <Float floatIntensity={1} speed={4} rotationIntensity={0.8}>
+    <Float floatIntensity={0.2} speed={4} rotationIntensity={0.2}>
       <primitive ref={cuRef} object={scene} onClick={handleClick} />;
     </Float>
   );
