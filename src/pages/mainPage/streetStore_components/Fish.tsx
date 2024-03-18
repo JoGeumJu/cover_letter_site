@@ -7,7 +7,6 @@ import { ST_EO, ST_SO } from "../../../data/scroll_offset";
 const Fish: React.FC = () => {
   const ref = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/streetStore/fish.glb");
-  const gltf = useGLTF("/assets/models/streetStore/mouth.glb");
   const mixer = new THREE.AnimationMixer(scene);
   const scroll = useScroll();
   const mouse = new THREE.Vector2();
