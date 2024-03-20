@@ -1,0 +1,55 @@
+html {
+  background-color: black;
+}
+
+.page {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+}
+
+:not(#loading).page-transition-enter-active::after {
+  background: #fef6e1;
+  content: "";
+  z-index: 99999;
+  position: fixed;
+  top: 0%;
+  left: -25%;
+  width: 150%;
+  height: 100%;
+  transform-origin: left;
+  transform: scaleX(1) skewX(30deg);
+}
+
+:not(#loading).page-transition-enter-done::after {
+  background: #fef6e1;
+  content: "";
+  z-index: 99999;
+  position: fixed;
+  top: 0%;
+  left: -25%;
+  width: 150%;
+  height: 100%;
+  transform-origin: left;
+  transform: scaleX(0) skewX(30deg);
+  transition: transform 500ms ease;
+}
+
+:not(#loading).page-transition-exit::after {
+  background: #fef6e1;
+  content: "";
+  z-index: 99999;
+  position: fixed;
+  top: 0%;
+  left: -25%;
+  width: 150%;
+  height: 100%;
+  transform-origin: left;
+  transform: scaleX(0) skewX(30deg);
+}
+
+:not(#loading).page-transition-exit-active::after {
+  transform-origin: left;
+  transform: scaleX(1) skewX(30deg);
+  transition: transform 500ms ease;
+}

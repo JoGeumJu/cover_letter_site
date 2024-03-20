@@ -3,7 +3,7 @@ import MainCanvas from "./common/Canvas";
 
 const MainPage: React.FunctionComponent = () => {
   return (
-    <MainWrapper>
+    <MainWrapper className={"page"} id={"main"}>
       <MainWrapperInner>
         <FloatingCanvas>
           <MainCanvas />
