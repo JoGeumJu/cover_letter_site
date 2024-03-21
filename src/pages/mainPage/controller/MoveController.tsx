@@ -11,7 +11,7 @@ import MeonghaePlanet from "../meonghae_components/Meonghae_Planet";
 import DOSPlanet from "../dos_components/DOS_Planet";
 import GitPlanet from "../git_components/Git_Planet";
 
-const CURVE_AHEAD_CAMERA = 0.008;
+const CURVE_AHEAD_CAMERA = 0.006;
 const CURVE_AHEAD_Dog = 0.02;
 const Dog_MAX_ANGLE = 10;
 

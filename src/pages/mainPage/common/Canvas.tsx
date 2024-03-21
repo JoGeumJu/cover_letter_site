@@ -12,11 +12,12 @@ const MainCanvas: React.FunctionComponent = () => {
     <CustomCanvas>
       <fog attach={"fog"} color={"black"} near={0} far={130} />
       <LightController />
-      <ScrollControls pages={20} damping={0.25}>
+      <ScrollControls pages={28} damping={0.25}>
         <MoveController />
         <TextBubble />
       </ScrollControls>
       <Stars />
+      <Stats />
     </CustomCanvas>
   );
 };

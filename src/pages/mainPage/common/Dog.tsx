@@ -44,7 +44,7 @@ const Dog: React.FC = () => {
   }, [readyFlying, animations]);
 
   useFrame((state, delta) => {
-    if (DOG_SO < scroll.offset && scroll.offset < DOG_EO) {
+    if (DOG_SO <= scroll.offset && scroll.offset < DOG_EO) {
       if (!readyFlying) setReadyFlying(true);
       if (meshRef.current) {
         meshRef.current.rotation.y = Math.PI * (scroll.offset / DOG_EO);
