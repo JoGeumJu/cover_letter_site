@@ -4,12 +4,12 @@ import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { Group } from "three";
 import Dog from "../common/Dog";
-import Planet from "../Planet";
 import CUPlanet from "../cu_components/CU_Planet";
 import CalculatorPlanet from "../calculator_components/Calculator_Planet";
 import StreetStorePlanet from "../streetStore_components/StreetStore_Planet";
 import MeonghaePlanet from "../meonghae_components/Meonghae_Planet";
 import DOSPlanet from "../dos_components/DOS_Planet";
+import GitPlanet from "../git_components/Git_Planet";
 
 const CURVE_AHEAD_CAMERA = 0.008;
 const CURVE_AHEAD_Dog = 0.02;
@@ -103,13 +103,7 @@ const MoveController: React.FunctionComponent = () => {
       <StreetStorePlanet />
       <DOSPlanet />
       <MeonghaePlanet />
-      <Planet
-        // git
-        args={[1, 1, 1]}
-        position={[42, 20, -1125]}
-        scale={[1, 1, 1]}
-        rotation={[0, 0, 0]}
-      />
+      <GitPlanet />
     </>
   );
 };
