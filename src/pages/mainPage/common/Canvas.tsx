@@ -17,7 +17,6 @@ const MainCanvas: React.FunctionComponent = () => {
         <TextBubble />
       </ScrollControls>
       <Stars />
-      <Stats />
     </CustomCanvas>
   );
 };
@@ -26,5 +25,5 @@ export default MainCanvas;
 const CustomCanvas = styled(Canvas)`
   width: 100%;
   height: 100%;
-  background: black;
+  background-color: black;
 `;
