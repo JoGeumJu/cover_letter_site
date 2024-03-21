@@ -11,7 +11,7 @@ import MeonghaePlanet from "../meonghae_components/Meonghae_Planet";
 import DOSPlanet from "../dos_components/DOS_Planet";
 import GitPlanet from "../git_components/Git_Planet";
 
-const CURVE_AHEAD_CAMERA = 0.006;
+const CURVE_AHEAD_CAMERA = 0.008;
 const CURVE_AHEAD_Dog = 0.02;
 const Dog_MAX_ANGLE = 10;
 
@@ -46,7 +46,6 @@ const MoveController: React.FunctionComponent = () => {
   useFrame((_state, delta) => {
     const scrollOffset = Math.max(0, scroll.offset);
     const curPoint = curve.getPoint(scrollOffset);
-
     cameraGroup.current.position.lerp(curPoint, delta * 24);
     const lookAtPoint = curve.getPoint(
       Math.min(scrollOffset + CURVE_AHEAD_CAMERA, 1)
@@ -58,10 +57,11 @@ const MoveController: React.FunctionComponent = () => {
       .subVectors(curPoint, lookAtPoint)
       .normalize();
     const lookAt = currentLookAt.lerp(targetLookAt, delta * 24);
-    cameraGroup.current.lookAt(
-      cameraGroup.current.position.clone().add(lookAt)
-    );
-
+    if (scroll.offset < 1) {
+      cameraGroup.current.lookAt(
+        cameraGroup.current.position.clone().add(lookAt)
+      );
+    }
     const tangent = curve.getTangent(scrollOffset + CURVE_AHEAD_Dog);
     const nonLeprLookAt = new Group();
     nonLeprLookAt.position.copy(curPoint);
@@ -70,7 +70,6 @@ const MoveController: React.FunctionComponent = () => {
       new THREE.Vector3(0, 1, 0),
       -nonLeprLookAt.rotation.y
     );
-
     let angle = Math.atan2(-tangent.z, tangent.x);
     angle = -Math.PI / 2 + angle;
     let angleDegrees = (angle * 180) / Math.PI;

@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Float, useGLTF, useScroll } from "@react-three/drei";
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { MEONG_EO, MEONG_SO } from "../../../data/scroll_offset";
 
@@ -26,9 +26,7 @@ const CatWithFur: React.FC = () => {
 
   return (
     <Float floatIntensity={0.2} speed={4} rotationIntensity={0.2}>
-      <group>
-        <primitive object={scene} ref={ref} />
-      </group>
+      <primitive object={scene} ref={ref} />
     </Float>
   );
 };
