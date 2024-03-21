@@ -16,6 +16,7 @@ const Display: React.FC = () => {
   const { camera } = useThree();
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
     if (DOS_SO < scroll.offset && scroll.offset < DOS_EO) {
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -30,11 +31,16 @@ const Display: React.FC = () => {
               action.loop = THREE.LoopOnce;
               action.clampWhenFinished = true;
               action.reset().play();
+              return;
             } else if (clickedMesh.name === "popup_button_n") {
               action.reset().stop();
+              return;
             } else if (clickedMesh.name === "popup_button_y") {
-              window.open("https://develop-order-service.site/", "_blank");
               action.reset().stop();
+              return window.open(
+                "https://develop-order-service.site/",
+                "_blank"
+              );
             }
           }
         });
