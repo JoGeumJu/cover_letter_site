@@ -3,13 +3,27 @@ import MainPage from "./pages/mainPage";
 import DetailPage from "./pages/detailPage";
 import { Routes, Route, useLocation } from "react-router-dom";
 import LoadingPage from "./pages/loadingPage";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { isLoadingState } from "./recoil/loadingAtom";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { createBrowserHistory } from "history";
+import { useEffect } from "react";
 
 function App() {
-  const isLoading = useRecoilValue(isLoadingState);
+  const [isLoading, setIsLoading] = useRecoilState(isLoadingState);
   const location = useLocation();
+  const history = createBrowserHistory();
+
+  useEffect(() => {
+    return history.listen(({ action }) => {
+      if (action === "POP") {
+        setIsLoading(true);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
+      }
+    });
+  }, []);
 
   return (
     <div className="App">
@@ -18,7 +32,6 @@ function App() {
           key={location.key + isLoading}
           classNames="page-transition"
           timeout={500}
-          unmountOnExit
         >
           <Routes location={location}>
             <Route
