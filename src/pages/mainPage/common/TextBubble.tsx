@@ -1,6 +1,8 @@
 import { Html, useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import { keyframes, styled } from "styled-components";
 import {
   CAL_EO,
@@ -17,6 +19,7 @@ import {
 } from "../../../data/scroll_offset";
 import { LabelType, TalkingText } from "../../../data/talking_text";
 import useTalking from "../../../hook/useTalking";
+import { isLoadingState } from "../../../recoil/loadingAtom";
 
 export const TextBubble: React.FunctionComponent = () => {
   const scroll = useScroll();
@@ -28,6 +31,9 @@ export const TextBubble: React.FunctionComponent = () => {
   }>({ text: "", speed: 50 });
   const taking = useTalking(talkingOption.text, talkingOption.speed);
   const [textIndex, setTextIndex] = useState<number>(0);
+
+  const setIsLoading = useSetRecoilState(isLoadingState);
+  const navigate = useNavigate();
 
   useFrame((state, delta) => {
     if (scroll.offset <= 1 / 14) {
@@ -103,14 +109,19 @@ export const TextBubble: React.FunctionComponent = () => {
               type="button"
               onClick={() => {
                 if (opacity >= 0.2) {
-                  window.open(
-                    "https://github.com/JoGeumJu?tab=stars",
-                    "_blank"
-                  );
+                  // window.open(
+                  //   "https://github.com/JoGeumJu?tab=stars",
+                  //   "_blank"
+                  // );
+                  setIsLoading(true);
+                  navigate("/detail");
+                  setTimeout(() => {
+                    setIsLoading(false);
+                  }, 3000);
                 }
               }}
             >
-              git 알려줘
+              디테일로 페이지로
             </SelectBtn>
           </SelectBubble>
         </BubbleInner>
