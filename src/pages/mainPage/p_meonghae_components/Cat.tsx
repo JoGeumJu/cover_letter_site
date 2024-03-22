@@ -14,7 +14,7 @@ const CatWithFur: React.FC = () => {
     animations.forEach((clip) => {
       const action = mixer.clipAction(clip);
       action.loop = THREE.LoopRepeat;
-      action.play();
+      action.reset().play();
     });
   }, [scene]);
 

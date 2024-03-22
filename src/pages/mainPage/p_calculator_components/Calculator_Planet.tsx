@@ -1,14 +1,9 @@
-import { Float } from "@react-three/drei";
 import Calculator from "./Calculator";
 import Keyword from "./Keyword";
 
 const CalculatorPlanet: React.FC = () => {
   return (
-    <mesh
-      position={[38, -25.5, -246]}
-      scale={[1, 1, 1]}
-      rotation={[Math.PI / 10, 0, 0]}
-    >
+    <mesh position={[64, -10.8, -344]} rotation={[0.4, -0.5, 0.15]}>
       <group>
         <Calculator />
         <Keyword />

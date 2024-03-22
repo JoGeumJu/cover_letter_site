@@ -5,7 +5,7 @@ import Milk from "./Milk";
 
 const CUPlanet: React.FC = () => {
   return (
-    <mesh position={[-28, 25.5, -100]} scale={[0.8, 0.8, 0.8]}>
+    <mesh position={[-55, 26, -195]} rotation={[0.4, -0.1, 0.03]}>
       <group>
         <CU />
         <Milk />

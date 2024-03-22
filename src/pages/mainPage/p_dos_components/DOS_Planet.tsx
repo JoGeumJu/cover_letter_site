@@ -4,9 +4,9 @@ import Keyword from "./Keyword";
 const DOSPlanet: React.FC = () => {
   return (
     <mesh
-      position={[32, 4, -612]}
-      scale={[1.5, 1.5, 1.5]}
-      rotation={[Math.PI / 7, Math.PI / 10, -Math.PI / 20]}
+      position={[17.2, -18, -656.3]}
+      scale={[1.3, 1.3, 1.3]}
+      rotation={[0.6, -0.2, 0.1]}
     >
       <group>
         <Display />

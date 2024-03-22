@@ -39,7 +39,7 @@ const Dog: React.FC = () => {
         action.reset();
         action.loop = THREE.LoopRepeat;
       }
-      action.play();
+      action.reset().play();
     });
   }, [readyFlying, animations]);
 

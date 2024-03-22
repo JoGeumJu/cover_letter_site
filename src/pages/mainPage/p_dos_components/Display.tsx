@@ -71,7 +71,7 @@ const Display: React.FC = () => {
     } else if (wasAnimated) setWasAnimated(false);
   });
   return (
-    <Float floatIntensity={0.2} speed={4} rotationIntensity={0.2}>
+    <Float floatIntensity={0.1} speed={4} rotationIntensity={0.1}>
       <primitive ref={displayRef} object={scene} onClick={handleClick} />;
     </Float>
   );

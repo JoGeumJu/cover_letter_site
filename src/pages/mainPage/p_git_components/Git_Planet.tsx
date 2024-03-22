@@ -24,9 +24,8 @@ const GitPlanet: React.FC = () => {
 
   return (
     <mesh
-      position={[40.6, 20.5, -1107]}
-      scale={[1, 1, 1]}
-      rotation={[0, -Math.PI / 12, 0]}
+      position={[-0.7, 1.5, -1008]}
+      rotation={[0, 0, 0]}
       onClick={() =>
         window.open("https://github.com/JoGeumJu?tab=stars", "_blank")
       }
