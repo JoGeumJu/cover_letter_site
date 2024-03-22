@@ -45,36 +45,40 @@ export const TextBubble: React.FunctionComponent = () => {
 
   useFrame((state, delta) => {
     let filtering = false;
-    scrollOffsets.filter((offsets) => {
+    scrollOffsets.some((offsets) => {
       if (
-        offsets.s - 0.03 < scroll.offset &&
-        scroll.offset < offsets.e + 0.03
+        offsets.s - 0.02 < scroll.offset &&
+        scroll.offset < offsets.e + 0.02
       ) {
         filtering = true;
         if (scroll.offset < offsets.s) {
           checkIndex(offsets.l);
-          setOpacity(scroll.range(offsets.s - 0.03, 0.03));
+          setOpacity(scroll.range(offsets.s - 0.02, 0.02));
         } else if (scroll.offset > offsets.e) {
-          setOpacity(1 - scroll.range(offsets.e, 0.03));
-        } else {
-          setOpacity(1);
           checkIndex(offsets.l);
+          setOpacity(1 - scroll.range(offsets.e, 0.02));
+        } else {
+          checkIndex(offsets.l);
+          setOpacity(1);
         }
+        return true;
       } else {
-        if (!filtering) {
-          setTextIndex(0);
-          setOpacity(0);
-          setIsFolding(false);
-          setTalkingOption({ text: "", speed: 50 });
-        }
+        return false;
       }
     });
-    if (scroll.offset <= 0.03) {
+    if (scroll.offset <= 0.02) {
       checkIndex(LabelType.intro);
       setOpacity(1 - scroll.range(0, 0.03));
-    } else if (scroll.offset >= 0.97) {
+    } else if (scroll.offset >= 0.98) {
       checkIndex(LabelType.git);
-      setOpacity(scroll.range(0.97, 0.03));
+      setOpacity(scroll.range(0.98, 0.02));
+    } else {
+      if (!filtering) {
+        setTextIndex(0);
+        setOpacity(0);
+        setIsFolding(false);
+        setTalkingOption({ text: "", speed: 50 });
+      }
     }
   });
 

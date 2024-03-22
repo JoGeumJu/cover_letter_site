@@ -32,11 +32,9 @@ const Dog: React.FC = () => {
     animations.forEach((clip) => {
       const action = mixer.clipAction(clip);
       if (readyFlying) {
-        action.reset();
         action.loop = THREE.LoopOnce;
         action.clampWhenFinished = true;
       } else {
-        action.reset();
         action.loop = THREE.LoopRepeat;
       }
       action.reset().play();
@@ -44,7 +42,7 @@ const Dog: React.FC = () => {
   }, [readyFlying, animations]);
 
   useFrame((state, delta) => {
-    if (DOG_SO <= scroll.offset && scroll.offset < DOG_EO) {
+    if (DOG_SO < scroll.offset && scroll.offset < DOG_EO) {
       if (!readyFlying) setReadyFlying(true);
       if (meshRef.current) {
         meshRef.current.rotation.y = Math.PI * (scroll.offset / DOG_EO);
