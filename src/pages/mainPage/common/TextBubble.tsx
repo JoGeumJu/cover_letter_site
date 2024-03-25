@@ -23,6 +23,7 @@ import useTalking from "../../../hook/useTalking";
 import { isLoadingState } from "../../../recoil/globalState";
 
 const ACTIVE_OPACITY = 0.9;
+
 export const TextBubble: React.FunctionComponent = () => {
   const scroll = useScroll();
   const [opacity, setOpacity] = useState(1);
@@ -149,7 +150,6 @@ export const TextBubble: React.FunctionComponent = () => {
     </Html>
   );
 };
-export default TextBubble;
 
 const Bubble = styled.section<{ opacity: number; isfolding: number }>`
   position: fixed;

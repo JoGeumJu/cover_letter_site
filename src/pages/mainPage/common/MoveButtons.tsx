@@ -2,7 +2,7 @@ import { Html, useScroll } from "@react-three/drei";
 import { useState } from "react";
 import { styled } from "styled-components";
 
-export const TextBubble: React.FunctionComponent = () => {
+export const MoveButtons: React.FunctionComponent = () => {
   const scroll = useScroll();
   const [isFolding, setIsFolding] = useState<boolean>(false);
 
@@ -18,7 +18,6 @@ export const TextBubble: React.FunctionComponent = () => {
     </Html>
   );
 };
-export default TextBubble;
 
 const Wrapper = styled.section<{ isfolding: number }>`
   position: fixed;
