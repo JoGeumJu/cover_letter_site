@@ -16,7 +16,7 @@ const RedBean2: React.FC = () => {
     animations.forEach((clip) => {
       const action = mixer.clipAction(clip);
       action.loop = THREE.LoopRepeat;
-      action.reset().play();
+      action.reset().setDuration(25).play();
     });
   }, [scene]);
 
