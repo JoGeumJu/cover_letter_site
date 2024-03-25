@@ -133,17 +133,15 @@ export const TextBubble: React.FunctionComponent = () => {
                   //   "_blank"
                   // );
                   //
-                  // setIsLoading(true);
-                  // navigate("/detail");
-                  // setTimeout(() => {
-                  //   setIsLoading(false);
-                  // }, 3000);
-                  scroll.el.scrollTo({ top: 38745 * ST_SO });
-                  scroll.offset = 0.5;
+                  setIsLoading(true);
+                  navigate("/detail");
+                  setTimeout(() => {
+                    setIsLoading(false);
+                  }, 3000);
                 }
               }}
             >
-              움직여 보기
+              디테일 페이지로
             </SelectBtn>
           </SelectBubble>
         </BubbleInner>
