@@ -168,6 +168,8 @@ const Bubble = styled.section<{ opacity: number; isfolding: number }>`
   opacity: ${(props) => props.opacity};
   overflow: visible;
   transition: transform 0.4s ease;
+  pointer-events: ${(props) =>
+    props.opacity >= ACTIVE_OPACITY ? "auto" : "none"};
 `;
 const BubbleInner = styled.div`
   display: flex;
@@ -206,6 +208,7 @@ const BubbleBtn = styled.button`
   cursor: pointer;
   padding: 0;
   justify-content: center;
+  overflow: "hidden";
 `;
 const Text = styled.div`
   color: #70684f;
