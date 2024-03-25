@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF, useScroll } from "@react-three/drei";
 import { DOG_EO, DOG_SO } from "../../../data/scroll_offset";
+import { MathUtils } from "three";
 
 const Dog: React.FC = () => {
   const scroll = useScroll();
@@ -24,7 +25,11 @@ const Dog: React.FC = () => {
       findAndApplyMaterial(child);
     });
     if (meshRef.current) {
-      meshRef.current.position.set(0, 0, -7);
+      if (scroll.offset >= DOG_EO) {
+        meshRef.current.position.set(0, -3, -2);
+      } else {
+        meshRef.current.position.set(0, 0, -7);
+      }
     }
   }, []);
 
@@ -42,12 +47,12 @@ const Dog: React.FC = () => {
   }, [readyFlying, animations]);
 
   useFrame((state, delta) => {
-    if (DOG_SO < scroll.offset && scroll.offset < DOG_EO) {
+    if (DOG_SO < scroll.offset) {
       if (!readyFlying) setReadyFlying(true);
       if (meshRef.current) {
-        meshRef.current.rotation.y = Math.PI * (scroll.offset / DOG_EO);
-        meshRef.current.position.z = -7 + 5 * (scroll.offset / DOG_EO);
-        meshRef.current.position.y = -3 * (scroll.offset / DOG_EO);
+        meshRef.current.rotation.y = Math.PI * scroll.range(DOG_SO, DOG_EO);
+        meshRef.current.position.z = -7 + 5 * scroll.range(DOG_SO, DOG_EO);
+        meshRef.current.position.y = -3 * scroll.range(DOG_SO, DOG_EO);
       }
     } else if (DOG_SO >= scroll.offset && readyFlying) setReadyFlying(false);
     mixer.update(delta);

@@ -1,5 +1,5 @@
-import { Float, Line, PerspectiveCamera, useScroll } from "@react-three/drei";
-import React, { useRef, useState } from "react";
+import { Float, PerspectiveCamera, Scroll, useScroll } from "@react-three/drei";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import Dog from "../common/Dog";
@@ -29,22 +29,15 @@ import { useMoveCurve } from "../../../hook/useMoveCurve";
 const DOG_MAX_ANGLE = 10;
 const CURVE_AHEAD_CAMERA = 0.008;
 const CURVE_AHEAD_DOG = 0.02;
+const SCROLL_HEIGHT = 38745;
 
 const MoveController: React.FunctionComponent = () => {
   const scroll = useScroll();
   const { curve } = useMoveCurve();
   const cameraGroup = useRef<THREE.Group>(null!);
   const dog = useRef<THREE.Group>(null!);
+  const scrollRef = useRef(null!);
 
-  const isStop = () => {
-    return (
-      (CU_SO < scroll.offset && scroll.offset < CU_EO) ||
-      (CAL_SO < scroll.offset && scroll.offset < CAL_EO) ||
-      (ST_SO < scroll.offset && scroll.offset < ST_EO) ||
-      (DOS_SO < scroll.offset && scroll.offset < DOS_EO) ||
-      (MEONG_SO < scroll.offset && scroll.offset < MEONG_EO)
-    );
-  };
   const backOffset = (s: number, e: number, scroll: number, i: number) => {
     if (0 < i) return scroll - ((e - scroll) * 0.03) / (e - s);
     else return scroll;
@@ -125,16 +118,9 @@ const MoveController: React.FunctionComponent = () => {
     });
   });
 
-  // const curveStartPoints = curve.getPoints(50);
   return (
-    <>
+    <Scroll ref={scrollRef}>
       <group ref={cameraGroup}>
-        {/* <PerspectiveCamera
-          position={[0, 100, 0]}
-          fov={60}
-          makeDefault
-          rotation={[-Math.PI / 2, 0, 0]}
-        /> */}
         <PerspectiveCamera position={[0, 0, 0]} fov={60} makeDefault />
         <group ref={dog}>
           <Float floatIntensity={0.1} speed={4} rotationIntensity={0.1}>
@@ -148,8 +134,7 @@ const MoveController: React.FunctionComponent = () => {
       <DOSPlanet />
       <MeonghaePlanet />
       <GitPlanet />
-      {/* <Line points={curveStartPoints} color="pink" lineWidth={2} /> */}
-    </>
+    </Scroll>
   );
 };
 export default MoveController;

@@ -2,7 +2,7 @@ import { Html, useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { keyframes, styled } from "styled-components";
 import {
   CAL_EO,
@@ -20,8 +20,9 @@ import {
 } from "../../../data/scroll_offset";
 import { LabelType, TalkingText } from "../../../data/talking_text";
 import useTalking from "../../../hook/useTalking";
-import { isLoadingState } from "../../../recoil/loadingAtom";
+import { isLoadingState } from "../../../recoil/globalState";
 
+const ACTIVE_OPACITY = 0.9;
 export const TextBubble: React.FunctionComponent = () => {
   const scroll = useScroll();
   const [opacity, setOpacity] = useState(1);
@@ -106,7 +107,8 @@ export const TextBubble: React.FunctionComponent = () => {
           <BubbleBtn
             type="button"
             onClick={() => {
-              if (opacity >= 0.2 && !isFolding) setTextIndex(textIndex + 1);
+              if (opacity >= ACTIVE_OPACITY && !isFolding)
+                setTextIndex(textIndex + 1);
             }}
           >
             <Text>{taking}</Text>
@@ -115,7 +117,7 @@ export const TextBubble: React.FunctionComponent = () => {
             <SelectBtn
               type="button"
               onClick={() => {
-                if (opacity >= 0.2) {
+                if (opacity >= ACTIVE_OPACITY) {
                   setIsFolding(!isFolding);
                 }
               }}
@@ -125,20 +127,23 @@ export const TextBubble: React.FunctionComponent = () => {
             <SelectBtn
               type="button"
               onClick={() => {
-                if (opacity >= 0.2) {
+                if (opacity >= ACTIVE_OPACITY) {
                   // window.open(
                   //   "https://github.com/JoGeumJu?tab=stars",
                   //   "_blank"
                   // );
-                  setIsLoading(true);
-                  navigate("/detail");
-                  setTimeout(() => {
-                    setIsLoading(false);
-                  }, 3000);
+                  //
+                  // setIsLoading(true);
+                  // navigate("/detail");
+                  // setTimeout(() => {
+                  //   setIsLoading(false);
+                  // }, 3000);
+                  scroll.el.scrollTo({ top: 38745 * ST_SO });
+                  scroll.offset = 0.5;
                 }
               }}
             >
-              디테일로 페이지로
+              움직여 보기
             </SelectBtn>
           </SelectBubble>
         </BubbleInner>
