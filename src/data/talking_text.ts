@@ -33,7 +33,7 @@ export const TalkingText = (label: LabelType) => {
           text: "실제 웹 페이지를 보고 싶다면, 더보기 버튼을 눌러봐! 멍!",
           speed: 50,
         },
-        { text: '더보기 버튼은 "..."모양의 버튼이야, 멍', speed: 50 },
+        { text: '더보기 버튼은 "···"모양의 버튼이야, 멍', speed: 50 },
       ];
     case LabelType.calculator:
       return [

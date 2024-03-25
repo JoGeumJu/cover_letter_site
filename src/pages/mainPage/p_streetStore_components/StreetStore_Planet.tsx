@@ -5,11 +5,7 @@ import RedBean2 from "./RedBean2";
 
 const StreetStorePlanet: React.FC = () => {
   return (
-    <mesh
-      position={[-30, -45, -442]}
-      scale={[2, 2, 2]}
-      rotation={[Math.PI / 9, -Math.PI / 4, 0]}
-    >
+    <mesh position={[-40, -35, -513]} rotation={[0.2, -0.4, -0.1]}>
       <group>
         <Fish />
         <RedBean1 />
