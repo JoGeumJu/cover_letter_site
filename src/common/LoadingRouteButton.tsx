@@ -27,7 +27,7 @@ export const LoadingRouteButton: React.FunctionComponent<ButtonProps> = (
       navigate(props.path);
       setTimeout(() => {
         setIsLoading(false);
-      }, 2000);
+      }, 3000);
     } else {
       if (props.elFunc) {
         props.elFunc();
