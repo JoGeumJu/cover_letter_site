@@ -32,8 +32,8 @@ const Keyword: React.FC = () => {
       <primitive
         ref={keyRef}
         object={scene}
-        scale={[1, 1, 1]}
         position={[-1, 1, 0]}
+        rotation={[0, -0.2, 0]}
       />
     </Float>
   );

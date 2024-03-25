@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { styled } from "styled-components";
 import { LoadingRouteButton } from "../../common/LoadingRouteButton";
-import { isLoadingState } from "../../recoil/loadingAtom";
+import { isLoadingState } from "../../recoil/globalState";
 
 const DetailPage: React.FunctionComponent = () => {
   const setIsLoading = useSetRecoilState(isLoadingState);

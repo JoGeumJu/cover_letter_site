@@ -75,7 +75,8 @@ const Calculator: React.FC = () => {
       if (intersects.length > 0) {
         const clickedMesh = intersects[0].object;
         animations.forEach((clip) => {
-          if (clip.name.includes(clickedMesh.name.slice(-3))) {
+          console.log(clip.name);
+          if (clip.name.includes("Cube." + clickedMesh.name.slice(-3))) {
             const action = mixer.clipAction(clip);
             action.loop = THREE.LoopOnce;
             action.reset().play();

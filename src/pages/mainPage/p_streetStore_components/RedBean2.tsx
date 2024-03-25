@@ -16,7 +16,7 @@ const RedBean2: React.FC = () => {
     animations.forEach((clip) => {
       const action = mixer.clipAction(clip);
       action.loop = THREE.LoopRepeat;
-      action.play();
+      action.reset().setDuration(25).play();
     });
   }, [scene]);
 
@@ -24,7 +24,7 @@ const RedBean2: React.FC = () => {
     if (ST_SO < scroll.offset && scroll.offset < ST_EO) mixer.update(delta);
   });
 
-  return <primitive ref={ref} object={scene} />;
+  return <primitive ref={ref} object={scene} rotation={[0, 0, 0.3]} />;
 };
 
 export default RedBean2;
