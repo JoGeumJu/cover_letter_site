@@ -95,6 +95,10 @@ export const TalkingText = (label: LabelType) => {
           speed: 40,
         },
         {
+          text: "냥이를 클릭 할 때마다 모자를 계속 바꿔 쓴다는데..?\n정말일까? 멍??",
+          speed: 40,
+        },
+        {
           text: "이 어플을 만들기 위해 주인이 Flutter를\n열심히 공부했던 기억이 있지, 멍?",
           speed: 40,
         },

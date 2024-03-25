@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { MEONG_EO, MEONG_SO } from "../../../data/scroll_offset";
 
-const CatWithFur: React.FC = () => {
+const Cat: React.FC = () => {
   const ref = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/meonghae/cat.glb");
   let mixer = new THREE.AnimationMixer(scene);
@@ -21,7 +21,6 @@ const CatWithFur: React.FC = () => {
   useFrame((state, delta) => {
     if (MEONG_SO < scroll.offset && scroll.offset < MEONG_EO)
       mixer.update(delta);
-    if (ref.current) ref.current.rotateY(delta / 2);
   });
 
   return (
@@ -31,4 +30,4 @@ const CatWithFur: React.FC = () => {
   );
 };
 
-export default CatWithFur;
+export default Cat;

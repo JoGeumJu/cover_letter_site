@@ -134,11 +134,15 @@ export const TextBubble: React.FunctionComponent = () => {
                   //   "_blank"
                   // );
                   //
-                  setIsLoading(true);
-                  navigate("/detail");
-                  setTimeout(() => {
-                    setIsLoading(false);
-                  }, 3000);
+                  // setIsLoading(true);
+                  // navigate("/detail");
+                  // setTimeout(() => {
+                  //   setIsLoading(false);
+                  // }, 3000);
+                  const height =
+                    scroll.el.scrollHeight - scroll.el.clientHeight;
+                  scroll.el.scrollTo({ top: height * 0.82 });
+                  scroll.offset = 0.5;
                 }
               }}
             >
