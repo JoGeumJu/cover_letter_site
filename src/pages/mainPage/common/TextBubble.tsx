@@ -33,8 +33,14 @@ export const TextBubble: React.FunctionComponent = () => {
     speed: number;
   }>({ text: "", speed: 50 });
   const [textIndex, setTextIndex] = useState<number>(0);
+  const [skip, setSkip] = useState(false);
   const [moveMode, setMoveMode] = useRecoilState(moveModeState);
-  const taking = useTalking(talkingOption.text, talkingOption.speed);
+  const taking = useTalking(
+    talkingOption.text,
+    talkingOption.speed,
+    moveMode,
+    skip
+  );
   const scrollOffsets: Array<{ s: number; e: number; l: LabelType }> = [
     { s: CU_SO, e: CU_EO, l: LabelType.cu },
     { s: CAL_SO, e: CAL_EO, l: LabelType.calculator },
@@ -79,6 +85,7 @@ export const TextBubble: React.FunctionComponent = () => {
         setIsFolding(false);
         setTalkingOption({ text: "", speed: 50 });
         setMoveMode(false);
+        setSkip(false);
       }
     }
   });
@@ -109,7 +116,14 @@ export const TextBubble: React.FunctionComponent = () => {
           <BubbleBtn
             type="button"
             onClick={() => {
-              if (!moveMode) setTextIndex(textIndex + 1);
+              if (!moveMode) {
+                if (skip) {
+                  setSkip(false);
+                  setTextIndex(textIndex + 1);
+                } else {
+                  setSkip(true);
+                }
+              }
             }}
           >
             <Text>{taking}</Text>
@@ -122,16 +136,12 @@ export const TextBubble: React.FunctionComponent = () => {
               moveMode={moveMode}
               type="button"
               className="canRed"
-              onClick={() => {
+              onClick={async () => {
                 if (moveMode) {
                   setMoveMode(false);
                 } else {
-                  setTalkingOption({
-                    text: "좋아! 원하는 행성을 클릭해봐 멍!",
-                    speed: 50,
-                  });
+                  setSkip(false);
                   setIsFolding(false);
-                  setTextIndex(0);
                   setMoveMode(true);
                 }
               }}
