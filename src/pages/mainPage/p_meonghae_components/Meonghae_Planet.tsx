@@ -8,6 +8,7 @@ import { MEONG_EO, MEONG_SO } from "../../../data/scroll_offset";
 import { useScroll } from "@react-three/drei";
 import { useRecoilValue } from "recoil";
 import { moveModeState } from "../../../recoil/globalState";
+import MoreButton from "../common/MoreButton";
 
 const HAT_NUM = 4;
 const MeonghaePlanet: React.FC = () => {
@@ -39,6 +40,14 @@ const MeonghaePlanet: React.FC = () => {
           <Hats clickCat={clickCat} />
         </group>
         <Keyword />
+        <MoreButton
+          position={[8.5, 5, 0]}
+          scale={[1, 1, 1]}
+          rotation={[0.2, -0.3, -0.2]}
+          active_s={MEONG_SO}
+          active_e={MEONG_EO}
+          content={"meong"}
+        />
       </group>
     </mesh>
   );
