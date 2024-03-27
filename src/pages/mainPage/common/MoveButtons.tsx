@@ -78,7 +78,7 @@ export const MoveButtons: React.FunctionComponent<ButtonPropsType> = ({
   return (
     <>
       <Background moveMode={moveMode} />
-      <SelectPlanets>
+      <SelectPlanets moveMode={moveMode}>
         {settingButtons.map((i) => {
           return (
             <Button
@@ -107,7 +107,7 @@ const Background = styled.div<{ moveMode: boolean }>`
   transition: opacity 0.3s ease;
   pointer-events: ${(props) => (props.moveMode ? "auto" : "none")};
 `;
-const SelectPlanets = styled.section`
+const SelectPlanets = styled.section<{ moveMode: boolean }>`
   display: flex;
   position: fixed;
   flex-direction: row;
@@ -116,6 +116,7 @@ const SelectPlanets = styled.section`
   width: 100%;
   height: 70%;
   gap: 1%;
+  pointer-events: ${(props) => (props.moveMode ? "auto" : "none")};
 `;
 const Button = styled.button<{ position: number[]; moveMode: boolean }>`
   display: flex;
