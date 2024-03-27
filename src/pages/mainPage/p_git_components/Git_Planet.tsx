@@ -19,7 +19,7 @@ const GitPlanet: React.FC = () => {
       action.loop = THREE.LoopRepeat;
       action.reset().play();
     });
-  }, [scene]);
+  }, [animations]);
 
   useFrame((state, delta) => {
     if (GIT_SO < scroll.offset) mixer.update(delta);

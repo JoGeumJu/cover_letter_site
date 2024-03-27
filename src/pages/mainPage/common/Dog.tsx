@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float, useGLTF, useScroll } from "@react-three/drei";
 import { DOG_EO, DOG_SO } from "../../../data/scroll_offset";
-import { MathUtils } from "three";
 
 const Dog: React.FC = () => {
   const scroll = useScroll();
@@ -32,7 +31,7 @@ const Dog: React.FC = () => {
         meshRef.current.rotation.set(0, Math.PI * 2, 0);
       }
     }
-  }, []);
+  }, [scene]);
 
   useEffect(() => {
     animations.forEach((clip) => {

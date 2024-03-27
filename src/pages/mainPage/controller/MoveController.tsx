@@ -54,7 +54,7 @@ const MoveController: React.FunctionComponent = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [viewport]);
+  }, [viewport, set]);
 
   const backOffset = (s: number, e: number, scroll: number, i: number) => {
     if (0 < i) return scroll - ((e - scroll) * 0.03) / (e - s);

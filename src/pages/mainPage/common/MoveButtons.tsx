@@ -1,5 +1,4 @@
 import { ScrollControlsState } from "@react-three/drei";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import {
   CAL_EO,
@@ -9,7 +8,6 @@ import {
   DOS_EO,
   DOS_SO,
   GIT_EO,
-  GIT_SO,
   MEONG_EO,
   MEONG_SO,
   ST_EO,

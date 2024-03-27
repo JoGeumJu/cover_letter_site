@@ -54,7 +54,6 @@ const Calculator: React.FC = () => {
           clip.name.includes("Armature") &&
           !clip.name.includes("020")
         ) {
-          //019 21 22 23
           action.loop = THREE.LoopRepeat;
           action.reset().play();
         }
