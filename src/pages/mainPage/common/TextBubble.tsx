@@ -108,7 +108,7 @@ export const TextBubble: React.FunctionComponent = () => {
 
   return (
     <Html>
-      <Bubble opacity={opacity} isfolding={isFolding ? -16 : -100}>
+      <Bubble opacity={opacity} $isfolding={isFolding}>
         <BubbleInner>
           <Name>흥이</Name>
           <BubbleBtn
@@ -131,7 +131,7 @@ export const TextBubble: React.FunctionComponent = () => {
               {isFolding ? "말풍선 올려줘" : "말풍선 내려줘"}
             </SelectBtn>
             <SelectBtn
-              moveMode={moveMode}
+              $movemode={moveMode}
               type="button"
               className="canRed"
               onClick={async () => {
@@ -158,7 +158,7 @@ export const TextBubble: React.FunctionComponent = () => {
   );
 };
 
-const Bubble = styled.section<{ opacity: number; isfolding: number }>`
+const Bubble = styled.section<{ opacity: number; $isfolding: boolean }>`
   position: fixed;
   width: 50vw;
   max-width: 800px;
@@ -166,7 +166,7 @@ const Bubble = styled.section<{ opacity: number; isfolding: number }>`
   object-fit: cover;
   left: 50vw;
   top: calc(100vh - 30px);
-  transform: translate(-50%, ${(props) => props.isfolding}%);
+  transform: translate(-50%, ${(props) => (props.$isfolding ? -16 : -100)}%);
   background-image: url("/assets/images/bubble.png");
   background-size: cover;
   aspect-ratio: 2.875/1;
@@ -259,7 +259,7 @@ const fillAnimation = keyframes`
     transform: translate(-50%, -50%) scaleX(1); 
   }
 `;
-const SelectBtn = styled.button<{ moveMode?: boolean }>`
+const SelectBtn = styled.button<{ $movemode?: boolean }>`
   position: relative;
   background: none;
   border: none;
@@ -283,7 +283,7 @@ const SelectBtn = styled.button<{ moveMode?: boolean }>`
       transform: translate(-50%, -50%);
       width: 92%;
       height: 60%;
-      background-color: ${(props) => (props.moveMode ? "#ff8b8b" : "#f0d24a")};
+      background-color: ${(props) => (props.$movemode ? "#ff8b8b" : "#f0d24a")};
       z-index: -1;
       border-radius: 10%;
       transform-origin: left;

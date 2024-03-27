@@ -35,7 +35,7 @@ const GitPlanet: React.FC = () => {
       }}
     >
       <Float floatIntensity={0.2} speed={4} rotationIntensity={0.2}>
-        <primitive ref={ref} object={scene} />;
+        <primitive ref={ref} object={scene} />
       </Float>
     </mesh>
   );

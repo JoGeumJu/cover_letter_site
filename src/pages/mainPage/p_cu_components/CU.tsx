@@ -46,7 +46,7 @@ const CU: React.FC = () => {
   });
   return (
     <Float floatIntensity={0.2} speed={4} rotationIntensity={0.2}>
-      <primitive ref={cuRef} object={scene} onClick={handleClick} />;
+      <primitive ref={cuRef} object={scene} onClick={handleClick} />
     </Float>
   );
 };
