@@ -4,16 +4,19 @@ import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { CU_EO, CU_SO } from "../../../data/scroll_offset";
 import { MeshStandardMaterial } from "three";
+import { useRecoilValue } from "recoil";
+import { moveModeState } from "../../../recoil/globalState";
 
 const CU: React.FC = () => {
   const [wasAnimated, setWasAnimated] = useState(false);
+  const moveMode = useRecoilValue(moveModeState);
   const scroll = useScroll();
   const cuRef = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/cu/cu.glb");
   const mixer = new THREE.AnimationMixer(scene);
 
   const handleClick = () => {
-    if (CU_SO < scroll.offset && scroll.offset < CU_EO) {
+    if (CU_SO < scroll.offset && scroll.offset < CU_EO && !moveMode) {
       scene.children.forEach((mesh) => {
         if (mesh.name === "Cube024" || mesh.name === "Cube025") {
           const material = (mesh as THREE.Mesh)

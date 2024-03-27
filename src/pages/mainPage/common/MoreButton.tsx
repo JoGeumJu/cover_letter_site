@@ -51,7 +51,7 @@ const MoreButton: React.FC<ButtonPropsType> = ({
   }, [animations, wasAnimated]);
 
   useFrame((state, delta) => {
-    if (active_s < scroll.offset && scroll.offset < active_e) {
+    if (active_s <= scroll.offset && scroll.offset <= active_e) {
       if (!wasAnimated) setWasAnimated(true);
       mixer.update(delta);
     } else if (wasAnimated) setWasAnimated(false);

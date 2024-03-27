@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { DOS_EO, DOS_SO } from "../../../data/scroll_offset";
 import { act } from "react-dom/test-utils";
+import { useRecoilValue } from "recoil";
+import { moveModeState } from "../../../recoil/globalState";
 
 const Display: React.FC = () => {
   const [wasAnimated, setWasAnimated] = useState(false);
@@ -14,10 +16,11 @@ const Display: React.FC = () => {
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
   const { camera } = useThree();
+  const moveMode = useRecoilValue(moveModeState);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
-    if (DOS_SO < scroll.offset && scroll.offset < DOS_EO) {
+    if (DOS_SO < scroll.offset && scroll.offset < DOS_EO && !moveMode) {
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
