@@ -3,7 +3,7 @@ import MainCanvas from "./common/Canvas";
 
 const MainPage: React.FunctionComponent = () => {
   return (
-    <MainWrapper>
+    <MainWrapper className={"page"} id={"main"}>
       <MainWrapperInner>
         <FloatingCanvas>
           <MainCanvas />
@@ -21,7 +21,7 @@ const MainWrapper = styled.main`
 const MainWrapperInner = styled.section`
   display: flex;
   width: 100%;
-  height: 3000px;
+  height: 100%;
 `;
 
 const FloatingCanvas = styled.div`

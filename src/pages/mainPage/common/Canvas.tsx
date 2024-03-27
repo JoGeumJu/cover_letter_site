@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import { Stats } from "@react-three/drei";
+import { Stats, useScroll } from "@react-three/drei";
 import Stars from "./Stars";
 import { ScrollControls } from "@react-three/drei";
 import MoveController from "../controller/MoveController";
@@ -12,7 +12,7 @@ const MainCanvas: React.FunctionComponent = () => {
     <CustomCanvas>
       <fog attach={"fog"} color={"black"} near={0} far={130} />
       <LightController />
-      <ScrollControls pages={20} damping={0.25}>
+      <ScrollControls pages={40} damping={0.25}>
         <MoveController />
         <TextBubble />
       </ScrollControls>
@@ -26,5 +26,5 @@ export default MainCanvas;
 const CustomCanvas = styled(Canvas)`
   width: 100%;
   height: 100%;
-  background: black;
+  background-color: black;
 `;

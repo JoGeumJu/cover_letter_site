@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Float, useGLTF, useScroll } from "@react-three/drei";
 import { CAL_EO, CAL_SO } from "../../../data/scroll_offset";
+import { useRecoilValue } from "recoil";
+import { moveModeState } from "../../../recoil/globalState";
 
 const Calculator: React.FC = () => {
   const scroll = useScroll();
@@ -15,6 +17,7 @@ const Calculator: React.FC = () => {
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
   const { camera } = useThree();
+  const moveMode = useRecoilValue(moveModeState);
 
   const findAndApplyMaterial = (object: THREE.Object3D) => {
     if (object instanceof THREE.Mesh && object.name.includes("window")) {
@@ -67,7 +70,7 @@ const Calculator: React.FC = () => {
   });
 
   const handleClcik = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (CAL_SO < scroll.offset && scroll.offset < CAL_EO) {
+    if (CAL_SO < scroll.offset && scroll.offset < CAL_EO && !moveMode) {
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
@@ -75,7 +78,7 @@ const Calculator: React.FC = () => {
       if (intersects.length > 0) {
         const clickedMesh = intersects[0].object;
         animations.forEach((clip) => {
-          if (clip.name.includes(clickedMesh.name.slice(-3))) {
+          if (clip.name.includes("Cube." + clickedMesh.name.slice(-3))) {
             const action = mixer.clipAction(clip);
             action.loop = THREE.LoopOnce;
             action.reset().play();
