@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF, useScroll } from "@react-three/drei";
 import { useNavigate } from "react-router-dom";
@@ -26,8 +26,9 @@ const MoreButton: React.FC<ButtonPropsType> = ({
   const scroll = useScroll();
   const meshRef = useRef<THREE.Mesh>(null);
   const { scene, animations } = useGLTF("/assets/models/more_button.glb");
+  const copiedScene = useMemo(() => scene.clone(), [scene]);
   const [wasAnimated, setWasAnimated] = useState(false);
-  let mixer = new THREE.AnimationMixer(scene);
+  let mixer = new THREE.AnimationMixer(copiedScene);
 
   const navigate = useNavigate();
   const setIsLoading = useSetRecoilState(isLoadingState);
@@ -60,7 +61,7 @@ const MoreButton: React.FC<ButtonPropsType> = ({
   return (
     <primitive
       ref={meshRef}
-      object={scene}
+      object={copiedScene}
       scale={scale}
       position={position}
       rotation={rotation}

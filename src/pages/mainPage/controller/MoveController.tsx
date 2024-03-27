@@ -1,7 +1,7 @@
-import { Float, PerspectiveCamera, Scroll, useScroll } from "@react-three/drei";
-import React, { useEffect, useRef, useState } from "react";
+import { PerspectiveCamera, Scroll, useScroll } from "@react-three/drei";
+import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import Dog from "../common/Dog";
 import CUPlanet from "../p_cu_components/CU_Planet";
 import CalculatorPlanet from "../p_calculator_components/Calculator_Planet";
@@ -29,7 +29,6 @@ import { useMoveCurve } from "../../../hook/useMoveCurve";
 const DOG_MAX_ANGLE = 10;
 const CURVE_AHEAD_CAMERA = 0.008;
 const CURVE_AHEAD_DOG = 0.02;
-const SCROLL_HEIGHT = 38745;
 
 const MoveController: React.FunctionComponent = () => {
   const scroll = useScroll();
@@ -37,6 +36,25 @@ const MoveController: React.FunctionComponent = () => {
   const cameraGroup = useRef<THREE.Group>(null!);
   const dog = useRef<THREE.Group>(null!);
   const scrollRef = useRef(null!);
+  const { set, viewport } = useThree();
+
+  useEffect(() => {
+    const handleResize = () => {
+      set((state) => ({
+        viewport: {
+          ...state.viewport,
+          factor: Infinity,
+          distance: 0,
+          height: 0,
+          width: 0,
+        },
+      }));
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [viewport]);
 
   const backOffset = (s: number, e: number, scroll: number, i: number) => {
     if (0 < i) return scroll - ((e - scroll) * 0.03) / (e - s);
@@ -123,9 +141,7 @@ const MoveController: React.FunctionComponent = () => {
       <group ref={cameraGroup}>
         <PerspectiveCamera position={[0, 0, 0]} fov={60} makeDefault />
         <group ref={dog}>
-          <Float floatIntensity={0.1} speed={4} rotationIntensity={0.1}>
-            <Dog />
-          </Float>
+          <Dog />
         </group>
       </group>
       <CUPlanet />

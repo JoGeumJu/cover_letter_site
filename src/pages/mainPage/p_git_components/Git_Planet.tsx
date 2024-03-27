@@ -29,10 +29,10 @@ const GitPlanet: React.FC = () => {
     <mesh
       position={[-0.7, 1.5, -1008]}
       rotation={[0, 0, 0]}
-      onClick={() =>
-        !moveMode ??
-        window.open("https://github.com/JoGeumJu?tab=stars", "_blank")
-      }
+      onClick={() => {
+        if (!moveMode && scroll.offset > 0.98)
+          window.open("https://github.com/JoGeumJu?tab=stars", "_blank");
+      }}
     >
       <Float floatIntensity={0.2} speed={4} rotationIntensity={0.2}>
         <primitive ref={ref} object={scene} />;
