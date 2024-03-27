@@ -1,8 +1,7 @@
 import { Html, useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { keyframes, styled } from "styled-components";
 import {
   CAL_EO,
@@ -20,7 +19,8 @@ import {
 } from "../../../data/scroll_offset";
 import { LabelType, TalkingText } from "../../../data/talking_text";
 import useTalking from "../../../hook/useTalking";
-import { isLoadingState } from "../../../recoil/globalState";
+import { moveModeState } from "../../../recoil/globalState";
+import { MoveButtons } from "./MoveButtons";
 
 const ACTIVE_OPACITY = 0.9;
 
@@ -32,8 +32,9 @@ export const TextBubble: React.FunctionComponent = () => {
     text: string;
     speed: number;
   }>({ text: "", speed: 50 });
-  const taking = useTalking(talkingOption.text, talkingOption.speed);
   const [textIndex, setTextIndex] = useState<number>(0);
+  const [moveMode, setMoveMode] = useRecoilState(moveModeState);
+  const taking = useTalking(talkingOption.text, talkingOption.speed);
   const scrollOffsets: Array<{ s: number; e: number; l: LabelType }> = [
     { s: CU_SO, e: CU_EO, l: LabelType.cu },
     { s: CAL_SO, e: CAL_EO, l: LabelType.calculator },
@@ -41,9 +42,6 @@ export const TextBubble: React.FunctionComponent = () => {
     { s: DOS_SO, e: DOS_EO, l: LabelType.dos },
     { s: MEONG_SO, e: MEONG_EO, l: LabelType.meonghae },
   ];
-
-  const setIsLoading = useSetRecoilState(isLoadingState);
-  const navigate = useNavigate();
 
   useFrame((state, delta) => {
     let filtering = false;
@@ -80,23 +78,26 @@ export const TextBubble: React.FunctionComponent = () => {
         setOpacity(0);
         setIsFolding(false);
         setTalkingOption({ text: "", speed: 50 });
+        setMoveMode(false);
       }
     }
   });
 
   const checkIndex = (label: LabelType) => {
-    const labelitems = TalkingText(label);
-    if (labelitems[textIndex]) {
-      setTalkingOption({
-        text: labelitems[textIndex].text,
-        speed: labelitems[textIndex].speed,
-      });
-    } else {
-      setTextIndex(0);
-      setTalkingOption({
-        text: labelitems[0].text,
-        speed: labelitems[0].speed,
-      });
+    if (!moveMode) {
+      const labelitems = TalkingText(label);
+      if (labelitems[textIndex]) {
+        setTalkingOption({
+          text: labelitems[textIndex].text,
+          speed: labelitems[textIndex].speed,
+        });
+      } else {
+        setTextIndex(0);
+        setTalkingOption({
+          text: labelitems[0].text,
+          speed: labelitems[0].speed,
+        });
+      }
     }
   };
 
@@ -108,49 +109,43 @@ export const TextBubble: React.FunctionComponent = () => {
           <BubbleBtn
             type="button"
             onClick={() => {
-              if (opacity >= ACTIVE_OPACITY && !isFolding)
-                setTextIndex(textIndex + 1);
+              if (!moveMode) setTextIndex(textIndex + 1);
             }}
           >
             <Text>{taking}</Text>
           </BubbleBtn>
           <SelectBubble>
-            <SelectBtn
-              type="button"
-              onClick={() => {
-                if (opacity >= ACTIVE_OPACITY) {
-                  setIsFolding(!isFolding);
-                }
-              }}
-            >
+            <SelectBtn type="button" onClick={() => setIsFolding(!isFolding)}>
               {isFolding ? "말풍선 올려줘" : "말풍선 내려줘"}
             </SelectBtn>
             <SelectBtn
+              moveMode={moveMode}
               type="button"
+              className="canRed"
               onClick={() => {
-                if (opacity >= ACTIVE_OPACITY) {
-                  // window.open(
-                  //   "https://github.com/JoGeumJu?tab=stars",
-                  //   "_blank"
-                  // );
-                  //
-                  // setIsLoading(true);
-                  // navigate("/detail");
-                  // setTimeout(() => {
-                  //   setIsLoading(false);
-                  // }, 3000);
-                  const height =
-                    scroll.el.scrollHeight - scroll.el.clientHeight;
-                  scroll.el.scrollTo({ top: height * 0.82 });
-                  scroll.offset = 0.5;
+                if (moveMode) {
+                  setMoveMode(false);
+                } else {
+                  setTalkingOption({
+                    text: "좋아! 원하는 행성을 클릭해봐 멍!",
+                    speed: 50,
+                  });
+                  setIsFolding(false);
+                  setTextIndex(0);
+                  setMoveMode(true);
                 }
               }}
             >
-              디테일 페이지로
+              {moveMode ? "안갈래~" : "행성으로 갈래"}
             </SelectBtn>
           </SelectBubble>
         </BubbleInner>
       </Bubble>
+      <MoveButtons
+        setUnmoveMode={() => setMoveMode(false)}
+        scroll={scroll}
+        moveMode={moveMode}
+      />
     </Html>
   );
 };
@@ -166,7 +161,6 @@ const Bubble = styled.section<{ opacity: number; isfolding: number }>`
   transform: translate(-50%, ${(props) => props.isfolding}%);
   background-image: url("/assets/images/bubble.png");
   background-size: cover;
-  width: 50vw;
   aspect-ratio: 2.875/1;
   z-index: 500;
   opacity: ${(props) => props.opacity};
@@ -200,6 +194,8 @@ const Name = styled.div`
 `;
 const BubbleBtn = styled.button`
   display: flex;
+  flex-direction: column;
+  gap: 10%;
   position: absolute;
   border: 1px solid black;
   width: 86%;
@@ -212,14 +208,13 @@ const BubbleBtn = styled.button`
   cursor: pointer;
   padding: 0;
   justify-content: center;
+  align-items: center;
   overflow: "hidden";
 `;
 const Text = styled.div`
   color: #70684f;
   position: relative;
   font-weight: bold;
-  top: 50%;
-  transform: translateY(-50%);
   text-align: center;
   font-size: 24px;
   line-height: 180%;
@@ -256,7 +251,7 @@ const fillAnimation = keyframes`
     transform: translate(-50%, -50%) scaleX(1); 
   }
 `;
-const SelectBtn = styled.button`
+const SelectBtn = styled.button<{ moveMode?: boolean }>`
   position: relative;
   background: none;
   border: none;
@@ -280,7 +275,7 @@ const SelectBtn = styled.button`
       transform: translate(-50%, -50%);
       width: 92%;
       height: 60%;
-      background-color: #f0d24a;
+      background-color: ${(props) => (props.moveMode ? "#ff8b8b" : "#f0d24a")};
       z-index: -1;
       border-radius: 10%;
       transform-origin: left;

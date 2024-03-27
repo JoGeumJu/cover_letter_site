@@ -11,9 +11,6 @@ const Hats: React.FC<{ clickCat: number }> = ({ clickCat }) => {
   const scroll = useScroll();
 
   useEffect(() => {
-    console.log(scene);
-
-    console.log(clickCat);
     animations.forEach((clip) => {
       const action = mixer.current.clipAction(clip);
       action.clampWhenFinished = true;
