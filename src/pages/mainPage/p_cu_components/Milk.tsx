@@ -1,22 +1,25 @@
 import * as THREE from "three";
-import { useGLTF, useScroll } from "@react-three/drei";
-import { useEffect, useRef, useState } from "react";
+import { useGLTF } from "@react-three/drei";
+import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 
-const Milk: React.FC = () => {
+const Milk: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
   const ref = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/cu/milk.glb");
   let mixer = new THREE.AnimationMixer(scene);
 
   useEffect(() => {
-    animations.forEach((clip) => {
-      const action = mixer.clipAction(clip);
-      action.reset().play();
-    });
-  }, [scene]);
+    if (wasAnimated) {
+      animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.loop = THREE.LoopRepeat;
+        action.reset().play();
+      });
+    }
+  }, [wasAnimated, animations]);
 
   useFrame((state, delta) => {
-    mixer.update(delta);
+    if (wasAnimated) mixer.update(delta);
   });
 
   return (

@@ -1,26 +1,25 @@
 import * as THREE from "three";
-import { Float, useGLTF, useScroll } from "@react-three/drei";
+import { Float, useGLTF } from "@react-three/drei";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { MEONG_EO, MEONG_SO } from "../../../data/scroll_offset";
 
-const Cat: React.FC = () => {
+const Cat: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
   const ref = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/meonghae/cat.glb");
   let mixer = new THREE.AnimationMixer(scene);
-  const scroll = useScroll();
 
   useEffect(() => {
-    animations.forEach((clip) => {
-      const action = mixer.clipAction(clip);
-      action.loop = THREE.LoopRepeat;
-      action.reset().play();
-    });
-  }, [scene]);
+    if (wasAnimated) {
+      animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.loop = THREE.LoopRepeat;
+        action.reset().play();
+      });
+    }
+  }, [wasAnimated, animations]);
 
   useFrame((state, delta) => {
-    if (MEONG_SO < scroll.offset && scroll.offset < MEONG_EO)
-      mixer.update(delta);
+    if (wasAnimated) mixer.update(delta);
   });
 
   return (

@@ -1,15 +1,12 @@
 import * as THREE from "three";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Float, useGLTF, useScroll } from "@react-three/drei";
-import { CAL_EO, CAL_SO } from "../../../data/scroll_offset";
 import { useRecoilValue } from "recoil";
 import { moveModeState } from "../../../recoil/globalState";
 
-const Calculator: React.FC = () => {
-  const scroll = useScroll();
+const Calculator: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
   const meshRef = useRef<THREE.Mesh>(null!);
-  const [wasAnimated, setWasAnimated] = useState(false);
   const { scene, animations } = useGLTF(
     "/assets/models/calculator/calculator.glb"
   );
@@ -62,14 +59,11 @@ const Calculator: React.FC = () => {
   }, [wasAnimated, animations]);
 
   useFrame((state, delta) => {
-    if (CAL_SO < scroll.offset && scroll.offset < CAL_EO) {
-      if (!wasAnimated) setWasAnimated(true);
-      mixer.update(delta);
-    } else if (wasAnimated) setWasAnimated(false);
+    if (wasAnimated) mixer.update(delta);
   });
 
   const handleClcik = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (CAL_SO < scroll.offset && scroll.offset < CAL_EO && !moveMode) {
+    if (wasAnimated && !moveMode) {
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);

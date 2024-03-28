@@ -12,40 +12,41 @@ import MoreButton from "../common/MoreButton";
 
 const HAT_NUM = 4;
 const MeonghaePlanet: React.FC = () => {
+  const [wasAnimated, setWasAnimated] = useState(false);
   const catRef = useRef<THREE.Group>(null!);
   const [clickCat, setClickCat] = useState(0);
   const scroll = useScroll();
   const moveMode = useRecoilValue(moveModeState);
 
   useFrame((state, delta) => {
+    if (MEONG_SO < scroll.offset && scroll.offset < MEONG_EO) {
+      if (!wasAnimated) setWasAnimated(true);
+    } else if (wasAnimated) setWasAnimated(false);
     if (catRef.current) catRef.current.rotateY(delta / 2);
   });
+
   return (
     <mesh position={[-61, 29, -827.2]} rotation={[0, 0, 0]}>
       <group>
         <group
           ref={catRef}
           onClick={() => {
-            if (
-              MEONG_SO < scroll.offset &&
-              MEONG_EO > scroll.offset &&
-              !moveMode
-            ) {
+            if (wasAnimated && !moveMode) {
               if (clickCat >= HAT_NUM) setClickCat(0);
               else setClickCat(clickCat + 1);
             }
           }}
         >
-          <Cat />
+          <Cat wasAnimated={wasAnimated} />
           <Hats clickCat={clickCat} />
         </group>
-        <Keyword />
+        <Keyword wasAnimated={wasAnimated} />
         <MoreButton
-          position={[8.5, 5, 0]}
-          scale={[1, 1, 1]}
-          rotation={[0.2, -0.3, -0.2]}
-          active_s={MEONG_SO}
-          active_e={MEONG_EO}
+          delay={25}
+          position={[8.5, 5, 1]}
+          scale={[0.3, 0.3, 0.3]}
+          rotation={[0, 0, -0.2]}
+          wasAnimated={wasAnimated}
           content={"meong"}
         />
       </group>

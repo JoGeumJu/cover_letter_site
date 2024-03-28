@@ -1,6 +1,6 @@
 import { Float, useGLTF, useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import * as THREE from "three";
 import { GIT_SO } from "../../../data/scroll_offset";
@@ -8,21 +8,27 @@ import { moveModeState } from "../../../recoil/globalState";
 
 const GitPlanet: React.FC = () => {
   const ref = useRef<THREE.Mesh>(null!);
+  const [wasAnimated, setWasAnimated] = useState(false);
   const { scene, animations } = useGLTF("/assets/models/git/git.glb");
   let mixer = new THREE.AnimationMixer(scene);
   const scroll = useScroll();
   const moveMode = useRecoilValue(moveModeState);
 
   useEffect(() => {
-    animations.forEach((clip) => {
-      const action = mixer.clipAction(clip);
-      action.loop = THREE.LoopRepeat;
-      action.reset().play();
-    });
-  }, [animations]);
+    if (wasAnimated) {
+      animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.loop = THREE.LoopRepeat;
+        action.reset().play();
+      });
+    }
+  }, [wasAnimated, animations]);
 
   useFrame((state, delta) => {
-    if (GIT_SO < scroll.offset) mixer.update(delta);
+    if (GIT_SO < scroll.offset) {
+      if (!wasAnimated) setWasAnimated(true);
+      mixer.update(delta);
+    } else if (wasAnimated) setWasAnimated(false);
   });
 
   return (

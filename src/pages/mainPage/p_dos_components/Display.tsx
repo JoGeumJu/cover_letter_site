@@ -1,15 +1,11 @@
 import * as THREE from "three";
-import { Float, useGLTF, useScroll } from "@react-three/drei";
-import { useEffect, useRef, useState } from "react";
+import { Float, useGLTF } from "@react-three/drei";
+import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import { DOS_EO, DOS_SO } from "../../../data/scroll_offset";
-import { act } from "react-dom/test-utils";
 import { useRecoilValue } from "recoil";
 import { moveModeState } from "../../../recoil/globalState";
 
-const Display: React.FC = () => {
-  const [wasAnimated, setWasAnimated] = useState(false);
-  const scroll = useScroll();
+const Display: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
   const displayRef = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/dos/display.glb");
   const mixer = new THREE.AnimationMixer(scene);
@@ -20,7 +16,7 @@ const Display: React.FC = () => {
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
-    if (DOS_SO < scroll.offset && scroll.offset < DOS_EO && !moveMode) {
+    if (wasAnimated && !moveMode) {
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
@@ -65,14 +61,12 @@ const Display: React.FC = () => {
         }
       });
     }
-  }, [scene, wasAnimated, animations]);
+  }, [wasAnimated, animations]);
 
   useFrame((state, delta) => {
-    if (DOS_SO < scroll.offset && scroll.offset < DOS_EO) {
-      if (!wasAnimated) setWasAnimated(true);
-      mixer.update(delta);
-    } else if (wasAnimated) setWasAnimated(false);
+    if (wasAnimated) mixer.update(delta);
   });
+
   return (
     <Float floatIntensity={0.1} speed={4} rotationIntensity={0.1}>
       <primitive ref={displayRef} object={scene} onClick={handleClick} />

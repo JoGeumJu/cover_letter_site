@@ -1,3 +1,6 @@
+import { useScroll } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
+import { useState } from "react";
 import { ST_EO, ST_SO } from "../../../data/scroll_offset";
 import MoreButton from "../common/MoreButton";
 import Fish from "./Fish";
@@ -6,19 +9,28 @@ import RedBean1 from "./RedBean1";
 import RedBean2 from "./RedBean2";
 
 const StreetStorePlanet: React.FC = () => {
+  const [wasAnimated, setWasAnimated] = useState(false);
+  const scroll = useScroll();
+
+  useFrame((state, delta) => {
+    if (ST_SO < scroll.offset && scroll.offset < ST_EO) {
+      if (!wasAnimated) setWasAnimated(true);
+    } else if (wasAnimated) setWasAnimated(false);
+  });
+
   return (
     <mesh position={[-40, -35, -513]} rotation={[0.2, -0.4, -0.1]}>
       <group>
-        <Fish />
-        <RedBean1 />
-        <RedBean2 />
-        <Keyword />
+        <Fish wasAnimated={wasAnimated} />
+        <RedBean1 wasAnimated={wasAnimated} />
+        <RedBean2 wasAnimated={wasAnimated} />
+        <Keyword wasAnimated={wasAnimated} />
         <MoreButton
-          position={[8.5, 7, 0]}
-          scale={[1, 1, 1]}
-          rotation={[0.1, -0.2, 0]}
-          active_s={ST_SO}
-          active_e={ST_EO}
+          delay={30}
+          position={[8.5, 6, 0]}
+          scale={[0.3, 0.3, 0.3]}
+          rotation={[0, -0.2, -0.1]}
+          wasAnimated={wasAnimated}
           content={"st"}
         />
       </group>
