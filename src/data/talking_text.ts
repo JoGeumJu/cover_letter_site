@@ -30,10 +30,13 @@ export const TalkingText = (label: LabelType) => {
           speed: 40,
         },
         {
-          text: "실제 웹 페이지를 보고 싶다면, 더보기 버튼을 눌러봐! 멍!",
-          speed: 50,
+          text: "더 많은 정보가 궁금하다면, 내 도감책을 눌러봐!\n모든(git행성 제외) 행성들마다 도감책이 있어~, 멍!",
+          speed: 40,
         },
-        { text: '더보기 버튼은 "···"모양의 버튼이야, 멍', speed: 50 },
+        {
+          text: "도감책은 행성 주위에 떠 있는 보라색 수첩이야! 멍~!\n(아끼는 도감책이니 살살 다뤄줘, 멍...)",
+          speed: 40,
+        },
       ];
     case LabelType.calculator:
       return [

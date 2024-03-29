@@ -8,10 +8,8 @@ import {
   CAL_SO,
   CU_EO,
   CU_SO,
-  DOG_EO,
   DOS_EO,
   DOS_SO,
-  GIT_SO,
   MEONG_EO,
   MEONG_SO,
   ST_EO,
@@ -33,8 +31,14 @@ export const TextBubble: React.FunctionComponent = () => {
     speed: number;
   }>({ text: "", speed: 50 });
   const [textIndex, setTextIndex] = useState<number>(0);
+  const [skip, setSkip] = useState(false);
   const [moveMode, setMoveMode] = useRecoilState(moveModeState);
-  const taking = useTalking(talkingOption.text, talkingOption.speed);
+  const taking = useTalking(
+    talkingOption.text,
+    talkingOption.speed,
+    moveMode,
+    skip
+  );
   const scrollOffsets: Array<{ s: number; e: number; l: LabelType }> = [
     { s: CU_SO, e: CU_EO, l: LabelType.cu },
     { s: CAL_SO, e: CAL_EO, l: LabelType.calculator },
@@ -79,6 +83,7 @@ export const TextBubble: React.FunctionComponent = () => {
         setIsFolding(false);
         setTalkingOption({ text: "", speed: 50 });
         setMoveMode(false);
+        setSkip(false);
       }
     }
   });
@@ -103,13 +108,20 @@ export const TextBubble: React.FunctionComponent = () => {
 
   return (
     <Html>
-      <Bubble opacity={opacity} isfolding={isFolding ? -16 : -100}>
+      <Bubble opacity={opacity} $isfolding={isFolding}>
         <BubbleInner>
           <Name>흥이</Name>
           <BubbleBtn
             type="button"
             onClick={() => {
-              if (!moveMode) setTextIndex(textIndex + 1);
+              if (!moveMode) {
+                if (skip) {
+                  setSkip(false);
+                  setTextIndex(textIndex + 1);
+                } else {
+                  setSkip(true);
+                }
+              }
             }}
           >
             <Text>{taking}</Text>
@@ -119,19 +131,15 @@ export const TextBubble: React.FunctionComponent = () => {
               {isFolding ? "말풍선 올려줘" : "말풍선 내려줘"}
             </SelectBtn>
             <SelectBtn
-              moveMode={moveMode}
+              $movemode={moveMode}
               type="button"
               className="canRed"
-              onClick={() => {
+              onClick={async () => {
                 if (moveMode) {
                   setMoveMode(false);
                 } else {
-                  setTalkingOption({
-                    text: "좋아! 원하는 행성을 클릭해봐 멍!",
-                    speed: 50,
-                  });
+                  setSkip(false);
                   setIsFolding(false);
-                  setTextIndex(0);
                   setMoveMode(true);
                 }
               }}
@@ -150,7 +158,7 @@ export const TextBubble: React.FunctionComponent = () => {
   );
 };
 
-const Bubble = styled.section<{ opacity: number; isfolding: number }>`
+const Bubble = styled.section<{ opacity: number; $isfolding: boolean }>`
   position: fixed;
   width: 50vw;
   max-width: 800px;
@@ -158,7 +166,7 @@ const Bubble = styled.section<{ opacity: number; isfolding: number }>`
   object-fit: cover;
   left: 50vw;
   top: calc(100vh - 30px);
-  transform: translate(-50%, ${(props) => props.isfolding}%);
+  transform: translate(-50%, ${(props) => (props.$isfolding ? -16 : -100)}%);
   background-image: url("/assets/images/bubble.png");
   background-size: cover;
   aspect-ratio: 2.875/1;
@@ -251,7 +259,7 @@ const fillAnimation = keyframes`
     transform: translate(-50%, -50%) scaleX(1); 
   }
 `;
-const SelectBtn = styled.button<{ moveMode?: boolean }>`
+const SelectBtn = styled.button<{ $movemode?: boolean }>`
   position: relative;
   background: none;
   border: none;
@@ -275,7 +283,7 @@ const SelectBtn = styled.button<{ moveMode?: boolean }>`
       transform: translate(-50%, -50%);
       width: 92%;
       height: 60%;
-      background-color: ${(props) => (props.moveMode ? "#ff8b8b" : "#f0d24a")};
+      background-color: ${(props) => (props.$movemode ? "#ff8b8b" : "#f0d24a")};
       z-index: -1;
       border-radius: 10%;
       transform-origin: left;

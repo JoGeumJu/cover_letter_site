@@ -1,5 +1,4 @@
 import { ScrollControlsState } from "@react-three/drei";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import {
   CAL_EO,
@@ -9,7 +8,6 @@ import {
   DOS_EO,
   DOS_SO,
   GIT_EO,
-  GIT_SO,
   MEONG_EO,
   MEONG_SO,
   ST_EO,
@@ -77,15 +75,15 @@ export const MoveButtons: React.FunctionComponent<ButtonPropsType> = ({
 
   return (
     <>
-      <Background moveMode={moveMode} />
-      <SelectPlanets moveMode={moveMode}>
+      <Background $moveMode={moveMode} />
+      <SelectPlanets $moveMode={moveMode}>
         {settingButtons.map((i) => {
           return (
             <Button
               key={i.name}
-              position={i.position}
+              $position={i.position}
               type="button"
-              moveMode={moveMode}
+              $moveMode={moveMode}
               onClick={() => handleClick(i.offset)}
             >
               <Image src={`/assets/images/${i.name}.png`} />
@@ -97,17 +95,17 @@ export const MoveButtons: React.FunctionComponent<ButtonPropsType> = ({
   );
 };
 
-const Background = styled.div<{ moveMode: boolean }>`
+const Background = styled.div<{ $moveMode: boolean }>`
   display: flex;
   position: fixed;
   background: black;
-  opacity: ${(props) => (props.moveMode ? 0.85 : 0)};
+  opacity: ${(props) => (props.$moveMode ? 0.85 : 0)};
   width: 100%;
   height: 100%;
   transition: opacity 0.3s ease;
-  pointer-events: ${(props) => (props.moveMode ? "auto" : "none")};
+  pointer-events: ${(props) => (props.$moveMode ? "auto" : "none")};
 `;
-const SelectPlanets = styled.section<{ moveMode: boolean }>`
+const SelectPlanets = styled.section<{ $moveMode: boolean }>`
   display: flex;
   position: fixed;
   flex-direction: row;
@@ -116,9 +114,9 @@ const SelectPlanets = styled.section<{ moveMode: boolean }>`
   width: 100%;
   height: 70%;
   gap: 1%;
-  pointer-events: ${(props) => (props.moveMode ? "auto" : "none")};
+  pointer-events: ${(props) => (props.$moveMode ? "auto" : "none")};
 `;
-const Button = styled.button<{ position: number[]; moveMode: boolean }>`
+const Button = styled.button<{ $position: number[]; $moveMode: boolean }>`
   display: flex;
   width: 10%;
   max-width: 168px;
@@ -129,12 +127,12 @@ const Button = styled.button<{ position: number[]; moveMode: boolean }>`
   align-items: center;
   justify-content: center;
   transform: ${(props) =>
-    `translate(${props.position[0]}%, ${props.position[1]}%) scale(${
-      props.moveMode ? 1 : 0
+    `translate(${props.$position[0]}%, ${props.$position[1]}%) scale(${
+      props.$moveMode ? 1 : 0
     })`};
-  pointer-events: ${(props) => (props.moveMode ? "auto" : "none")};
+  pointer-events: ${(props) => (props.$moveMode ? "auto" : "none")};
   transition: transform 0.3s ease, opacity 0.3s ease;
-  opacity: ${(props) => (props.moveMode ? 1 : 0)};
+  opacity: ${(props) => (props.$moveMode ? 1 : 0)};
   &:hover img {
     transform: scale(1.3);
   }

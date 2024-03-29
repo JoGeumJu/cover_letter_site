@@ -4,7 +4,7 @@ const LoadingPage: React.FunctionComponent = () => {
   return (
     <LoadingWrapper className={"page"} id={"loading"}>
       <LoadingWrapperInner>
-        <LoadingSpinner src={"/assets/gifs/rocket.gif"} alt={"rocket"} />
+        <LoadingSpinner src={"/assets/gifs/book.gif"} alt={"rocket"} />
       </LoadingWrapperInner>
     </LoadingWrapper>
   );

@@ -1,12 +1,10 @@
 import * as THREE from "three";
-import { Float, useGLTF, useScroll } from "@react-three/drei";
-import { useEffect, useRef, useState } from "react";
+import { Float, useGLTF } from "@react-three/drei";
+import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { CAL_EO, CAL_SO } from "../../../data/scroll_offset";
 
-const Keyword: React.FC = () => {
-  const [wasAnimated, setWasAnimated] = useState(false);
-  const scroll = useScroll();
+const Keyword: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
   const keyRef = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/calculator/key.glb");
   let mixer = new THREE.AnimationMixer(scene);
@@ -16,16 +14,12 @@ const Keyword: React.FC = () => {
       const action = mixer.clipAction(clip);
       action.loop = THREE.LoopOnce;
       action.clampWhenFinished = true;
-      action.setEffectiveTimeScale(1.2);
-      action.reset().play();
+      action.startAt(0.6).setEffectiveTimeScale(1.4).reset().play();
     });
   }, [scene, wasAnimated]);
 
   useFrame((state, delta) => {
-    if (CAL_SO < scroll.offset && scroll.offset < CAL_EO) {
-      if (!wasAnimated) setWasAnimated(true);
-      mixer.update(delta);
-    } else if (wasAnimated) setWasAnimated(false);
+    if (wasAnimated) mixer.update(delta);
   });
 
   return (

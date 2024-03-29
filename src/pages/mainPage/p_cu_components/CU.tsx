@@ -1,22 +1,19 @@
 import * as THREE from "three";
-import { Float, useGLTF, useScroll } from "@react-three/drei";
-import { useEffect, useRef, useState } from "react";
+import { Float, useGLTF } from "@react-three/drei";
+import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { CU_EO, CU_SO } from "../../../data/scroll_offset";
 import { MeshStandardMaterial } from "three";
 import { useRecoilValue } from "recoil";
 import { moveModeState } from "../../../recoil/globalState";
 
-const CU: React.FC = () => {
-  const [wasAnimated, setWasAnimated] = useState(false);
+const CU: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
   const moveMode = useRecoilValue(moveModeState);
-  const scroll = useScroll();
   const cuRef = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/cu/cu.glb");
   const mixer = new THREE.AnimationMixer(scene);
 
   const handleClick = () => {
-    if (CU_SO < scroll.offset && scroll.offset < CU_EO && !moveMode) {
+    if (wasAnimated && !moveMode) {
       scene.children.forEach((mesh) => {
         if (mesh.name === "Cube024" || mesh.name === "Cube025") {
           const material = (mesh as THREE.Mesh)
@@ -39,14 +36,12 @@ const CU: React.FC = () => {
   }, [scene, wasAnimated, animations]);
 
   useFrame((state, delta) => {
-    if (CU_SO < scroll.offset && scroll.offset < CU_EO) {
-      if (!wasAnimated) setWasAnimated(true);
-      mixer.update(delta);
-    } else if (wasAnimated) setWasAnimated(false);
+    if (wasAnimated) mixer.update(delta);
   });
+
   return (
     <Float floatIntensity={0.2} speed={4} rotationIntensity={0.2}>
-      <primitive ref={cuRef} object={scene} onClick={handleClick} />;
+      <primitive ref={cuRef} object={scene} onClick={handleClick} />
     </Float>
   );
 };

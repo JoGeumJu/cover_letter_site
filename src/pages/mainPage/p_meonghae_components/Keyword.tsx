@@ -1,12 +1,9 @@
 import * as THREE from "three";
-import { Float, useGLTF, useScroll } from "@react-three/drei";
-import { useEffect, useRef, useState } from "react";
+import { Float, useGLTF } from "@react-three/drei";
+import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { MEONG_EO, MEONG_SO } from "../../../data/scroll_offset";
 
-const Keyword: React.FC = () => {
-  const [wasAnimated, setWasAnimated] = useState(false);
-  const scroll = useScroll();
+const Keyword: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
   const keyRef = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/meonghae/key.glb");
   let mixer = new THREE.AnimationMixer(scene);
@@ -21,10 +18,7 @@ const Keyword: React.FC = () => {
   }, [scene, wasAnimated]);
 
   useFrame((state, delta) => {
-    if (MEONG_SO < scroll.offset && scroll.offset < MEONG_EO) {
-      if (!wasAnimated) setWasAnimated(true);
-      mixer.update(delta);
-    } else if (wasAnimated) setWasAnimated(false);
+    if (wasAnimated) mixer.update(delta);
   });
 
   return (

@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import { Stats, useScroll } from "@react-three/drei";
+import { Stats } from "@react-three/drei";
 import Stars from "./Stars";
 import { ScrollControls } from "@react-three/drei";
 import MoveController from "../controller/MoveController";

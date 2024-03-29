@@ -1,27 +1,27 @@
 import * as THREE from "three";
-import { useGLTF, useScroll } from "@react-three/drei";
-import { useEffect, useRef, useState } from "react";
+import { useGLTF } from "@react-three/drei";
+import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { ST_EO, ST_SO } from "../../../data/scroll_offset";
 
-const RedBean2: React.FC = () => {
+const RedBean2: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
   const ref = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF(
     "/assets/models/streetStore/red_bean2.glb"
   );
   let mixer = new THREE.AnimationMixer(scene);
-  const scroll = useScroll();
 
   useEffect(() => {
-    animations.forEach((clip) => {
-      const action = mixer.clipAction(clip);
-      action.loop = THREE.LoopRepeat;
-      action.reset().setDuration(25).play();
-    });
-  }, [scene]);
+    if (wasAnimated) {
+      animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        action.loop = THREE.LoopRepeat;
+        action.reset().setDuration(25).play();
+      });
+    }
+  }, [wasAnimated, animations]);
 
   useFrame((state, delta) => {
-    if (ST_SO < scroll.offset && scroll.offset < ST_EO) mixer.update(delta);
+    if (wasAnimated) mixer.update(delta);
   });
 
   return <primitive ref={ref} object={scene} rotation={[0, 0, 0.3]} />;
