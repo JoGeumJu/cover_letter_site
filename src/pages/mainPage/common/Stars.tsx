@@ -17,8 +17,8 @@ const Stars: React.FC = () => {
       const id = counter++;
       tempBoxes.scale.set(0.1, 0.1, 0.1);
       tempBoxes.position.set(
-        (Math.random() - 0.5) * 150,
-        (Math.random() - 0.5) * 150,
+        (Math.random() - 0.5) * 200,
+        (Math.random() - 0.5) * 200,
         (Math.random() - 0.5) * starsNum
       );
       tempBoxes.updateMatrix();

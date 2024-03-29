@@ -1,8 +1,7 @@
 import { Html, useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { keyframes, styled } from "styled-components";
 import {
   CAL_EO,
@@ -11,7 +10,6 @@ import {
   CU_SO,
   DOS_EO,
   DOS_SO,
-  GIT_SO,
   MEONG_EO,
   MEONG_SO,
   ST_EO,
@@ -19,7 +17,10 @@ import {
 } from "../../../data/scroll_offset";
 import { LabelType, TalkingText } from "../../../data/talking_text";
 import useTalking from "../../../hook/useTalking";
-import { isLoadingState } from "../../../recoil/loadingAtom";
+import { moveModeState } from "../../../recoil/globalState";
+import { MoveButtons } from "./MoveButtons";
+
+const ACTIVE_OPACITY = 0.9;
 
 export const TextBubble: React.FunctionComponent = () => {
   const scroll = useScroll();
@@ -29,109 +30,135 @@ export const TextBubble: React.FunctionComponent = () => {
     text: string;
     speed: number;
   }>({ text: "", speed: 50 });
-  const taking = useTalking(talkingOption.text, talkingOption.speed);
   const [textIndex, setTextIndex] = useState<number>(0);
-
-  const setIsLoading = useSetRecoilState(isLoadingState);
-  const navigate = useNavigate();
+  const [skip, setSkip] = useState(false);
+  const [moveMode, setMoveMode] = useRecoilState(moveModeState);
+  const taking = useTalking(
+    talkingOption.text,
+    talkingOption.speed,
+    moveMode,
+    skip
+  );
+  const scrollOffsets: Array<{ s: number; e: number; l: LabelType }> = [
+    { s: CU_SO, e: CU_EO, l: LabelType.cu },
+    { s: CAL_SO, e: CAL_EO, l: LabelType.calculator },
+    { s: ST_SO, e: ST_EO, l: LabelType.streetStore },
+    { s: DOS_SO, e: DOS_EO, l: LabelType.dos },
+    { s: MEONG_SO, e: MEONG_EO, l: LabelType.meonghae },
+  ];
 
   useFrame((state, delta) => {
-    if (scroll.offset <= 1 / 14) {
+    let filtering = false;
+    scrollOffsets.some((offsets) => {
+      if (
+        offsets.s - 0.02 < scroll.offset &&
+        scroll.offset < offsets.e + 0.02
+      ) {
+        filtering = true;
+        if (scroll.offset < offsets.s) {
+          checkIndex(offsets.l);
+          setOpacity(scroll.range(offsets.s - 0.02, 0.02));
+        } else if (scroll.offset > offsets.e) {
+          checkIndex(offsets.l);
+          setOpacity(1 - scroll.range(offsets.e, 0.02));
+        } else {
+          checkIndex(offsets.l);
+          setOpacity(1);
+        }
+        return true;
+      } else {
+        return false;
+      }
+    });
+    if (scroll.offset <= 0.02) {
       checkIndex(LabelType.intro);
-      setOpacity(1 - scroll.range(0, 1 / 14));
-    } else if (CU_SO < scroll.offset && scroll.offset < CU_EO) {
-      checkIndex(LabelType.cu);
-      setOpacity(scroll.curve(CU_SO, 0.035));
-    } else if (CAL_SO < scroll.offset && scroll.offset < CAL_EO) {
-      checkIndex(LabelType.calculator);
-      setOpacity(scroll.curve(CAL_SO, 0.035));
-    } else if (ST_SO < scroll.offset && scroll.offset < ST_EO) {
-      checkIndex(LabelType.streetStore);
-      setOpacity(scroll.curve(ST_SO, 0.035));
-    } else if (DOS_SO < scroll.offset && scroll.offset < DOS_EO) {
-      checkIndex(LabelType.dos);
-      setOpacity(scroll.curve(DOS_SO, 0.035));
-    } else if (MEONG_SO < scroll.offset && scroll.offset < MEONG_EO) {
-      checkIndex(LabelType.meonghae);
-      setOpacity(scroll.curve(MEONG_SO, 0.035));
-    } else if (GIT_SO < scroll.offset) {
+      setOpacity(1 - scroll.range(0, 0.03));
+    } else if (scroll.offset >= 0.98) {
       checkIndex(LabelType.git);
-      setOpacity(scroll.curve(GIT_SO, 0.035));
+      setOpacity(scroll.range(0.98, 0.02));
     } else {
-      setTextIndex(0);
-      setOpacity(0);
-      setIsFolding(false);
-      setTalkingOption({ text: "", speed: 50 });
+      if (!filtering) {
+        setTextIndex(0);
+        setOpacity(0);
+        setIsFolding(false);
+        setTalkingOption({ text: "", speed: 50 });
+        setMoveMode(false);
+        setSkip(false);
+      }
     }
   });
 
   const checkIndex = (label: LabelType) => {
-    const labelitems = TalkingText(label);
-    if (labelitems[textIndex]) {
-      setTalkingOption({
-        text: labelitems[textIndex].text,
-        speed: labelitems[textIndex].speed,
-      });
-    } else {
-      setTextIndex(0);
-      setTalkingOption({
-        text: labelitems[0].text,
-        speed: labelitems[0].speed,
-      });
+    if (!moveMode) {
+      const labelitems = TalkingText(label);
+      if (labelitems[textIndex]) {
+        setTalkingOption({
+          text: labelitems[textIndex].text,
+          speed: labelitems[textIndex].speed,
+        });
+      } else {
+        setTextIndex(0);
+        setTalkingOption({
+          text: labelitems[0].text,
+          speed: labelitems[0].speed,
+        });
+      }
     }
   };
 
   return (
     <Html>
-      <Bubble opacity={opacity} isfolding={isFolding ? -16 : -100}>
+      <Bubble opacity={opacity} $isfolding={isFolding}>
         <BubbleInner>
           <Name>흥이</Name>
           <BubbleBtn
             type="button"
             onClick={() => {
-              if (opacity >= 0.2 && !isFolding) setTextIndex(textIndex + 1);
+              if (!moveMode) {
+                if (skip) {
+                  setSkip(false);
+                  setTextIndex(textIndex + 1);
+                } else {
+                  setSkip(true);
+                }
+              }
             }}
           >
             <Text>{taking}</Text>
           </BubbleBtn>
           <SelectBubble>
-            <SelectBtn
-              type="button"
-              onClick={() => {
-                if (opacity >= 0.2) {
-                  setIsFolding(!isFolding);
-                }
-              }}
-            >
+            <SelectBtn type="button" onClick={() => setIsFolding(!isFolding)}>
               {isFolding ? "말풍선 올려줘" : "말풍선 내려줘"}
             </SelectBtn>
             <SelectBtn
+              $movemode={moveMode}
               type="button"
-              onClick={() => {
-                if (opacity >= 0.2) {
-                  // window.open(
-                  //   "https://github.com/JoGeumJu?tab=stars",
-                  //   "_blank"
-                  // );
-                  setIsLoading(true);
-                  navigate("/detail");
-                  setTimeout(() => {
-                    setIsLoading(false);
-                  }, 3000);
+              className="canRed"
+              onClick={async () => {
+                if (moveMode) {
+                  setMoveMode(false);
+                } else {
+                  setSkip(false);
+                  setIsFolding(false);
+                  setMoveMode(true);
                 }
               }}
             >
-              디테일로 페이지로
+              {moveMode ? "안갈래~" : "행성으로 갈래"}
             </SelectBtn>
           </SelectBubble>
         </BubbleInner>
       </Bubble>
+      <MoveButtons
+        setUnmoveMode={() => setMoveMode(false)}
+        scroll={scroll}
+        moveMode={moveMode}
+      />
     </Html>
   );
 };
-export default TextBubble;
 
-const Bubble = styled.section<{ opacity: number; isfolding: number }>`
+const Bubble = styled.section<{ opacity: number; $isfolding: boolean }>`
   position: fixed;
   width: 50vw;
   max-width: 800px;
@@ -139,15 +166,16 @@ const Bubble = styled.section<{ opacity: number; isfolding: number }>`
   object-fit: cover;
   left: 50vw;
   top: calc(100vh - 30px);
-  transform: translate(-50%, ${(props) => props.isfolding}%);
+  transform: translate(-50%, ${(props) => (props.$isfolding ? -16 : -100)}%);
   background-image: url("/assets/images/bubble.png");
   background-size: cover;
-  width: 50vw;
   aspect-ratio: 2.875/1;
   z-index: 500;
   opacity: ${(props) => props.opacity};
   overflow: visible;
   transition: transform 0.4s ease;
+  pointer-events: ${(props) =>
+    props.opacity >= ACTIVE_OPACITY ? "auto" : "none"};
 `;
 const BubbleInner = styled.div`
   display: flex;
@@ -174,6 +202,8 @@ const Name = styled.div`
 `;
 const BubbleBtn = styled.button`
   display: flex;
+  flex-direction: column;
+  gap: 10%;
   position: absolute;
   border: 1px solid black;
   width: 86%;
@@ -186,13 +216,13 @@ const BubbleBtn = styled.button`
   cursor: pointer;
   padding: 0;
   justify-content: center;
+  align-items: center;
+  overflow: "hidden";
 `;
 const Text = styled.div`
   color: #70684f;
   position: relative;
   font-weight: bold;
-  top: 50%;
-  transform: translateY(-50%);
   text-align: center;
   font-size: 24px;
   line-height: 180%;
@@ -229,7 +259,7 @@ const fillAnimation = keyframes`
     transform: translate(-50%, -50%) scaleX(1); 
   }
 `;
-const SelectBtn = styled.button`
+const SelectBtn = styled.button<{ $movemode?: boolean }>`
   position: relative;
   background: none;
   border: none;
@@ -253,7 +283,7 @@ const SelectBtn = styled.button`
       transform: translate(-50%, -50%);
       width: 92%;
       height: 60%;
-      background-color: #f0d24a;
+      background-color: ${(props) => (props.$movemode ? "#ff8b8b" : "#f0d24a")};
       z-index: -1;
       border-radius: 10%;
       transform-origin: left;

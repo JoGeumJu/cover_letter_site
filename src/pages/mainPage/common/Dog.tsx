@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { useGLTF, useScroll } from "@react-three/drei";
+import { Float, useGLTF, useScroll } from "@react-three/drei";
 import { DOG_EO, DOG_SO } from "../../../data/scroll_offset";
 
 const Dog: React.FC = () => {
@@ -24,38 +24,47 @@ const Dog: React.FC = () => {
       findAndApplyMaterial(child);
     });
     if (meshRef.current) {
-      meshRef.current.position.set(0, 0, -7);
+      if (scroll.offset >= DOG_EO) {
+        meshRef.current.position.set(0, -3, -2);
+      } else {
+        meshRef.current.position.set(0, 0, -7);
+        meshRef.current.rotation.set(0, Math.PI * 2, 0);
+      }
     }
-  }, []);
+  }, [scene]);
 
   useEffect(() => {
     animations.forEach((clip) => {
       const action = mixer.clipAction(clip);
       if (readyFlying) {
-        action.reset();
         action.loop = THREE.LoopOnce;
         action.clampWhenFinished = true;
       } else {
-        action.reset();
         action.loop = THREE.LoopRepeat;
       }
-      action.play();
+      action.reset().play();
     });
   }, [readyFlying, animations]);
 
   useFrame((state, delta) => {
-    if (DOG_SO < scroll.offset && scroll.offset < DOG_EO) {
+    if (DOG_SO < scroll.offset) {
       if (!readyFlying) setReadyFlying(true);
       if (meshRef.current) {
-        meshRef.current.rotation.y = Math.PI * (scroll.offset / DOG_EO);
-        meshRef.current.position.z = -7 + 5 * (scroll.offset / DOG_EO);
-        meshRef.current.position.y = -3 * (scroll.offset / DOG_EO);
+        meshRef.current.rotation.y = Math.PI * scroll.range(DOG_SO, DOG_EO);
+        meshRef.current.position.z = -7 + 5 * scroll.range(DOG_SO, DOG_EO);
+        meshRef.current.position.y = -3 * scroll.range(DOG_SO, DOG_EO);
       }
-    } else if (DOG_SO >= scroll.offset && readyFlying) setReadyFlying(false);
+    } else if (DOG_SO === scroll.offset && readyFlying) {
+      setReadyFlying(false);
+    }
     mixer.update(delta);
   });
 
-  return <primitive ref={meshRef} object={scene} scale={[0.5, 0.5, 0.5]} />;
+  return (
+    <Float floatIntensity={0.1} speed={4} rotationIntensity={0.1}>
+      <primitive ref={meshRef} object={scene} scale={[0.5, 0.5, 0.5]} />
+    </Float>
+  );
 };
 
 export default Dog;

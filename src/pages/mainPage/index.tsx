@@ -21,7 +21,7 @@ const MainWrapper = styled.main`
 const MainWrapperInner = styled.section`
   display: flex;
   width: 100%;
-  height: 3000px;
+  height: 100%;
 `;
 
 const FloatingCanvas = styled.div`

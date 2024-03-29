@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { styled } from "styled-components";
-import { isLoadingState } from "../recoil/loadingAtom";
+import { isLoadingState } from "../recoil/globalState";
 
 interface ButtonProps {
   path: string;
@@ -27,7 +27,7 @@ export const LoadingRouteButton: React.FunctionComponent<ButtonProps> = (
       navigate(props.path);
       setTimeout(() => {
         setIsLoading(false);
-      }, 2000);
+      }, 3000);
     } else {
       if (props.elFunc) {
         props.elFunc();

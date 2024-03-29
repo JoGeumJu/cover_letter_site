@@ -3,7 +3,9 @@ import { styled } from "styled-components";
 const LoadingPage: React.FunctionComponent = () => {
   return (
     <LoadingWrapper className={"page"} id={"loading"}>
-      <LoadingWrapperInner>로딩중</LoadingWrapperInner>
+      <LoadingWrapperInner>
+        <LoadingSpinner src={"/assets/gifs/book.gif"} alt={"rocket"} />
+      </LoadingWrapperInner>
     </LoadingWrapper>
   );
 };
@@ -17,5 +19,12 @@ const LoadingWrapper = styled.main`
 const LoadingWrapperInner = styled.section`
   display: flex;
   width: 100%;
-  height: 3000px;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+const LoadingSpinner = styled.img`
+  width: 25%;
+  min-width: 200px;
+  margin-bottom: 10%;
 `;
