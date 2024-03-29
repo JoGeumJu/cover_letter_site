@@ -25,7 +25,7 @@ const DOSPlanet: React.FC = () => {
         <Display wasAnimated={wasAnimated} />
         <Keyword wasAnimated={wasAnimated} />
         <MoreButton
-          delay={45}
+          delay={35}
           position={[-2.5, 1, 0]}
           scale={[0.1, 0.1, 0.1]}
           rotation={[-0.2, 0.5, 0]}

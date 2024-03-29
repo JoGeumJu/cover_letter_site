@@ -42,7 +42,7 @@ const MeonghaePlanet: React.FC = () => {
         </group>
         <Keyword wasAnimated={wasAnimated} />
         <MoreButton
-          delay={25}
+          delay={15}
           position={[8.5, 5, 1]}
           scale={[0.3, 0.3, 0.3]}
           rotation={[0, 0, -0.2]}

@@ -42,7 +42,7 @@ const Calculator: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
         if (clip.name === "main") {
           action.loop = THREE.LoopOnce;
           action.clampWhenFinished = true;
-          action.setEffectiveTimeScale(1.3);
+          action.setEffectiveTimeScale(1.5);
           action.reset().play();
         } else if (clip.name.includes("fishs")) {
           action.loop = THREE.LoopRepeat;

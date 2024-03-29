@@ -26,7 +26,7 @@ const StreetStorePlanet: React.FC = () => {
         <RedBean2 wasAnimated={wasAnimated} />
         <Keyword wasAnimated={wasAnimated} />
         <MoreButton
-          delay={30}
+          delay={20}
           position={[8.5, 6, 0]}
           scale={[0.3, 0.3, 0.3]}
           rotation={[0, -0.2, -0.1]}

@@ -14,8 +14,7 @@ const Keyword: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
       const action = mixer.clipAction(clip);
       action.loop = THREE.LoopOnce;
       action.clampWhenFinished = true;
-      action.setEffectiveTimeScale(1.2);
-      action.reset().play();
+      action.startAt(0.6).setEffectiveTimeScale(1.4).reset().play();
     });
   }, [scene, wasAnimated]);
 

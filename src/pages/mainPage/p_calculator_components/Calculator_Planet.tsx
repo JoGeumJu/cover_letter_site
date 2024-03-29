@@ -22,7 +22,7 @@ const CalculatorPlanet: React.FC = () => {
         <Calculator wasAnimated={wasAnimated} />
         <Keyword wasAnimated={wasAnimated} />
         <MoreButton
-          delay={100}
+          delay={45}
           position={[-13, -1, 0]}
           scale={[0.4, 0.4, 0.4]}
           rotation={[-0.3, 0.6, 0]}

@@ -12,7 +12,7 @@ interface ButtonPropsType {
   scale?: number[];
   wasAnimated: boolean;
   content: string;
-  delay: 25 | 30 | 45 | 100;
+  delay: 15 | 20 | 35 | 45 | 90;
 }
 
 const MoreButton: React.FC<ButtonPropsType> = ({

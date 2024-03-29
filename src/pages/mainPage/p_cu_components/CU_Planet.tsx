@@ -27,7 +27,7 @@ const CUPlanet: React.FC = () => {
         <Keyword wasAnimated={wasAnimated} />
         <MoreButton
           wasAnimated={wasAnimated}
-          delay={25}
+          delay={15}
           position={[-11.5, 3, 2]}
           scale={[0.4, 0.4, 0.4]}
           rotation={[0, 0, -0.2]}
