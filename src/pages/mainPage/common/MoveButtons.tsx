@@ -121,6 +121,7 @@ const SelectPlanets = styled.section<{ $moveMode: boolean }>`
 const Button = styled.button<{ $position: number[]; $moveMode: boolean }>`
   display: flex;
   width: 15%;
+  max-width: 200px;
   align-items: center;
   justify-content: center;
   transform: ${(props) =>
@@ -131,11 +132,10 @@ const Button = styled.button<{ $position: number[]; $moveMode: boolean }>`
   transition: transform 0.3s ease, opacity 0.3s ease;
   opacity: ${(props) => (props.$moveMode ? 1 : 0)};
   &:hover img {
-    transform: scale(1.2);
+    transform: scale(1.15);
   }
 `;
 const Image = styled.img`
   width: 110%;
   transition: transform 0.3s ease;
-  transform: scale(1.05);
 `;
