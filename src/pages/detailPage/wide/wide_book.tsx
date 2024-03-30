@@ -106,7 +106,7 @@ const NameTagBox = styled.div`
   color: black;
   top: 50%;
   left: 50%;
-  transform: translate(-113%, -280%) rotate(-8deg);
+  transform: translate(-113%, -265%) rotate(-8deg);
   font-size: 2.2vh;
 `;
 const Book = styled.img`
@@ -124,7 +124,7 @@ const PlanetImageBox = styled.div`
   aspect-ratio: 1;
   top: 50%;
   left: 50%;
-  transform: translate(-120%, -107%) rotate(-1deg);
+  transform: translate(-120%, -100%) rotate(-1deg);
 `;
 const DateText = styled.div`
   display: flex;
