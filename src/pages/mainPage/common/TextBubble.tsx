@@ -160,9 +160,7 @@ export const TextBubble: React.FunctionComponent = () => {
 
 const Bubble = styled.section<{ opacity: number; $isfolding: boolean }>`
   position: fixed;
-  width: 50vw;
-  max-width: 800px;
-  min-width: 600px;
+  width: 45vw;
   object-fit: cover;
   left: 50vw;
   top: calc(100vh - 30px);
@@ -191,30 +189,19 @@ const Name = styled.div`
   top: 11%;
   left: 11.5%;
   transform: translate(-50%, -50%) rotateZ(-3deg);
-  font-size: 20px;
+  font-size: 1vw;
   cursor: default;
-  @media screen and (max-width: 1600px) {
-    font-size: 1.2vw;
-  }
-  @media screen and (max-width: 1200px) {
-    font-size: 14px;
-  }
 `;
 const BubbleBtn = styled.button`
   display: flex;
   flex-direction: column;
   gap: 10%;
   position: absolute;
-  border: 1px solid black;
   width: 86%;
   height: 76%;
   top: 56%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
   justify-content: center;
   align-items: center;
   overflow: "hidden";
@@ -224,15 +211,9 @@ const Text = styled.div`
   position: relative;
   font-weight: bold;
   text-align: center;
-  font-size: 24px;
+  font-size: 1.3vw;
   line-height: 180%;
   white-space: pre;
-  @media screen and (max-width: 1600px) {
-    font-size: 1.5vw;
-  }
-  @media screen and (max-width: 1200px) {
-    font-size: 18px;
-  }
 `;
 const SelectBubble = styled.section`
   display: flex;
@@ -246,7 +227,6 @@ const SelectBubble = styled.section`
   top: -2%;
   transform: translate(0, -50%);
   border-radius: 45%;
-  font-size: 20px;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
@@ -261,19 +241,10 @@ const fillAnimation = keyframes`
 `;
 const SelectBtn = styled.button<{ $movemode?: boolean }>`
   position: relative;
-  background: none;
-  border: none;
   color: #70684f;
   font-weight: bold;
   padding: 4%;
-  cursor: pointer;
-  font-size: 20px;
-  @media screen and (max-width: 1600px) {
-    font-size: 1.2vw;
-  }
-  @media screen and (max-width: 1200px) {
-    font-size: 14px;
-  }
+  font-size: 1.15vw;
   &:hover {
     &::after {
       content: "";
