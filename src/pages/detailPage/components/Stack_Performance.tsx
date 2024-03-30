@@ -5,13 +5,6 @@ export const Stack_Performance: React.FunctionComponent<{
   stack?: string[];
   performance?: string[];
 }> = ({ stack, performance }) => {
-  let libraries = [
-    "React",
-    "styled-components",
-    "styled-components",
-    "recoil",
-    "React",
-  ];
   return (
     <>
       <ExplainText2>

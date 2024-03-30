@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { styled } from "styled-components";
+import { LoadingRouteButton } from "../../common/LoadingRouteButton";
 import { ContentType, DetailPageData } from "../../data/detail_page_data";
 import { isLoadingState } from "../../recoil/globalState";
 import { Explain } from "./components/Explain";
@@ -37,6 +38,9 @@ const DetailPage: React.FunctionComponent = () => {
           performance={content?.performance}
         />
       </DetailWrapperInner>
+      <LoadingRouteButton path={"/"}>
+        <Back />
+      </LoadingRouteButton>
     </DetailWrapper>
   );
 };
@@ -63,4 +67,17 @@ const Book = styled.img`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+`;
+const Back = styled.div`
+  display: flex;
+  position: absolute;
+  top: 5vh;
+  left: 5vh;
+  background-image: url("/assets/images/wide_book/back_sticker.png");
+  height: 6%;
+  aspect-ratio: 1.163;
+  background-size: cover;
+  &:hover {
+    transform: scale(1.15);
+  }
 `;

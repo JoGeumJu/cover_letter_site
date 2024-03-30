@@ -52,8 +52,8 @@ const PlanetImageBox = styled.div`
   height: 28%;
   aspect-ratio: 1;
   top: 32vh;
-  left: 42vh;
-  transform: translate(-50%, -50%) rotate(-1deg);
+  left: 50%;
+  transform: translate(calc(-50% - 36vh), -50%) rotate(-1deg);
 `;
 const ScreenImageBox = styled.div`
   display: flex;
