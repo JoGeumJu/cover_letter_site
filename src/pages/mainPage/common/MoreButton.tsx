@@ -1,71 +1,73 @@
 import * as THREE from "three";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { useGLTF, useScroll } from "@react-three/drei";
+import { Float, useGLTF, useScroll } from "@react-three/drei";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { isLoadingState } from "../../../recoil/globalState";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isLoadingState, moveModeState } from "../../../recoil/globalState";
 
 interface ButtonPropsType {
   position?: number[];
   rotation?: number[];
   scale?: number[];
-  active_s: number;
-  active_e: number;
+  wasAnimated: boolean;
   content: string;
+  delay: 15 | 20 | 35 | 45 | 90;
 }
 
 const MoreButton: React.FC<ButtonPropsType> = ({
   position,
   rotation,
   scale,
-  active_s,
-  active_e,
+  wasAnimated,
   content,
+  delay,
 }) => {
-  const scroll = useScroll();
   const meshRef = useRef<THREE.Mesh>(null);
-  const { scene, animations } = useGLTF("/assets/models/more_button.glb");
-  const [wasAnimated, setWasAnimated] = useState(false);
-  let mixer = new THREE.AnimationMixer(scene);
+  const moveMode = useRecoilValue(moveModeState);
+  const { scene, animations } = useGLTF(
+    `/assets/models/book/book_${delay}.glb`
+  );
+  const copiedScene = useMemo(() => scene.clone(), [scene]);
+  let mixer = new THREE.AnimationMixer(copiedScene);
 
   const navigate = useNavigate();
   const setIsLoading = useSetRecoilState(isLoadingState);
 
   const handleClick = () => {
-    if (active_s < scroll.offset && scroll.offset < active_e) {
+    if (wasAnimated && !moveMode) {
       setIsLoading(true);
       navigate(`/detail?content=${content}`);
       setTimeout(() => {
         setIsLoading(false);
-      }, 2000);
+      }, 3000);
     }
   };
 
   useEffect(() => {
     animations.forEach((clip) => {
       const action = mixer.clipAction(clip);
-      action.loop = THREE.LoopRepeat;
-      action.reset().setDuration(5).play();
+      action.loop = THREE.LoopOnce;
+      action.clampWhenFinished = true;
+      action.reset().play();
     });
   }, [animations, wasAnimated]);
 
   useFrame((state, delta) => {
-    if (active_s <= scroll.offset && scroll.offset <= active_e) {
-      if (!wasAnimated) setWasAnimated(true);
-      mixer.update(delta);
-    } else if (wasAnimated) setWasAnimated(false);
+    if (wasAnimated) mixer.update(delta);
   });
 
   return (
-    <primitive
-      ref={meshRef}
-      object={scene}
-      scale={scale}
-      position={position}
-      rotation={rotation}
-      onClick={handleClick}
-    />
+    <Float floatIntensity={0.6} speed={2} rotationIntensity={0.6}>
+      <primitive
+        ref={meshRef}
+        object={copiedScene}
+        scale={scale}
+        position={position}
+        rotation={rotation}
+        onClick={handleClick}
+      />
+    </Float>
   );
 };
 

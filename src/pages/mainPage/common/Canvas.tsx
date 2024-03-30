@@ -1,5 +1,4 @@
 import { Canvas } from "@react-three/fiber";
-import { Stats, useScroll } from "@react-three/drei";
 import Stars from "./Stars";
 import { ScrollControls } from "@react-three/drei";
 import MoveController from "../controller/MoveController";
@@ -17,7 +16,6 @@ const MainCanvas: React.FunctionComponent = () => {
         <TextBubble />
       </ScrollControls>
       <Stars />
-      <Stats />
     </CustomCanvas>
   );
 };
@@ -26,5 +24,5 @@ export default MainCanvas;
 const CustomCanvas = styled(Canvas)`
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color: #09010d;
 `;
