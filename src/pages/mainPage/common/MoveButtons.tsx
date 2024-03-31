@@ -86,7 +86,7 @@ export const MoveButtons: React.FunctionComponent<ButtonPropsType> = ({
               $moveMode={moveMode}
               onClick={() => handleClick(i.offset)}
             >
-              <Image src={`/assets/images/move_buttons/${i.name}.png`} />
+              <Image src={`/assets/images/move_buttons/${i.name}.webp`} />
             </Button>
           );
         })}
@@ -116,7 +116,9 @@ const SelectPlanets = styled.section<{ $moveMode: boolean }>`
   left: 50%;
   transform: translate(-50%, 0);
   gap: 1%;
+  opacity: ${(props) => (props.$moveMode ? 1 : 0)};
   pointer-events: ${(props) => (props.$moveMode ? "auto" : "none")};
+  transition: all 0.3s ease;
 `;
 const Button = styled.button<{ $position: number[]; $moveMode: boolean }>`
   display: flex;
@@ -128,9 +130,7 @@ const Button = styled.button<{ $position: number[]; $moveMode: boolean }>`
     `translate(${props.$position[0]}vw, ${props.$position[1]}vh) scale(${
       props.$moveMode ? 1 : 0
     })`};
-  pointer-events: ${(props) => (props.$moveMode ? "auto" : "none")};
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  opacity: ${(props) => (props.$moveMode ? 1 : 0)};
+  transition: transform 0.3s ease;
   &:hover img {
     transform: scale(1.15);
   }

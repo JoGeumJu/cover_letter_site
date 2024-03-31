@@ -25,7 +25,7 @@ const DetailPage: React.FunctionComponent = () => {
   return (
     <DetailWrapper className={"page"} id={"detail"}>
       <DetailWrapperInner>
-        <Book src={"/assets/images/wide_book/book_detail_wide.png"} />
+        <Book src={"/assets/images/wide_book/book_detail_wide.webp"} />
         <PlanetPicture
           date={content?.date}
           name_s={content?.name_s}
@@ -73,7 +73,7 @@ const Back = styled.div`
   position: absolute;
   top: 5vh;
   left: 5vh;
-  background-image: url("/assets/images/wide_book/back_sticker.png");
+  background-image: url("/assets/images/wide_book/back_sticker.webp");
   height: 6%;
   aspect-ratio: 1.163;
   background-size: cover;

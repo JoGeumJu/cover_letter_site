@@ -108,8 +108,9 @@ export const TextBubble: React.FunctionComponent = () => {
 
   return (
     <Html>
-      <Bubble opacity={opacity} $isfolding={isFolding}>
-        <BubbleInner>
+      <Wrapper opacity={opacity} $isfolding={isFolding}>
+        <WrapperInner>
+          <Bubble src={"/assets/images/bubble.webp"} alt={"bubble"} />
           <Name>흥이</Name>
           <BubbleBtn
             type="button"
@@ -147,8 +148,8 @@ export const TextBubble: React.FunctionComponent = () => {
               {moveMode ? "안갈래~" : "행성으로 갈래"}
             </SelectBtn>
           </SelectBubble>
-        </BubbleInner>
-      </Bubble>
+        </WrapperInner>
+      </Wrapper>
       <MoveButtons
         setUnmoveMode={() => setMoveMode(false)}
         scroll={scroll}
@@ -158,15 +159,13 @@ export const TextBubble: React.FunctionComponent = () => {
   );
 };
 
-const Bubble = styled.section<{ opacity: number; $isfolding: boolean }>`
+const Wrapper = styled.section<{ opacity: number; $isfolding: boolean }>`
   position: fixed;
-  width: 45vw;
+  width: 40vw;
   object-fit: cover;
   left: 50vw;
   top: calc(100vh - 30px);
   transform: translate(-50%, ${(props) => (props.$isfolding ? -16 : -100)}%);
-  background-image: url("/assets/images/bubble.png");
-  background-size: cover;
   aspect-ratio: 2.875/1;
   z-index: 500;
   opacity: ${(props) => props.opacity};
@@ -175,12 +174,21 @@ const Bubble = styled.section<{ opacity: number; $isfolding: boolean }>`
   pointer-events: ${(props) =>
     props.opacity >= ACTIVE_OPACITY ? "auto" : "none"};
 `;
-const BubbleInner = styled.div`
+const WrapperInner = styled.div`
   display: flex;
   position: relative;
   width: 100%;
   height: 100%;
   cursor: pointer;
+`;
+const Bubble = styled.img`
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
 `;
 const Name = styled.div`
   color: #fff9e9;
@@ -189,7 +197,7 @@ const Name = styled.div`
   top: 11%;
   left: 11.5%;
   transform: translate(-50%, -50%) rotateZ(-3deg);
-  font-size: 1vw;
+  font-size: 0.9vw;
   cursor: default;
 `;
 const BubbleBtn = styled.button`
@@ -211,7 +219,7 @@ const Text = styled.div`
   position: relative;
   font-weight: bold;
   text-align: center;
-  font-size: 1.3vw;
+  font-size: 1.2vw;
   line-height: 180%;
   white-space: pre;
 `;
@@ -244,7 +252,7 @@ const SelectBtn = styled.button<{ $movemode?: boolean }>`
   color: #70684f;
   font-weight: bold;
   padding: 4%;
-  font-size: 1.15vw;
+  font-size: 1.05vw;
   &:hover {
     &::after {
       content: "";
