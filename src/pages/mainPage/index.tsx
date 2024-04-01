@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import MainCanvas from "./common/Canvas";
+import { TextBubble } from "./components/TextBubble";
 
 const MainPage: React.FunctionComponent = () => {
   return (
@@ -8,6 +9,7 @@ const MainPage: React.FunctionComponent = () => {
         <FloatingCanvas>
           <MainCanvas />
         </FloatingCanvas>
+        <TextBubble />
       </MainWrapperInner>
     </MainWrapper>
   );

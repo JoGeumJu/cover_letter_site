@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
+const moveModeText = "좋아! 원하는 행성을 클릭해봐 멍!";
+
 const useTalking = (
   text: String,
   speed: number = 50,
@@ -22,23 +24,16 @@ const useTalking = (
       const elapsed = timestamp - lastUpdateRef.current;
       if (elapsed >= (moveMode ? 50 : speed)) {
         if (moveMode) {
-          let moveModeText = "좋아! 원하는 행성을 클릭해봐 멍!";
           lastUpdateRef.current = timestamp;
           if (moveModeText.length > currentIndex) {
-            setDisplayText((state) => {
-              const newState = (state += moveModeText[currentIndex]);
-              setCurrentIndex((prevIndex) => prevIndex + 1);
-              return newState;
-            });
+            setDisplayText((prev) => prev + moveModeText[currentIndex]);
+            setCurrentIndex((prev) => prev + 1);
           }
         } else {
           lastUpdateRef.current = timestamp;
           if (text.length > currentIndex) {
-            setDisplayText((state) => {
-              const newState = (state += text[currentIndex]);
-              setCurrentIndex((prevIndex) => prevIndex + 1);
-              return newState;
-            });
+            setDisplayText((prev) => prev + text[currentIndex]);
+            setCurrentIndex((prev) => prev + 1);
           }
         }
       }

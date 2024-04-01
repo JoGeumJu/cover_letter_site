@@ -2,9 +2,9 @@ import { Canvas } from "@react-three/fiber";
 import Stars from "./Stars";
 import { ScrollControls } from "@react-three/drei";
 import MoveController from "../controller/MoveController";
-import { TextBubble } from "./TextBubble";
 import LightController from "../controller/LightController";
 import { styled } from "styled-components";
+import { TextBubbleController } from "../controller/TextBubbleController";
 
 const MainCanvas: React.FunctionComponent = () => {
   return (
@@ -13,7 +13,7 @@ const MainCanvas: React.FunctionComponent = () => {
       <LightController />
       <ScrollControls pages={40} damping={0.25}>
         <MoveController />
-        <TextBubble />
+        <TextBubbleController />
       </ScrollControls>
       <Stars />
     </CustomCanvas>
