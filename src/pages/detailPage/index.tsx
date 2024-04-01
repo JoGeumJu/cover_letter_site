@@ -25,7 +25,10 @@ const DetailPage: React.FunctionComponent = () => {
   return (
     <DetailWrapper className={"page"} id={"detail"}>
       <DetailWrapperInner>
-        <Book src={"/assets/images/wide_book/book_detail_wide.webp"} />
+        <Book
+          src={"/assets/images/wide_book/book_detail_wide.webp"}
+          alt={"book"}
+        />
         <PlanetPicture
           date={content?.date}
           name_s={content?.name_s}
@@ -38,9 +41,14 @@ const DetailPage: React.FunctionComponent = () => {
           performance={content?.performance}
         />
       </DetailWrapperInner>
-      <LoadingRouteButton path={"/"}>
-        <Back />
-      </LoadingRouteButton>
+      <Back>
+        <LoadingRouteButton path={"/"}>
+          <img
+            src={"/assets/images/wide_book/back_sticker.webp"}
+            alt={"back"}
+          />
+        </LoadingRouteButton>
+      </Back>
     </DetailWrapper>
   );
 };
@@ -73,10 +81,9 @@ const Back = styled.div`
   position: absolute;
   top: 5vh;
   left: 5vh;
-  background-image: url("/assets/images/wide_book/back_sticker.webp");
   height: 6%;
   aspect-ratio: 1.163;
-  background-size: cover;
+  transition: transform 0.2s ease;
   &:hover {
     transform: scale(1.15);
   }

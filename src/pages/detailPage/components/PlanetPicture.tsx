@@ -13,6 +13,7 @@ export const PlanetPicture: React.FunctionComponent<{
         <img
           src={`/assets/images/move_buttons/${name_s}.webp`}
           style={{ objectFit: "cover" }}
+          alt={"planet_picture"}
         />
       </PlanetImageBox>
       <ScreenImageBox>
@@ -24,6 +25,7 @@ export const PlanetPicture: React.FunctionComponent<{
             opacity: 0.88,
             borderRadius: "1vh",
           }}
+          alt={"planet_main"}
         />
       </ScreenImageBox>
       <NameTagBox>{name}</NameTagBox>

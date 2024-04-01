@@ -25,6 +25,7 @@ export const Release: React.FunctionComponent<{
                 opacity: 0.7,
                 transform: "scale(0.75)",
               }}
+              alt={"released"}
             />
             {"절찬 배포 중! (클릭하여 접속)"}
           </>
@@ -37,6 +38,7 @@ export const Release: React.FunctionComponent<{
               opacity: 0.8,
               transform: "scale(1.1)",
             }}
+            alt={"unReleased"}
           />
         )}
       </LinkButton>

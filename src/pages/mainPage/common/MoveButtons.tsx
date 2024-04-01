@@ -86,7 +86,10 @@ export const MoveButtons: React.FunctionComponent<ButtonPropsType> = ({
               $moveMode={moveMode}
               onClick={() => handleClick(i.offset)}
             >
-              <Image src={`/assets/images/move_buttons/${i.name}.webp`} />
+              <Image
+                src={`/assets/images/move_buttons/${i.name}.webp`}
+                alt={"move_buttons"}
+              />
             </Button>
           );
         })}
