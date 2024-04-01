@@ -108,8 +108,9 @@ export const TextBubble: React.FunctionComponent = () => {
 
   return (
     <Html>
-      <Bubble opacity={opacity} $isfolding={isFolding}>
-        <BubbleInner>
+      <Wrapper opacity={opacity} $isfolding={isFolding}>
+        <WrapperInner>
+          <Bubble src={"/assets/images/bubble.webp"} alt={"bubble"} />
           <Name>흥이</Name>
           <BubbleBtn
             type="button"
@@ -147,8 +148,8 @@ export const TextBubble: React.FunctionComponent = () => {
               {moveMode ? "안갈래~" : "행성으로 갈래"}
             </SelectBtn>
           </SelectBubble>
-        </BubbleInner>
-      </Bubble>
+        </WrapperInner>
+      </Wrapper>
       <MoveButtons
         setUnmoveMode={() => setMoveMode(false)}
         scroll={scroll}
@@ -158,17 +159,13 @@ export const TextBubble: React.FunctionComponent = () => {
   );
 };
 
-const Bubble = styled.section<{ opacity: number; $isfolding: boolean }>`
+const Wrapper = styled.section<{ opacity: number; $isfolding: boolean }>`
   position: fixed;
-  width: 50vw;
-  max-width: 800px;
-  min-width: 600px;
+  width: 40vw;
   object-fit: cover;
   left: 50vw;
   top: calc(100vh - 30px);
   transform: translate(-50%, ${(props) => (props.$isfolding ? -16 : -100)}%);
-  background-image: url("/assets/images/bubble.png");
-  background-size: cover;
   aspect-ratio: 2.875/1;
   z-index: 500;
   opacity: ${(props) => props.opacity};
@@ -177,12 +174,21 @@ const Bubble = styled.section<{ opacity: number; $isfolding: boolean }>`
   pointer-events: ${(props) =>
     props.opacity >= ACTIVE_OPACITY ? "auto" : "none"};
 `;
-const BubbleInner = styled.div`
+const WrapperInner = styled.div`
   display: flex;
   position: relative;
   width: 100%;
   height: 100%;
   cursor: pointer;
+`;
+const Bubble = styled.img`
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
 `;
 const Name = styled.div`
   color: #fff9e9;
@@ -191,30 +197,19 @@ const Name = styled.div`
   top: 11%;
   left: 11.5%;
   transform: translate(-50%, -50%) rotateZ(-3deg);
-  font-size: 20px;
+  font-size: 0.9vw;
   cursor: default;
-  @media screen and (max-width: 1600px) {
-    font-size: 1.2vw;
-  }
-  @media screen and (max-width: 1200px) {
-    font-size: 14px;
-  }
 `;
 const BubbleBtn = styled.button`
   display: flex;
   flex-direction: column;
   gap: 10%;
   position: absolute;
-  border: 1px solid black;
   width: 86%;
   height: 76%;
   top: 56%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
   justify-content: center;
   align-items: center;
   overflow: "hidden";
@@ -224,15 +219,9 @@ const Text = styled.div`
   position: relative;
   font-weight: bold;
   text-align: center;
-  font-size: 24px;
+  font-size: 1.2vw;
   line-height: 180%;
   white-space: pre;
-  @media screen and (max-width: 1600px) {
-    font-size: 1.5vw;
-  }
-  @media screen and (max-width: 1200px) {
-    font-size: 18px;
-  }
 `;
 const SelectBubble = styled.section`
   display: flex;
@@ -246,7 +235,6 @@ const SelectBubble = styled.section`
   top: -2%;
   transform: translate(0, -50%);
   border-radius: 45%;
-  font-size: 20px;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
@@ -261,19 +249,10 @@ const fillAnimation = keyframes`
 `;
 const SelectBtn = styled.button<{ $movemode?: boolean }>`
   position: relative;
-  background: none;
-  border: none;
   color: #70684f;
   font-weight: bold;
   padding: 4%;
-  cursor: pointer;
-  font-size: 20px;
-  @media screen and (max-width: 1600px) {
-    font-size: 1.2vw;
-  }
-  @media screen and (max-width: 1200px) {
-    font-size: 14px;
-  }
+  font-size: 1.05vw;
   &:hover {
     &::after {
       content: "";

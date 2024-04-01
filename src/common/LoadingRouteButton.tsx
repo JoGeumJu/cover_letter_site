@@ -36,7 +36,7 @@ export const LoadingRouteButton: React.FunctionComponent<ButtonProps> = (
   };
 
   return (
-    <Button type="button" onClick={handleClick}>
+    <Button type="button" onClick={handleClick} name={"loading_route_button"}>
       {props.children}
     </Button>
   );
@@ -46,7 +46,4 @@ const Button = styled.button`
   display: flex;
   width: 100%;
   height: 100%;
-  background: none;
-  border: none;
-  cursor: pointer;
 `;

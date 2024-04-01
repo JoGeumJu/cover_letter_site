@@ -139,7 +139,13 @@ const MoveController: React.FunctionComponent = () => {
   return (
     <Scroll ref={scrollRef}>
       <group ref={cameraGroup}>
-        <PerspectiveCamera position={[0, 0, 0]} fov={60} makeDefault />
+        <PerspectiveCamera
+          position={[0, 0, 0]}
+          fov={60}
+          makeDefault
+          far={130}
+          near={1}
+        />
         <group ref={dog}>
           <Dog />
         </group>
