@@ -1,5 +1,7 @@
 import { styled } from "styled-components";
 import MainCanvas from "./common/Canvas";
+import { ScannerToggleButton } from "./components/ScannerToggleButton";
+import { TextBubble } from "./components/TextBubble";
 
 const MainPage: React.FunctionComponent = () => {
   return (
@@ -8,6 +10,8 @@ const MainPage: React.FunctionComponent = () => {
         <FloatingCanvas>
           <MainCanvas />
         </FloatingCanvas>
+        <TextBubble />
+        <ScannerToggleButton />
       </MainWrapperInner>
     </MainWrapper>
   );

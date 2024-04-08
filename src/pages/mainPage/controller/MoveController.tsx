@@ -25,6 +25,11 @@ import {
   DOG_SO,
 } from "../../../data/scroll_offset";
 import { useMoveCurve } from "../../../hook/useMoveCurve";
+import {
+  isScannerOpenState,
+  scannerOffsetState,
+} from "../../../recoil/globalState";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 const DOG_MAX_ANGLE = 10;
 const CURVE_AHEAD_CAMERA = 0.008;
@@ -37,6 +42,8 @@ const MoveController: React.FunctionComponent = () => {
   const dog = useRef<THREE.Group>(null!);
   const scrollRef = useRef(null!);
   const { set, viewport } = useThree();
+  const [isScannerOpen, setIsScannerOpen] = useRecoilState(isScannerOpenState);
+  const setScannerOffset = useSetRecoilState(scannerOffsetState);
 
   useEffect(() => {
     const handleResize = () => {
@@ -55,6 +62,13 @@ const MoveController: React.FunctionComponent = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [viewport, set]);
+
+  useEffect(() => {
+    if (isScannerOpen) {
+      setScannerOffset(scroll.offset);
+    }
+    setIsScannerOpen(false);
+  }, [isScannerOpen]);
 
   const backOffset = (s: number, e: number, scroll: number, i: number) => {
     if (0 < i) return scroll - ((e - scroll) * 0.03) / (e - s);

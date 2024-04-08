@@ -6,7 +6,10 @@ import { MeshStandardMaterial } from "three";
 import { useRecoilValue } from "recoil";
 import { moveModeState } from "../../../recoil/globalState";
 
-const CU: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
+const CU: React.FC<{ wasAnimated: boolean; isScannerOpen: boolean }> = ({
+  wasAnimated,
+  isScannerOpen,
+}) => {
   const moveMode = useRecoilValue(moveModeState);
   const cuRef = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/cu/cu.glb");
@@ -33,7 +36,7 @@ const CU: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
         action.reset().play();
       });
     }
-  }, [scene, wasAnimated, animations]);
+  }, [wasAnimated, animations, isScannerOpen]);
 
   useFrame((state, delta) => {
     if (wasAnimated) mixer.update(delta);

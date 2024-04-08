@@ -7,7 +7,7 @@ import Keyword from "./Keyword";
 import { MEONG_EO, MEONG_SO } from "../../../data/scroll_offset";
 import { useScroll } from "@react-three/drei";
 import { useRecoilValue } from "recoil";
-import { moveModeState } from "../../../recoil/globalState";
+import { isScannerOpenState, moveModeState } from "../../../recoil/globalState";
 import MoreButton from "../common/MoreButton";
 
 const HAT_NUM = 4;
@@ -17,6 +17,7 @@ const MeonghaePlanet: React.FC = () => {
   const [clickCat, setClickCat] = useState(0);
   const scroll = useScroll();
   const moveMode = useRecoilValue(moveModeState);
+  const isScannerOpen = useRecoilValue(isScannerOpenState);
 
   useFrame((state, delta) => {
     if (MEONG_SO < scroll.offset && scroll.offset < MEONG_EO) {
@@ -37,10 +38,10 @@ const MeonghaePlanet: React.FC = () => {
             }
           }}
         >
-          <Cat wasAnimated={wasAnimated} />
+          <Cat wasAnimated={wasAnimated} isScannerOpen={isScannerOpen} />
           <Hats clickCat={clickCat} />
         </group>
-        <Keyword wasAnimated={wasAnimated} />
+        <Keyword wasAnimated={wasAnimated} isScannerOpen={isScannerOpen} />
         <MoreButton
           delay={15}
           position={[8.5, 5, 1]}
@@ -48,6 +49,7 @@ const MeonghaePlanet: React.FC = () => {
           rotation={[0, 0, -0.2]}
           wasAnimated={wasAnimated}
           content={"meong"}
+          isScannerOpen={isScannerOpen}
         />
       </group>
     </mesh>

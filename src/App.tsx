@@ -6,9 +6,8 @@ import LoadingPage from "./pages/loadingPage";
 import { useRecoilState } from "recoil";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { createBrowserHistory } from "history";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { isLoadingState } from "./recoil/globalState";
-import MobileDetect from "mobile-detect";
 
 function App() {
   const [isLoading, setIsLoading] = useRecoilState(isLoadingState);
