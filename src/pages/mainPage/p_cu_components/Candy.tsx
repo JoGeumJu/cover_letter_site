@@ -3,7 +3,10 @@ import { useGLTF } from "@react-three/drei";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 
-const Candy: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
+const Candy: React.FC<{ wasAnimated: boolean; isScannerOpen: boolean }> = ({
+  wasAnimated,
+  isScannerOpen,
+}) => {
   const ref = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/cu/candy.glb");
   let mixer = new THREE.AnimationMixer(scene);
@@ -16,7 +19,7 @@ const Candy: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
         action.reset().play();
       });
     }
-  }, [wasAnimated, animations]);
+  }, [wasAnimated, animations, isScannerOpen]);
 
   useFrame((state, delta) => {
     if (wasAnimated) mixer.update(delta);

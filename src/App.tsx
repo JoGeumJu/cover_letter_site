@@ -4,13 +4,9 @@ import DetailPage from "./pages/detailPage";
 import { Routes, Route, useLocation } from "react-router-dom";
 import LoadingPage from "./pages/loadingPage";
 import { useRecoilState } from "recoil";
-import {
-  TransitionGroup,
-  CSSTransition,
-  Transition,
-} from "react-transition-group";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { createBrowserHistory } from "history";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { isLoadingState } from "./recoil/globalState";
 
 function App() {

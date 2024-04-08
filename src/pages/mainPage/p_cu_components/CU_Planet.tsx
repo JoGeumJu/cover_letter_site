@@ -7,9 +7,12 @@ import Candy from "./Candy";
 import CU from "./CU";
 import Keyword from "./Keyword";
 import Milk from "./Milk";
+import { useRecoilValue } from "recoil";
+import { isScannerOpenState } from "../../../recoil/globalState";
 
 const CUPlanet: React.FC = () => {
   const [wasAnimated, setWasAnimated] = useState(false);
+  const isScannerOpen = useRecoilValue(isScannerOpenState);
   const scroll = useScroll();
 
   useFrame((state, delta) => {
@@ -21,12 +24,13 @@ const CUPlanet: React.FC = () => {
   return (
     <mesh position={[-55, 26, -195]} rotation={[0.4, -0.1, 0.03]}>
       <group>
-        <CU wasAnimated={wasAnimated} />
-        <Milk wasAnimated={wasAnimated} />
-        <Candy wasAnimated={wasAnimated} />
-        <Keyword wasAnimated={wasAnimated} />
+        <CU wasAnimated={wasAnimated} isScannerOpen={isScannerOpen} />
+        <Milk wasAnimated={wasAnimated} isScannerOpen={isScannerOpen} />
+        <Candy wasAnimated={wasAnimated} isScannerOpen={isScannerOpen} />
+        <Keyword wasAnimated={wasAnimated} isScannerOpen={isScannerOpen} />
         <MoreButton
           wasAnimated={wasAnimated}
+          isScannerOpen={isScannerOpen}
           delay={15}
           position={[-11.5, 3, 2]}
           scale={[0.4, 0.4, 0.4]}

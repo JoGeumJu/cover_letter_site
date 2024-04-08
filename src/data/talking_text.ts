@@ -29,14 +29,6 @@ export const TalkingText = (label: LabelType) => {
           text: "이 프로젝트 SwiperJS와 웹 반응형에 신경을 쓴 흔적이 보여! 멍!",
           speed: 40,
         },
-        {
-          text: "더 많은 정보가 궁금하다면, 내 도감책을 눌러봐!\n모든(git행성 제외) 행성들마다 도감책이 있어~, 멍!",
-          speed: 40,
-        },
-        {
-          text: "도감책은 행성 주위에 떠 있는 보라색 수첩이야! 멍~!\n(아끼는 도감책이니 살살 다뤄줘, 멍...)",
-          speed: 40,
-        },
       ];
     case LabelType.calculator:
       return [
@@ -99,10 +91,6 @@ export const TalkingText = (label: LabelType) => {
         },
         {
           text: "냥이를 클릭 할 때마다 모자를 계속 바꿔 쓴다는데..?\n정말일까? 멍??",
-          speed: 40,
-        },
-        {
-          text: "이 어플을 만들기 위해 주인이 Flutter를\n열심히 공부했던 기억이 있지, 멍?",
           speed: 40,
         },
         {

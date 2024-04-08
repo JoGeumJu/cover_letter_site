@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { styled } from "styled-components";
+import { LoadingRouteButton } from "../../common/LoadingRouteButton";
 import { ContentType, DetailPageData } from "../../data/detail_page_data";
 import { isLoadingState } from "../../recoil/globalState";
 import { Explain } from "./components/Explain";
@@ -24,7 +25,10 @@ const DetailPage: React.FunctionComponent = () => {
   return (
     <DetailWrapper className={"page"} id={"detail"}>
       <DetailWrapperInner>
-        <Book src={"/assets/images/wide_book/book_detail_wide.png"} />
+        <Book
+          src={"/assets/images/wide_book/book_detail_wide.webp"}
+          alt={"book"}
+        />
         <PlanetPicture
           date={content?.date}
           name_s={content?.name_s}
@@ -37,6 +41,14 @@ const DetailPage: React.FunctionComponent = () => {
           performance={content?.performance}
         />
       </DetailWrapperInner>
+      <Back>
+        <LoadingRouteButton path={"/"}>
+          <img
+            src={"/assets/images/wide_book/back_sticker.webp"}
+            alt={"back"}
+          />
+        </LoadingRouteButton>
+      </Back>
     </DetailWrapper>
   );
 };
@@ -63,4 +75,16 @@ const Book = styled.img`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+`;
+const Back = styled.div`
+  display: flex;
+  position: absolute;
+  top: 5vh;
+  left: 5vh;
+  height: 6%;
+  aspect-ratio: 1.163;
+  transition: transform 0.2s ease;
+  &:hover {
+    transform: scale(1.15);
+  }
 `;

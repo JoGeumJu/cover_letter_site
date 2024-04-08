@@ -11,19 +11,21 @@ export const PlanetPicture: React.FunctionComponent<{
       <DateText>{date}</DateText>
       <PlanetImageBox>
         <img
-          src={`/assets/images/move_buttons/${name_s}.png`}
+          src={`/assets/images/move_buttons/${name_s}.webp`}
           style={{ objectFit: "cover" }}
+          alt={"planet_picture"}
         />
       </PlanetImageBox>
       <ScreenImageBox>
         <img
-          src={`/assets/images/web_main/${name_s}.png`}
+          src={`/assets/images/web_main/${name_s}.webp`}
           style={{
             width: "88%",
             height: "82%",
             opacity: 0.88,
             borderRadius: "1vh",
           }}
+          alt={"planet_main"}
         />
       </ScreenImageBox>
       <NameTagBox>{name}</NameTagBox>
@@ -34,7 +36,7 @@ export const PlanetPicture: React.FunctionComponent<{
 const NameTagBox = styled.div`
   display: flex;
   position: absolute;
-  background-image: url("/assets/images/wide_book/wide_name_tag.png");
+  background-image: url("/assets/images/wide_book/wide_name_tag.webp");
   height: 15%;
   aspect-ratio: 3.365;
   background-size: cover;
@@ -52,8 +54,8 @@ const PlanetImageBox = styled.div`
   height: 28%;
   aspect-ratio: 1;
   top: 32vh;
-  left: 42vh;
-  transform: translate(-50%, -50%) rotate(-1deg);
+  left: 50%;
+  transform: translate(calc(-50% - 36vh), -50%) rotate(-1deg);
 `;
 const ScreenImageBox = styled.div`
   display: flex;
@@ -62,7 +64,7 @@ const ScreenImageBox = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-122%, -100%) rotate(-20deg);
-  background-image: url("/assets/images/wide_book/wide_screen_sticker.png");
+  background-image: url("/assets/images/wide_book/wide_screen_sticker.webp");
   background-size: cover;
   aspect-ratio: 1.894;
   align-items: center;

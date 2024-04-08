@@ -1,115 +1,38 @@
-import { Html, useScroll } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
-import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { keyframes, styled } from "styled-components";
-import {
-  CAL_EO,
-  CAL_SO,
-  CU_EO,
-  CU_SO,
-  DOS_EO,
-  DOS_SO,
-  MEONG_EO,
-  MEONG_SO,
-  ST_EO,
-  ST_SO,
-} from "../../../data/scroll_offset";
-import { LabelType, TalkingText } from "../../../data/talking_text";
 import useTalking from "../../../hook/useTalking";
-import { moveModeState } from "../../../recoil/globalState";
+import {
+  bubbleIsFoldingState,
+  bubbleOpacityState,
+  bubbleSkipState,
+  bubbleTalkingOptionState,
+  bubbleTextIndex,
+  moveModeState,
+} from "../../../recoil/globalState";
 import { MoveButtons } from "./MoveButtons";
 
 const ACTIVE_OPACITY = 0.9;
 
 export const TextBubble: React.FunctionComponent = () => {
-  const scroll = useScroll();
-  const [opacity, setOpacity] = useState(1);
-  const [isFolding, setIsFolding] = useState<boolean>(false);
-  const [talkingOption, setTalkingOption] = useState<{
-    text: string;
-    speed: number;
-  }>({ text: "", speed: 50 });
-  const [textIndex, setTextIndex] = useState<number>(0);
-  const [skip, setSkip] = useState(false);
+  const opacity = useRecoilValue(bubbleOpacityState);
+  const [isFolding, setIsFolding] = useRecoilState(bubbleIsFoldingState);
   const [moveMode, setMoveMode] = useRecoilState(moveModeState);
+  const [skip, setSkip] = useRecoilState(bubbleSkipState);
+  const [textIndex, setTextIndex] = useRecoilState(bubbleTextIndex);
+  const talkingOption = useRecoilValue(bubbleTalkingOptionState);
+
   const taking = useTalking(
     talkingOption.text,
     talkingOption.speed,
     moveMode,
     skip
   );
-  const scrollOffsets: Array<{ s: number; e: number; l: LabelType }> = [
-    { s: CU_SO, e: CU_EO, l: LabelType.cu },
-    { s: CAL_SO, e: CAL_EO, l: LabelType.calculator },
-    { s: ST_SO, e: ST_EO, l: LabelType.streetStore },
-    { s: DOS_SO, e: DOS_EO, l: LabelType.dos },
-    { s: MEONG_SO, e: MEONG_EO, l: LabelType.meonghae },
-  ];
-
-  useFrame((state, delta) => {
-    let filtering = false;
-    scrollOffsets.some((offsets) => {
-      if (
-        offsets.s - 0.02 < scroll.offset &&
-        scroll.offset < offsets.e + 0.02
-      ) {
-        filtering = true;
-        if (scroll.offset < offsets.s) {
-          checkIndex(offsets.l);
-          setOpacity(scroll.range(offsets.s - 0.02, 0.02));
-        } else if (scroll.offset > offsets.e) {
-          checkIndex(offsets.l);
-          setOpacity(1 - scroll.range(offsets.e, 0.02));
-        } else {
-          checkIndex(offsets.l);
-          setOpacity(1);
-        }
-        return true;
-      } else {
-        return false;
-      }
-    });
-    if (scroll.offset <= 0.02) {
-      checkIndex(LabelType.intro);
-      setOpacity(1 - scroll.range(0, 0.03));
-    } else if (scroll.offset >= 0.98) {
-      checkIndex(LabelType.git);
-      setOpacity(scroll.range(0.98, 0.02));
-    } else {
-      if (!filtering) {
-        setTextIndex(0);
-        setOpacity(0);
-        setIsFolding(false);
-        setTalkingOption({ text: "", speed: 50 });
-        setMoveMode(false);
-        setSkip(false);
-      }
-    }
-  });
-
-  const checkIndex = (label: LabelType) => {
-    if (!moveMode) {
-      const labelitems = TalkingText(label);
-      if (labelitems[textIndex]) {
-        setTalkingOption({
-          text: labelitems[textIndex].text,
-          speed: labelitems[textIndex].speed,
-        });
-      } else {
-        setTextIndex(0);
-        setTalkingOption({
-          text: labelitems[0].text,
-          speed: labelitems[0].speed,
-        });
-      }
-    }
-  };
 
   return (
-    <Html>
-      <Bubble opacity={opacity} $isfolding={isFolding}>
-        <BubbleInner>
+    <>
+      <Wrapper opacity={opacity} $isfolding={isFolding}>
+        <WrapperInner>
+          <Bubble src={"/assets/images/bubble.webp"} alt={"bubble"} />
           <Name>흥이</Name>
           <BubbleBtn
             type="button"
@@ -147,26 +70,20 @@ export const TextBubble: React.FunctionComponent = () => {
               {moveMode ? "안갈래~" : "행성으로 갈래"}
             </SelectBtn>
           </SelectBubble>
-        </BubbleInner>
-      </Bubble>
-      <MoveButtons
-        setUnmoveMode={() => setMoveMode(false)}
-        scroll={scroll}
-        moveMode={moveMode}
-      />
-    </Html>
+        </WrapperInner>
+      </Wrapper>
+      <MoveButtons moveMode={moveMode} />
+    </>
   );
 };
 
-const Bubble = styled.section<{ opacity: number; $isfolding: boolean }>`
+const Wrapper = styled.section<{ opacity: number; $isfolding: boolean }>`
   position: fixed;
-  width: 45vw;
+  width: 40%;
   object-fit: cover;
-  left: 50vw;
-  top: calc(100vh - 30px);
-  transform: translate(-50%, ${(props) => (props.$isfolding ? -16 : -100)}%);
-  background-image: url("/assets/images/bubble.png");
-  background-size: cover;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, ${(props) => (props.$isfolding ? 75 : -10)}%);
   aspect-ratio: 2.875/1;
   z-index: 500;
   opacity: ${(props) => props.opacity};
@@ -175,12 +92,21 @@ const Bubble = styled.section<{ opacity: number; $isfolding: boolean }>`
   pointer-events: ${(props) =>
     props.opacity >= ACTIVE_OPACITY ? "auto" : "none"};
 `;
-const BubbleInner = styled.div`
+const WrapperInner = styled.div`
   display: flex;
   position: relative;
   width: 100%;
   height: 100%;
   cursor: pointer;
+`;
+const Bubble = styled.img`
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
 `;
 const Name = styled.div`
   color: #fff9e9;
@@ -189,7 +115,7 @@ const Name = styled.div`
   top: 11%;
   left: 11.5%;
   transform: translate(-50%, -50%) rotateZ(-3deg);
-  font-size: 1vw;
+  font-size: 0.9vw;
   cursor: default;
 `;
 const BubbleBtn = styled.button`
@@ -211,7 +137,7 @@ const Text = styled.div`
   position: relative;
   font-weight: bold;
   text-align: center;
-  font-size: 1.3vw;
+  font-size: 1.2vw;
   line-height: 180%;
   white-space: pre;
 `;
@@ -244,7 +170,7 @@ const SelectBtn = styled.button<{ $movemode?: boolean }>`
   color: #70684f;
   font-weight: bold;
   padding: 4%;
-  font-size: 1.15vw;
+  font-size: 1.05vw;
   &:hover {
     &::after {
       content: "";

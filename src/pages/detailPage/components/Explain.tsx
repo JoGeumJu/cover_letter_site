@@ -25,7 +25,7 @@ const SectionTitle_S = styled.div<{ $position: number[]; $rotation: number }>`
     `translate(${-50 + props.$position[0]}%, ${
       -50 + props.$position[1]
     }%) rotate(${props.$rotation}deg)`};
-  background-image: url("/assets/images/wide_book/wide_sticker_1.png");
+  background-image: url("/assets/images/wide_book/wide_sticker_1.webp");
   background-size: cover;
   align-items: center;
   justify-content: center;

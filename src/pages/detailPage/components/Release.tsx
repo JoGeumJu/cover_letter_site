@@ -17,7 +17,7 @@ export const Release: React.FunctionComponent<{
         {hasReleased ? (
           <>
             <img
-              src={"/assets/images/wide_book/release.png"}
+              src={"/assets/images/wide_book/release.webp"}
               style={{
                 objectFit: "cover",
                 height: "100%",
@@ -25,18 +25,20 @@ export const Release: React.FunctionComponent<{
                 opacity: 0.7,
                 transform: "scale(0.75)",
               }}
+              alt={"released"}
             />
             {"절찬 배포 중! (클릭하여 접속)"}
           </>
         ) : (
           <img
-            src={"/assets/images/wide_book/none_release.png"}
+            src={"/assets/images/wide_book/none_release.webp"}
             style={{
               objectFit: "cover",
               height: "100%",
               opacity: 0.8,
               transform: "scale(1.1)",
             }}
+            alt={"unReleased"}
           />
         )}
       </LinkButton>
@@ -52,7 +54,7 @@ const SectionTitle_L = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-116%, 180%) rotate(2deg);
-  background-image: url("/assets/images/wide_book/wide_sticker_2.png");
+  background-image: url("/assets/images/wide_book/wide_sticker_2.webp");
   background-size: cover;
   align-items: center;
   justify-content: center;

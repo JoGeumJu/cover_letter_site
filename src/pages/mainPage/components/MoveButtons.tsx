@@ -1,4 +1,4 @@
-import { ScrollControlsState } from "@react-three/drei";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import {
   CAL_EO,
@@ -13,28 +13,25 @@ import {
   ST_EO,
   ST_SO,
 } from "../../../data/scroll_offset";
+import { moveOffsetState } from "../../../recoil/globalState";
+import { CSSTransition } from "react-transition-group";
+import { useEffect, useRef } from "react";
 
 interface ButtonPropsType {
-  setUnmoveMode: Function;
-  scroll: ScrollControlsState;
   moveMode: boolean;
 }
 
 export const MoveButtons: React.FunctionComponent<ButtonPropsType> = ({
-  setUnmoveMode,
-  scroll,
   moveMode,
 }) => {
+  const moveButtonsRef = useRef(null);
+  const setMoveOffset = useSetRecoilState(moveOffsetState);
+
   const handleClick = (offset: number[]) => {
-    if (scroll.offset < offset[0] || scroll.offset > offset[1]) {
-      const height = scroll.el.scrollHeight - scroll.el.clientHeight;
-      setUnmoveMode();
-      scroll.el.scrollTo({ top: (height * (offset[0] + offset[1])) / 2 });
-      scroll.offset = 0.5;
-    } else {
-      setUnmoveMode();
-    }
+    setMoveOffset(offset);
   };
+
+  useEffect(() => {}, []);
 
   const settingButtons: Array<{
     name: string;
@@ -74,38 +71,47 @@ export const MoveButtons: React.FunctionComponent<ButtonPropsType> = ({
   ];
 
   return (
-    <>
-      <Background $moveMode={moveMode} />
-      <SelectPlanets $moveMode={moveMode}>
-        {settingButtons.map((i) => {
-          return (
-            <Button
-              key={i.name}
-              $position={i.position}
-              type="button"
-              $moveMode={moveMode}
-              onClick={() => handleClick(i.offset)}
-            >
-              <Image src={`/assets/images/move_buttons/${i.name}.png`} />
-            </Button>
-          );
-        })}
-      </SelectPlanets>
-    </>
+    <CSSTransition
+      in={moveMode}
+      nodeRef={moveButtonsRef}
+      className={"move"}
+      timeout={300}
+      unmountOnExit
+    >
+      <div ref={moveButtonsRef}>
+        <Background />
+        <SelectPlanets>
+          {settingButtons.map((i) => {
+            return (
+              <Button
+                key={i.name}
+                $position={i.position}
+                type="button"
+                $moveMode={moveMode}
+                onClick={() => handleClick(i.offset)}
+              >
+                <Image
+                  src={`/assets/images/move_buttons/${i.name}.webp`}
+                  alt={"move_buttons"}
+                />
+              </Button>
+            );
+          })}
+        </SelectPlanets>
+      </div>
+    </CSSTransition>
   );
 };
 
-const Background = styled.div<{ $moveMode: boolean }>`
+const Background = styled.div`
   display: flex;
   position: fixed;
-  background: black;
-  opacity: ${(props) => (props.$moveMode ? 0.85 : 0)};
+  background: #000000c5;
   width: 100%;
   height: 100%;
   transition: opacity 0.3s ease;
-  pointer-events: ${(props) => (props.$moveMode ? "auto" : "none")};
 `;
-const SelectPlanets = styled.section<{ $moveMode: boolean }>`
+const SelectPlanets = styled.section`
   display: flex;
   position: fixed;
   flex-direction: row;
@@ -116,7 +122,7 @@ const SelectPlanets = styled.section<{ $moveMode: boolean }>`
   left: 50%;
   transform: translate(-50%, 0);
   gap: 1%;
-  pointer-events: ${(props) => (props.$moveMode ? "auto" : "none")};
+  transition: all 0.3s ease;
 `;
 const Button = styled.button<{ $position: number[]; $moveMode: boolean }>`
   display: flex;
@@ -127,15 +133,12 @@ const Button = styled.button<{ $position: number[]; $moveMode: boolean }>`
     `translate(${props.$position[0]}vw, ${props.$position[1]}vh) scale(${
       props.$moveMode ? 1 : 0
     })`};
-  pointer-events: ${(props) => (props.$moveMode ? "auto" : "none")};
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  opacity: ${(props) => (props.$moveMode ? 1 : 0)};
+  transition: all 0.3s ease;
   &:hover img {
-    transform: scale(1.2);
+    transform: scale(1.15);
   }
 `;
 const Image = styled.img`
   width: 110%;
   transition: transform 0.3s ease;
-  transform: scale(1.05);
 `;
