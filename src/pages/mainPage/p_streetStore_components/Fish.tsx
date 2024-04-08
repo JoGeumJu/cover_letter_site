@@ -3,7 +3,10 @@ import { Float, useGLTF } from "@react-three/drei";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 
-const Fish: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
+const Fish: React.FC<{ wasAnimated: boolean; isScannerOpen: boolean }> = ({
+  wasAnimated,
+  isScannerOpen,
+}) => {
   const ref = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/streetStore/fish.glb");
   const mixer = new THREE.AnimationMixer(scene);
@@ -16,7 +19,7 @@ const Fish: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
         action.reset().play();
       });
     }
-  }, [wasAnimated, animations]);
+  }, [wasAnimated, animations, isScannerOpen]);
 
   useFrame((state, delta) => {
     if (wasAnimated) {

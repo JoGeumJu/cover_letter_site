@@ -9,7 +9,7 @@ button {
   padding: 0;
 }
 
-.page-transition {
+.page {
   position: absolute;
   width: 100vw;
   height: 100vh;
@@ -61,7 +61,7 @@ button {
   transition: transform 500ms ease;
 }
 
-/* move_div */
+/* move */
 .move.enter {
   opacity: 0;
 }
@@ -80,4 +80,37 @@ button {
 .move.exit-active {
   opacity: 0;
   transition: opacity 0.3s ease;
+}
+
+/* scanner */
+.scanner.enter {
+  transform: translate(0, 120%);
+}
+.scanner.enter-active {
+  transform: translate(0, 0);
+  transition: transform 0.4s ease;
+}
+.scanner.enter-done {
+  transform: translate(0, 0);
+  transition: transform 0.4s ease;
+}
+.scanner.exit {
+  transform: translate(0, 120%);
+  transition: transform 0.4s ease;
+}
+.move.exit-active {
+  transform: translate(0, 120%);
+  transition: transform 0.4s ease;
+}
+
+.scanner.enter .scanner_info {
+  opacity: 0;
+}
+.scanner.enter-active .scanner_info {
+  opacity: 1;
+  transition: opacity 0.4s 0.3s ease;
+}
+.scanner.enter-done .scanner_info {
+  opacity: 1;
+  transition: opacity 0.4s 0.3s ease;
 }

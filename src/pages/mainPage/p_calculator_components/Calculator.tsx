@@ -5,7 +5,10 @@ import { Float, useGLTF, useScroll } from "@react-three/drei";
 import { useRecoilValue } from "recoil";
 import { moveModeState } from "../../../recoil/globalState";
 
-const Calculator: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
+const Calculator: React.FC<{
+  wasAnimated: boolean;
+  isScannerOpen: boolean;
+}> = ({ wasAnimated, isScannerOpen }) => {
   const meshRef = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF(
     "/assets/models/calculator/calculator.glb"
@@ -56,7 +59,7 @@ const Calculator: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
         }
       });
     }
-  }, [wasAnimated, animations]);
+  }, [wasAnimated, animations, isScannerOpen]);
 
   useFrame((state, delta) => {
     if (wasAnimated) mixer.update(delta);

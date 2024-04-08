@@ -15,7 +15,7 @@ import {
 } from "../../../data/scroll_offset";
 import { moveOffsetState } from "../../../recoil/globalState";
 import { CSSTransition } from "react-transition-group";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface ButtonPropsType {
   moveMode: boolean;
@@ -30,6 +30,8 @@ export const MoveButtons: React.FunctionComponent<ButtonPropsType> = ({
   const handleClick = (offset: number[]) => {
     setMoveOffset(offset);
   };
+
+  useEffect(() => {}, []);
 
   const settingButtons: Array<{
     name: string;
@@ -125,7 +127,6 @@ const SelectPlanets = styled.section`
 const Button = styled.button<{ $position: number[]; $moveMode: boolean }>`
   display: flex;
   width: 15%;
-  max-width: 200px;
   align-items: center;
   justify-content: center;
   transform: ${(props) =>

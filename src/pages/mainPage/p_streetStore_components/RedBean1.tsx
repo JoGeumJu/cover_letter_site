@@ -3,7 +3,10 @@ import { useGLTF } from "@react-three/drei";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 
-const RedBean1: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
+const RedBean1: React.FC<{ wasAnimated: boolean; isScannerOpen: boolean }> = ({
+  wasAnimated,
+  isScannerOpen,
+}) => {
   const ref = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF(
     "/assets/models/streetStore/red_bean1.glb"
@@ -18,7 +21,7 @@ const RedBean1: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
         action.reset().setDuration(30).play();
       });
     }
-  }, [wasAnimated, animations]);
+  }, [wasAnimated, animations, isScannerOpen]);
 
   useFrame((state, delta) => {
     if (wasAnimated) mixer.update(delta);

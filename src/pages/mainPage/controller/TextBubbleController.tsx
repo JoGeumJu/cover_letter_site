@@ -27,7 +27,6 @@ import {
 
 export const TextBubbleController: React.FunctionComponent = () => {
   const scroll = useScroll();
-
   const setOpacity = useSetRecoilState(bubbleOpacityState);
   const setIsFolding = useSetRecoilState(bubbleIsFoldingState);
   const setTalkingOption = useSetRecoilState(bubbleTalkingOptionState);
@@ -39,7 +38,6 @@ export const TextBubbleController: React.FunctionComponent = () => {
   useEffect(() => {
     if (scroll.offset < moveOffset[0] || scroll.offset > moveOffset[1]) {
       const height = scroll.el.scrollHeight - scroll.el.clientHeight;
-
       scroll.el.scrollTo({
         top: (height * (moveOffset[0] + moveOffset[1])) / 2,
       });

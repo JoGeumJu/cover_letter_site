@@ -79,11 +79,11 @@ export const TextBubble: React.FunctionComponent = () => {
 
 const Wrapper = styled.section<{ opacity: number; $isfolding: boolean }>`
   position: fixed;
-  width: 40vw;
+  width: 40%;
   object-fit: cover;
-  left: 50vw;
-  top: calc(100vh - 30px);
-  transform: translate(-50%, ${(props) => (props.$isfolding ? -16 : -100)}%);
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, ${(props) => (props.$isfolding ? 75 : -10)}%);
   aspect-ratio: 2.875/1;
   z-index: 500;
   opacity: ${(props) => props.opacity};

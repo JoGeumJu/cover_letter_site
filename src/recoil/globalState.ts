@@ -34,3 +34,13 @@ export const bubbleTextIndex = atom<number>({
   key: "bubbleTextIndex",
   default: 0,
 });
+
+// scanner
+export const isScannerOpenState = atom<boolean>({
+  key: "isScannerOpenState",
+  default: false,
+});
+export const scannerOffsetState = atom<number>({
+  key: "scannerOffsetState",
+  default: 0,
+});

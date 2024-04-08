@@ -5,7 +5,10 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useRecoilValue } from "recoil";
 import { moveModeState } from "../../../recoil/globalState";
 
-const Display: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
+const Display: React.FC<{ wasAnimated: boolean; isScannerOpen: boolean }> = ({
+  wasAnimated,
+  isScannerOpen,
+}) => {
   const displayRef = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/dos/display.glb");
   const mixer = new THREE.AnimationMixer(scene);
@@ -61,7 +64,7 @@ const Display: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
         }
       });
     }
-  }, [wasAnimated, animations]);
+  }, [wasAnimated, animations, isScannerOpen]);
 
   useFrame((state, delta) => {
     if (wasAnimated) mixer.update(delta);

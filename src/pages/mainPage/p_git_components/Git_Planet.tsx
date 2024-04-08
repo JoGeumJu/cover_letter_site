@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import * as THREE from "three";
 import { GIT_SO } from "../../../data/scroll_offset";
-import { moveModeState } from "../../../recoil/globalState";
+import { isScannerOpenState, moveModeState } from "../../../recoil/globalState";
 
 const GitPlanet: React.FC = () => {
   const ref = useRef<THREE.Mesh>(null!);
@@ -13,6 +13,7 @@ const GitPlanet: React.FC = () => {
   let mixer = new THREE.AnimationMixer(scene);
   const scroll = useScroll();
   const moveMode = useRecoilValue(moveModeState);
+  const isScannerOpen = useRecoilValue(isScannerOpenState);
 
   useEffect(() => {
     if (wasAnimated) {
@@ -22,7 +23,7 @@ const GitPlanet: React.FC = () => {
         action.reset().play();
       });
     }
-  }, [wasAnimated, animations]);
+  }, [wasAnimated, animations, isScannerOpen]);
 
   useFrame((state, delta) => {
     if (GIT_SO < scroll.offset) {

@@ -4,7 +4,10 @@ import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { CAL_EO, CAL_SO } from "../../../data/scroll_offset";
 
-const Keyword: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
+const Keyword: React.FC<{ wasAnimated: boolean; isScannerOpen: boolean }> = ({
+  wasAnimated,
+  isScannerOpen,
+}) => {
   const keyRef = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/calculator/key.glb");
   let mixer = new THREE.AnimationMixer(scene);
@@ -16,7 +19,7 @@ const Keyword: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
       action.clampWhenFinished = true;
       action.startAt(0.6).setEffectiveTimeScale(1.4).reset().play();
     });
-  }, [scene, wasAnimated]);
+  }, [animations, wasAnimated, isScannerOpen]);
 
   useFrame((state, delta) => {
     if (wasAnimated) mixer.update(delta);
