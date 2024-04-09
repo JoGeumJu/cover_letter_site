@@ -3,7 +3,10 @@ import { Float, useGLTF } from "@react-three/drei";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 
-const Keyword: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
+const Keyword: React.FC<{ wasAnimated: boolean; isScannerOpen: boolean }> = ({
+  wasAnimated,
+  isScannerOpen,
+}) => {
   const keyRef = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF("/assets/models/cu/key.glb");
   let mixer = new THREE.AnimationMixer(scene);
@@ -15,7 +18,7 @@ const Keyword: React.FC<{ wasAnimated: boolean }> = ({ wasAnimated }) => {
       action.clampWhenFinished = true;
       action.reset().play();
     });
-  }, [scene, wasAnimated]);
+  }, [animations, wasAnimated, isScannerOpen]);
 
   useFrame((state, delta) => {
     if (wasAnimated) mixer.update(delta);

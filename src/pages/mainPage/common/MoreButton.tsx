@@ -13,6 +13,7 @@ interface ButtonPropsType {
   wasAnimated: boolean;
   content: string;
   delay: 15 | 20 | 35 | 45 | 90;
+  isScannerOpen: boolean;
 }
 
 const MoreButton: React.FC<ButtonPropsType> = ({
@@ -22,6 +23,7 @@ const MoreButton: React.FC<ButtonPropsType> = ({
   wasAnimated,
   content,
   delay,
+  isScannerOpen,
 }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const moveMode = useRecoilValue(moveModeState);
@@ -37,7 +39,7 @@ const MoreButton: React.FC<ButtonPropsType> = ({
   const handleClick = () => {
     if (wasAnimated && !moveMode) {
       setIsLoading(true);
-      navigate(`/detail?content=${content}`);
+      navigate(`/detail`, { state: { content: content } });
       setTimeout(() => {
         setIsLoading(false);
       }, 3000);
@@ -51,7 +53,7 @@ const MoreButton: React.FC<ButtonPropsType> = ({
       action.clampWhenFinished = true;
       action.reset().play();
     });
-  }, [animations, wasAnimated]);
+  }, [animations, wasAnimated, isScannerOpen]);
 
   useFrame((state, delta) => {
     if (wasAnimated) mixer.update(delta);

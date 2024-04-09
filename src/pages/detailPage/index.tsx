@@ -3,8 +3,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { styled } from "styled-components";
 import { LoadingRouteButton } from "../../common/LoadingRouteButton";
-import { ContentType, DetailPageData } from "../../data/detail_page_data";
+import {
+  ContentKeyType,
+  ContentType,
+  DetailPageData,
+} from "../../data/detail_page_data";
 import { isLoadingState } from "../../recoil/globalState";
+import { Bookmarks } from "./components/Bookmarks";
 import { Explain } from "./components/Explain";
 import { PlanetPicture } from "./components/PlanetPicture";
 import { Release } from "./components/Release";
@@ -14,18 +19,22 @@ const DetailPage: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const setIsLoading = useSetRecoilState(isLoadingState);
   const location = useLocation();
+  const [contentKey, setContentKey] = useState("");
   const [content, setContent] = useState<ContentType>();
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const contentKey = searchParams.get("content");
-    if (contentKey) setContent(DetailPageData(contentKey));
+    const getContentKey = location.state["content"];
+    setContentKey(getContentKey);
+    if (getContentKey) setContent(DetailPageData(getContentKey));
   }, []);
 
   return (
     <DetailWrapper className={"page"} id={"detail"}>
       <DetailWrapperInner>
-        <Book src={"/assets/images/wide_book/book_detail_wide.png"} />
+        <Book
+          src={"/assets/images/wide_book/book_detail_wide.webp"}
+          alt={"book"}
+        />
         <PlanetPicture
           date={content?.date}
           name_s={content?.name_s}
@@ -38,9 +47,16 @@ const DetailPage: React.FunctionComponent = () => {
           performance={content?.performance}
         />
       </DetailWrapperInner>
-      <LoadingRouteButton path={"/"}>
-        <Back />
-      </LoadingRouteButton>
+      <Bookmarks contentKey={contentKey} />
+      <Back>
+        <LoadingRouteButton path={"/"}>
+          <img
+            src={"/assets/images/wide_book/back_sticker.webp"}
+            alt={"back"}
+            style={{ width: "100%", height: "100%" }}
+          />
+        </LoadingRouteButton>
+      </Back>
     </DetailWrapper>
   );
 };
@@ -73,10 +89,9 @@ const Back = styled.div`
   position: absolute;
   top: 5vh;
   left: 5vh;
-  background-image: url("/assets/images/wide_book/back_sticker.png");
   height: 6%;
   aspect-ratio: 1.163;
-  background-size: cover;
+  transition: transform 0.2s ease;
   &:hover {
     transform: scale(1.15);
   }

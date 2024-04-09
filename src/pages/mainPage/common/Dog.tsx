@@ -3,10 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float, useGLTF, useScroll } from "@react-three/drei";
 import { DOG_EO, DOG_SO } from "../../../data/scroll_offset";
+import { useRecoilValue } from "recoil";
+import { isScannerOpenState } from "../../../recoil/globalState";
 
 const Dog: React.FC = () => {
   const scroll = useScroll();
   const meshRef = useRef<THREE.Mesh>(null);
+  const isScannerOpen = useRecoilValue(isScannerOpenState);
   const { scene, animations } = useGLTF("/assets/models/heongee.glb");
   const [readyFlying, setReadyFlying] = useState(false);
   let mixer = new THREE.AnimationMixer(scene);
@@ -44,7 +47,7 @@ const Dog: React.FC = () => {
       }
       action.reset().play();
     });
-  }, [readyFlying, animations]);
+  }, [readyFlying, animations, isScannerOpen]);
 
   useFrame((state, delta) => {
     if (DOG_SO < scroll.offset) {
