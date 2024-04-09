@@ -39,7 +39,7 @@ const MoreButton: React.FC<ButtonPropsType> = ({
   const handleClick = () => {
     if (wasAnimated && !moveMode) {
       setIsLoading(true);
-      navigate(`/detail?content=${content}`);
+      navigate(`/detail`, { state: { content: content } });
       setTimeout(() => {
         setIsLoading(false);
       }, 3000);

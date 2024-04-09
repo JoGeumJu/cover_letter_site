@@ -3,8 +3,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { styled } from "styled-components";
 import { LoadingRouteButton } from "../../common/LoadingRouteButton";
-import { ContentType, DetailPageData } from "../../data/detail_page_data";
+import {
+  ContentKeyType,
+  ContentType,
+  DetailPageData,
+} from "../../data/detail_page_data";
 import { isLoadingState } from "../../recoil/globalState";
+import { Bookmarks } from "./components/Bookmarks";
 import { Explain } from "./components/Explain";
 import { PlanetPicture } from "./components/PlanetPicture";
 import { Release } from "./components/Release";
@@ -14,12 +19,13 @@ const DetailPage: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const setIsLoading = useSetRecoilState(isLoadingState);
   const location = useLocation();
+  const [contentKey, setContentKey] = useState("");
   const [content, setContent] = useState<ContentType>();
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const contentKey = searchParams.get("content");
-    if (contentKey) setContent(DetailPageData(contentKey));
+    const getContentKey = location.state["content"];
+    setContentKey(getContentKey);
+    if (getContentKey) setContent(DetailPageData(getContentKey));
   }, []);
 
   return (
@@ -41,11 +47,13 @@ const DetailPage: React.FunctionComponent = () => {
           performance={content?.performance}
         />
       </DetailWrapperInner>
+      <Bookmarks contentKey={contentKey} />
       <Back>
         <LoadingRouteButton path={"/"}>
           <img
             src={"/assets/images/wide_book/back_sticker.webp"}
             alt={"back"}
+            style={{ width: "100%", height: "100%" }}
           />
         </LoadingRouteButton>
       </Back>
