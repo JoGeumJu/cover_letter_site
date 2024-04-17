@@ -92,8 +92,9 @@ export const ScannerInfo: React.FunctionComponent = () => {
                   src={"/assets/images/scanner/up_arrow.webp"}
                   alt={"up_arrow"}
                   style={{
-                    width: "100%",
-                    height: "100%",
+                    width: "15vh",
+                    aspectRatio: "0.7593",
+                    transform: "translate(0,0)",
                     opacity: 0.8,
                   }}
                 />

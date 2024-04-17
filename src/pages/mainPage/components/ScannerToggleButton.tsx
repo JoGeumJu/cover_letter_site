@@ -81,7 +81,6 @@ const ScannverImg = styled.img`
   position: fixed;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   overflow: visible;
   z-index: 600;
 `;
@@ -89,7 +88,7 @@ const Filter = styled.div`
   display: flex;
   position: fixed;
   width: 95%;
-  height: 95%;
+  height: 92%;
   background: #00000088;
   backdrop-filter: invert(35%);
   z-index: 600;
