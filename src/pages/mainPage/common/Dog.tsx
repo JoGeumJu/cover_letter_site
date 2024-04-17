@@ -11,7 +11,7 @@ const Dog: React.FC = () => {
   const meshRef = useRef<THREE.Mesh>(null);
   const isScannerOpen = useRecoilValue(isScannerOpenState);
   const { scene, animations } = useGLTF("/assets/models/heongee.glb");
-  const [readyFlying, setReadyFlying] = useState(false);
+  const [readyFlying, setReadyFlying] = useState(true);
   let mixer = new THREE.AnimationMixer(scene);
 
   const findAndApplyMaterial = (object: THREE.Object3D) => {
@@ -21,6 +21,22 @@ const Dog: React.FC = () => {
       material.opacity = 0.2;
     }
   };
+
+  useEffect(() => {
+    animations.forEach((clip) => {
+      const action = mixer.clipAction(clip);
+      if (readyFlying) {
+        console.log("출력1");
+        action.loop = THREE.LoopOnce;
+        action.clampWhenFinished = true;
+      } else {
+        console.log("출력2");
+        action.loop = THREE.LoopRepeat;
+      }
+      console.log("출력");
+      action.reset().play();
+    });
+  }, [readyFlying, animations, isScannerOpen]);
 
   useEffect(() => {
     scene.children.forEach((child) => {
@@ -35,19 +51,6 @@ const Dog: React.FC = () => {
       }
     }
   }, [scene]);
-
-  useEffect(() => {
-    animations.forEach((clip) => {
-      const action = mixer.clipAction(clip);
-      if (readyFlying) {
-        action.loop = THREE.LoopOnce;
-        action.clampWhenFinished = true;
-      } else {
-        action.loop = THREE.LoopRepeat;
-      }
-      action.reset().play();
-    });
-  }, [readyFlying, animations, isScannerOpen]);
 
   useFrame((state, delta) => {
     if (DOG_SO < scroll.offset) {
