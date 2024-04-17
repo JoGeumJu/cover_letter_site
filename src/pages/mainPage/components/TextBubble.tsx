@@ -21,12 +21,7 @@ export const TextBubble: React.FunctionComponent = () => {
   const [textIndex, setTextIndex] = useRecoilState(bubbleTextIndex);
   const talkingOption = useRecoilValue(bubbleTalkingOptionState);
 
-  const taking = useTalking(
-    talkingOption.text,
-    talkingOption.speed,
-    moveMode,
-    skip
-  );
+  const taking = useTalking(talkingOption.text, talkingOption.speed, moveMode);
 
   return (
     <>

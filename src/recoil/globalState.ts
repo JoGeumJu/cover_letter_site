@@ -44,3 +44,11 @@ export const scannerOffsetState = atom<number>({
   key: "scannerOffsetState",
   default: 0,
 });
+export const isNewAlarmState = atom<boolean>({
+  key: "isNewAlarmState",
+  default: true,
+});
+export const isCheckAlarmState = atom<boolean>({
+  key: "isNewCheckState",
+  default: false,
+});

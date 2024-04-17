@@ -1,14 +1,20 @@
 import React, { useRef, useState } from "react";
-import { styled } from "styled-components";
+import { css, keyframes, styled } from "styled-components";
 import { CSSTransition } from "react-transition-group";
-import { useSetRecoilState } from "recoil";
-import { isScannerOpenState } from "../../../recoil/globalState";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  isCheckAlarmState,
+  isNewAlarmState,
+  isScannerOpenState,
+} from "../../../recoil/globalState";
 import { ScannerInfo } from "./ScannerInfo";
 
 export const ScannerToggleButton: React.FunctionComponent = () => {
   const [isFolding, setIsFolding] = useState(true);
   const scannerRef = useRef(null);
   const setIsScannerOpen = useSetRecoilState(isScannerOpenState);
+  const isNewAlarm = useRecoilValue(isNewAlarmState);
+  const [isCheckAlarm, setIsCheckAlarm] = useRecoilState(isCheckAlarmState);
 
   return (
     <>
@@ -29,46 +35,86 @@ export const ScannerToggleButton: React.FunctionComponent = () => {
           <ScannerInfo />
         </ScannerBox>
       </CSSTransition>
-      <ButtonBox>
+      <ButtonBox $isAlarm={isNewAlarm && !isCheckAlarm}>
         <Button
           type="button"
           onClick={() => {
             if (isFolding) setIsScannerOpen(true);
             setIsFolding(!isFolding);
+            setIsCheckAlarm(true);
           }}
         >
           <ButtonImg
             src={"/assets/images/scanner/scanner_button.webp"}
             alt={"scanner_button"}
           />
+          {isNewAlarm && !isCheckAlarm ? <NewAlarm>N</NewAlarm> : null}
         </Button>
       </ButtonBox>
     </>
   );
 };
 
-const ButtonBox = styled.div`
+const pulse = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1);
+  }
+  60%{
+    
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
+const ButtonBox = styled.div<{ $isAlarm: boolean }>`
   display: flex;
   position: fixed;
   right: 4.5vh;
   top: 3vh;
   z-index: 600;
+  animation: ${(props) =>
+    props.$isAlarm
+      ? css`
+          ${pulse} 2s ease infinite
+        `
+      : null};
+  &:hover {
+    transform: scale(1.2);
+  }
+  transition: transform 0.3s ease;
 `;
 const Button = styled.button`
+  position: relative;
   height: 9vh;
   aspect-ratio: 1.376;
-  &:hover img {
-    transform: scale(1.35);
-  }
 `;
 const ButtonImg = styled.img`
   object-fit: cover;
   width: 100%;
   height: 100%;
   transform: scale(1.2);
-  transition: transform 0.3s ease;
 `;
-
+const NewAlarm = styled.div`
+  display: flex;
+  position: absolute;
+  background-color: #ff6666;
+  font-size: 1.8vh;
+  font-weight: bold;
+  color: white;
+  width: 3vh;
+  height: 3vh;
+  border-radius: 3vh;
+  align-items: center;
+  justify-content: center;
+  top: 0.6vh;
+  right: -0.6vh;
+  padding-top: 0.3vh;
+  box-sizing: border-box;
+`;
 const ScannerBox = styled.div`
   display: flex;
   position: fixed;

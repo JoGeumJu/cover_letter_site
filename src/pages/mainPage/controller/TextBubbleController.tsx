@@ -7,6 +7,8 @@ import {
   CAL_SO,
   CU_EO,
   CU_SO,
+  DOG_EO,
+  DOG_SO,
   DOS_EO,
   DOS_SO,
   MEONG_EO,
@@ -21,6 +23,8 @@ import {
   bubbleSkipState,
   bubbleTalkingOptionState,
   bubbleTextIndex,
+  isCheckAlarmState,
+  isNewAlarmState,
   moveModeState,
   moveOffsetState,
 } from "../../../recoil/globalState";
@@ -34,6 +38,8 @@ export const TextBubbleController: React.FunctionComponent = () => {
   const setSkip = useSetRecoilState(bubbleSkipState);
   const [moveMode, setMoveMode] = useRecoilState(moveModeState);
   const moveOffset = useRecoilValue(moveOffsetState);
+  const setIsNewAlarm = useSetRecoilState(isNewAlarmState);
+  const setIsCheckAlarm = useSetRecoilState(isCheckAlarmState);
 
   useEffect(() => {
     if (scroll.offset < moveOffset[0] || scroll.offset > moveOffset[1]) {
@@ -41,9 +47,11 @@ export const TextBubbleController: React.FunctionComponent = () => {
       scroll.el.scrollTo({
         top: (height * (moveOffset[0] + moveOffset[1])) / 2,
       });
-      scroll.offset = 0.5;
+      scroll.offset = (moveOffset[0] + moveOffset[1]) / 2;
     }
     setMoveMode(false);
+    setIsNewAlarm(false);
+    setIsCheckAlarm(false);
   }, [moveOffset]);
 
   const scrollOffsets: Array<{ s: number; e: number; l: LabelType }> = [
@@ -70,6 +78,7 @@ export const TextBubbleController: React.FunctionComponent = () => {
           setOpacity(1 - scroll.range(offsets.e, 0.02));
         } else {
           checkIndex(offsets.l);
+          setIsNewAlarm(true);
           setOpacity(1);
         }
         return true;
@@ -78,9 +87,11 @@ export const TextBubbleController: React.FunctionComponent = () => {
       }
     });
     if (scroll.offset <= 0.02) {
+      if (scroll.offset === DOG_SO) setIsNewAlarm(true);
       checkIndex(LabelType.intro);
-      setOpacity(1 - scroll.range(0, 0.03));
+      setOpacity(1 - scroll.range(0, 0.02));
     } else if (scroll.offset >= 0.98) {
+      if (scroll.offset === 0.99995) setIsNewAlarm(true);
       checkIndex(LabelType.git);
       setOpacity(scroll.range(0.98, 0.02));
     } else {
@@ -91,6 +102,8 @@ export const TextBubbleController: React.FunctionComponent = () => {
         setTalkingOption({ text: "", speed: 50 });
         setMoveMode(false);
         setSkip(false);
+        setIsNewAlarm(false);
+        setIsCheckAlarm(false);
       }
     }
   });
