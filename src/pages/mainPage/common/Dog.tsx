@@ -26,14 +26,11 @@ const Dog: React.FC = () => {
     animations.forEach((clip) => {
       const action = mixer.clipAction(clip);
       if (readyFlying) {
-        console.log("출력1");
         action.loop = THREE.LoopOnce;
         action.clampWhenFinished = true;
       } else {
-        console.log("출력2");
         action.loop = THREE.LoopRepeat;
       }
-      console.log("출력");
       action.reset().play();
     });
   }, [readyFlying, animations, isScannerOpen]);

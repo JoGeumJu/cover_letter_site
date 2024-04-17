@@ -7,21 +7,21 @@ export const Stack_Performance: React.FunctionComponent<{
 }> = ({ stack, performance }) => {
   return (
     <>
-      <ExplainText2>
+      <ExplainStack>
         {stack?.map((i, id) => (
-          <ExplainText2Item key={i + id}>✦ {i}</ExplainText2Item>
+          <ExplainStackItem key={i + id}>✦ {i}</ExplainStackItem>
         ))}
-      </ExplainText2>
+      </ExplainStack>
       <SectionTitle_L $position={[120, -340]} $rotation={5}>
         기술스택 및 라이브러리
       </SectionTitle_L>
-      <ExplainText3>
+      <ExplainPerformance>
         {performance?.map((i, id) => (
-          <ExplainText3Item key={id + "performance"}>
+          <ExplainPerformanceItem key={id + "performance"}>
             {"✱ " + i}
-          </ExplainText3Item>
+          </ExplainPerformanceItem>
         ))}
-      </ExplainText3>
+      </ExplainPerformance>
       <SectionTitle_L $position={[47, -60]} $rotation={-2}>
         맡은 역할 및 성과
       </SectionTitle_L>
@@ -46,7 +46,7 @@ const SectionTitle_L = styled.div<{ $position: number[]; $rotation: number }>`
   justify-content: center;
   font-size: 2vh;
 `;
-const ExplainText2 = styled.div`
+const ExplainStack = styled.div`
   display: flex;
   flex-wrap: wrap;
   position: absolute;
@@ -57,7 +57,7 @@ const ExplainText2 = styled.div`
   transform: translate(11%, 0);
   gap: 1.2vh 0;
 `;
-const ExplainText2Item = styled.div`
+const ExplainStackItem = styled.div`
   display: flex;
   width: 50%;
   padding-right: 0.6vh;
@@ -68,7 +68,7 @@ const ExplainText2Item = styled.div`
   font-size: 1.6vh;
   letter-spacing: -0.08vh;
 `;
-const ExplainText3 = styled.div`
+const ExplainPerformance = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -81,12 +81,12 @@ const ExplainText3 = styled.div`
   gap: 1.25vh 0;
   word-break: keep-all;
 `;
-const ExplainText3Item = styled.div`
+const ExplainPerformanceItem = styled.div`
   display: flex;
   width: 100%;
   line-height: 2.5vh;
   letter-spacing: -0.02vh;
   font-size: 1.8vh;
   white-space: pre-wrap;
-  word-break: break-word;
+  word-break: keep-all;
 `;

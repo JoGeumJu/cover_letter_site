@@ -66,7 +66,7 @@ export const MoveButtons: React.FunctionComponent<ButtonPropsType> = ({
     {
       name: "git",
       position: [0, 10],
-      offset: [GIT_EO, GIT_EO],
+      offset: [GIT_EO, GIT_EO - 0.0001],
     },
   ];
 
